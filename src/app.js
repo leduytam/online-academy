@@ -2,12 +2,12 @@ import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
+import 'express-async-errors';
 import { engine } from 'express-handlebars';
 import mongoSanitize from 'express-mongo-sanitize';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import hpp from 'hpp';
-import httpStatus from 'http-status';
 import morgan from 'morgan';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -15,9 +15,12 @@ import xss from 'xss-clean';
 
 import configs from './configs/index.js';
 import camelcase from './middlewares/camelcase.middleware.js';
-import errorHandler from './middlewares/error.middleware.js';
-import routes from './routes/v1/index.js';
-import ApiError from './utils/ApiError.js';
+import {
+  error404Handler,
+  errorConverter,
+  errorHandler,
+} from './middlewares/error.middleware.js';
+import routes from './routes/index.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -45,7 +48,7 @@ if (configs.env === 'production') {
 if (configs.env === 'development') {
   app.use(morgan('dev'));
 } else {
-  app.use(morgan());
+  app.use(morgan('tiny'));
 }
 
 app.use(
@@ -86,9 +89,9 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.use('/', routes);
 
-app.use((req, res, next) => {
-  throw new ApiError(httpStatus.NOT_FOUND, `Not found ${req.originalUrl}`);
-});
+app.use(error404Handler);
+
+app.use(errorConverter);
 
 app.use(errorHandler);
 
