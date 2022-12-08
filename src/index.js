@@ -1,9 +1,20 @@
+import mongoose from 'mongoose';
+
 import app from './app.js';
 import configs from './configs/index.js';
 import logger from './utils/logger.js';
 
-const server = app.listen(configs.port, () => {
-  logger.info(`Listening to port ${configs.port}`);
+logger.log('info', 'Connecting to MongoDB...');
+
+let server;
+
+mongoose.set('strictQuery', false);
+mongoose.connect(configs.mongoose.url, configs.mongoose.options).then(() => {
+  logger.info('Connected to MongoDB');
+
+  server = app.listen(configs.port, () => {
+    logger.info(`Listening to port ${configs.port}`);
+  });
 });
 
 const unexpectedErrorHandler = (err) => {

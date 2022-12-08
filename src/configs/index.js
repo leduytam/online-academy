@@ -10,7 +10,11 @@ dotenv.config({
 
 const configs = {
   env: process.env.NODE_ENV || 'development',
-  port: process.env.PORT || 8000,
+  port: +process.env.PORT || 8000,
+  mongoose: {
+    url: process.env.MONGODB_URL,
+    options: {},
+  },
 };
 
 export default configs;
