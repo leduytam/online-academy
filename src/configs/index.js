@@ -13,6 +13,8 @@ const configs = {
   port: +process.env.PORT || 8000,
   mongoose: {
     url: process.env.MONGODB_URL,
+    dbName: process.env.DB_NAME,
+    fullUrl: `${process.env.MONGODB_URL}/${process.env.DB_NAME}`,
     options: {},
   },
 };
