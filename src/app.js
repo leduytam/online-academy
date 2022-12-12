@@ -14,7 +14,6 @@ import { fileURLToPath } from 'url';
 import xss from 'xss-clean';
 
 import configs from './configs/index.js';
-import camelcase from './middlewares/camelcase.middleware.js';
 import {
   error404Handler,
   errorConverter,
@@ -82,8 +81,6 @@ app.use(xss());
 app.use(mongoSanitize());
 
 app.use(compression());
-
-app.use(camelcase());
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
