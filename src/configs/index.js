@@ -22,14 +22,14 @@ const configs = {
     resave: true,
     saveUninitialized: false,
     cookie: {
+      maxAge: ms(process.env.SESSION_MAX_AGE || '2h'),
       secure: process.env.NODE_ENV === 'production',
     },
     store: MongoStore.create({
       mongoUrl: process.env.MONGODB_URL,
-      ttl: ms(process.env.SESSION_MAX_AGE || '2h') / 1000,
-      autoRemove: 'native',
     }),
   },
+  rememberMeMaxAge: ms(process.env.REMEMBER_ME_MAX_AGE || '7d'),
 };
 
 export default configs;

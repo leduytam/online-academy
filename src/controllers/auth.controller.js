@@ -1,5 +1,6 @@
 import httpStatus from 'http-status';
 
+import configs from '../configs/index.js';
 import User from '../models/user.model.js';
 
 const login = async (req, res, next) => {
@@ -9,7 +10,7 @@ const login = async (req, res, next) => {
     return;
   }
 
-  const { email, password } = req.body;
+  const { email, password, rememberMe } = req.body;
 
   const user = await User.findOne({ email }).select('+password');
 
@@ -23,8 +24,11 @@ const login = async (req, res, next) => {
 
   req.session.user = user;
 
-  res.redirect(req.session.backUrl || '/');
-  req.session.backUrl = undefined;
+  if (rememberMe) {
+    req.session.cookie.maxAge = configs.rememberMeMaxAge;
+  }
+
+  res.status(httpStatus.OK).redirect(req.session.backUrl || '/');
 };
 
 const register = async (req, res, next) => {
@@ -52,8 +56,14 @@ const register = async (req, res, next) => {
 };
 
 const logout = async (req, res, next) => {
-  req.session.destroy();
-  res.status(httpStatus.OK).redirect(req.headers.referer || '/');
+  req.session.destroy((err) => {
+    if (err) {
+      next(err);
+      return;
+    }
+
+    res.redirect(req.headers.referer || '/');
+  });
 };
 
 const getLogInView = async (req, res, next) => {
