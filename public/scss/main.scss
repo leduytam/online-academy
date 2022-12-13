@@ -1,0 +1,12 @@
+label {
+  user-select: none;
+}
+
+::selection {
+  color: white;
+  background: blue;
+}
+
+::placeholder {
+  color: gray;
+}
