@@ -1,47 +1,32 @@
 import bcrypt from 'bcryptjs';
 import { Schema, model } from 'mongoose';
 
-const userSchema = new Schema(
-  {
-    email: {
-      type: String,
-      required: [true, 'Please provide an email'],
-      unique: [true, 'Email already exists'],
-    },
-    name: {
-      type: String,
-      required: [true, 'Please provide a name'],
-    },
-    password: {
-      type: String,
-      required: [true, 'Please provide a password'],
-      validate: {
-        validator: (value) => {
-          const regex =
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-          return regex.test(value);
-        },
-        message:
-          'Password must contain at least 8 characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character ',
-      },
-    },
-    role: {
-      type: String,
-      enum: {
-        values: ['student', 'instructor', 'admin'],
-        message: 'Please provide a valid role',
-      },
-      default: 'student',
-    },
-    isVerified: {
-      type: Boolean,
-      default: false,
-    },
+const userSchema = new Schema({
+  email: {
+    type: String,
+    required: true,
+    unique: true,
   },
-  {
-    timestamps: true,
-  }
-);
+  name: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+    select: false,
+  },
+  role: {
+    type: String,
+    enum: ['student', 'teacher', 'admin'],
+    default: 'student',
+  },
+  isVerified: {
+    type: Boolean,
+    default: false,
+    select: false,
+  },
+});
 
 userSchema.pre('save', async function (req, res, next) {
   if (this.isNew || this.isModified('password')) {
@@ -51,8 +36,12 @@ userSchema.pre('save', async function (req, res, next) {
   next();
 });
 
-userSchema.methods.isCorrectPassword = async function (password) {
+userSchema.methods.verifyPassword = async function (password) {
   return await bcrypt.compare(password, this.password);
+};
+
+userSchema.statics.isEmailTaken = async function (email) {
+  return !!(await this.findOne({ email }));
 };
 
 export default model('User', userSchema);

@@ -1,0 +1,74 @@
+<navbar class='navbar navbar-expand-lg py-0'>
+  <div class='container-fluid p-3 px-md-4 bg-white border-bottom shadow-sm'>
+    <a class='navbar-brand' href='/'>
+      <i class='fas fa-home'></i>
+      Home
+    </a>
+
+    <button
+      class='navbar-toggler'
+      type='button'
+      data-bs-toggle='collapse'
+      data-bs-target='#navbarNavDropdown'
+      aria-controls='navbarNavDropdown'
+      aria-expanded='false'
+      aria-label='Toggle navigation'
+    >
+      <span class='navbar-toggler-icon'></span>
+    </button>
+
+    <div class='collapse navbar-collapse' id='navbarNavDropdown'>
+      <ul class='navbar-nav ms-auto'>
+        {{#if user}}
+          <li class='nav-item dropdown'>
+            <a
+              class='nav-link dropdown-toggle'
+              href='#'
+              id='navbarDropdownMenuLink'
+              role='button'
+              data-bs-toggle='dropdown'
+              aria-expanded='false'
+            >
+              Welcome,
+              <b>{{user.name}}</b>
+            </a>
+
+            <ul
+              class='dropdown-menu dropdown-menu-end'
+              aria-labelledby='navbarDropdownMenuLink'
+            >
+              <li>
+                <a class='dropdown-item' href='/profile'>
+                  <i class='fa fa-user' aria-hidden='true'></i>
+                  Profile
+                </a>
+              </li>
+
+              <li>
+                <hr class='dropdown-divider' />
+              </li>
+
+              <li>
+                <form id='logout' action='/logout' method='post' class='my-0'>
+                  <a class='dropdown-item' href='javascript: logout();'>
+                    <i class='fa fa-sign-out' aria-hidden='true'></i>
+                    Log out
+                  </a>
+                </form>
+              </li>
+            </ul>
+          </li>
+        {{else}}
+          <li class='nav-item'>
+            <a class='nav-link' href='/login'>Login</a>
+          </li>
+          <li class='nav-item'>
+            <a class='nav-link' href='/register'>Register</a>
+          </li>
+        {{/if}}
+      </ul>
+    </div>
+  </div>
+</navbar>
+
+<script src='js/header.js'></script>

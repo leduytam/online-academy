@@ -1,23 +1,18 @@
 import httpStatus from 'http-status';
-import mongoose from 'mongoose';
 
 import configs from '../configs/index.js';
-import ApiError from '../utils/ApiError.js';
+import AppError from '../utils/AppError.js';
 import logger from '../utils/logger.js';
 
 export const errorConverter = (err, req, res, next) => {
-  if (err instanceof ApiError) {
+  if (err instanceof AppError) {
     next(err);
   }
 
-  const statusCode =
-    err.statusCode || err instanceof mongoose.Error
-      ? httpStatus.BAD_REQUEST
-      : httpStatus.INTERNAL_SERVER_ERROR;
-
+  const statusCode = err.statusCode || httpStatus.INTERNAL_SERVER_ERROR;
   const message = err.message || httpStatus[statusCode];
 
-  next(new ApiError(statusCode, message, false, err.stack));
+  next(new AppError(statusCode, message, false, err.stack));
 };
 
 export const error404Handler = (req, res, next) => {
