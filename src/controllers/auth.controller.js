@@ -16,7 +16,7 @@ const login = async (req, res, next) => {
 
   if (!user || !(await user.verifyPassword(password))) {
     res.locals.error = 'Incorrect email or password';
-    res.render('login');
+    res.status(httpStatus.FORBIDDEN).render('login');
     return;
   }
 
@@ -28,7 +28,7 @@ const login = async (req, res, next) => {
     req.session.cookie.maxAge = configs.rememberMeMaxAge;
   }
 
-  res.status(httpStatus.OK).redirect(req.session.backUrl || '/');
+  res.redirect(req.session.backUrl || '/');
 };
 
 const register = async (req, res, next) => {
@@ -66,6 +66,14 @@ const logout = async (req, res, next) => {
   });
 };
 
+const verify = async (req, res, next) => {
+  // TODO: Implement verify
+};
+
+const resendVerifyOtp = async (req, res, next) => {
+  // TODO: Implement resend verify otp
+};
+
 const getLogInView = async (req, res, next) => {
   if (req.session.user) {
     res.redirect('/');
@@ -84,10 +92,22 @@ const getRegisterView = async (req, res, next) => {
   res.render('register');
 };
 
+const getVerifyView = async (req, res, next) => {
+  if (req.session?.user?.isVerified) {
+    res.redirect('/');
+    return;
+  }
+
+  res.render('verify');
+};
+
 export default {
   login,
   register,
   logout,
+  verify,
+  resendVerifyOtp,
   getLogInView,
   getRegisterView,
+  getVerifyView,
 };
