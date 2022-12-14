@@ -9,13 +9,19 @@ logger.log('info', 'Connecting to MongoDB...');
 let server;
 
 mongoose.set('strictQuery', false);
-mongoose.connect(configs.mongoose.url, configs.mongoose.options).then(() => {
-  logger.info('Connected to MongoDB');
+mongoose
+  .connect(configs.mongoose.url, configs.mongoose.options)
+  .then(() => {
+    logger.info('Connected to MongoDB');
 
-  server = app.listen(configs.port, () => {
-    logger.info(`Server is running at http://localhost:${configs.port}`);
+    server = app.listen(configs.port, () => {
+      logger.info(`Server is running at http://localhost:${configs.port}`);
+    });
+  })
+  .catch((err) => {
+    logger.error('Failed to connect to MongoDB');
+    throw err;
   });
-});
 
 const unexpectedErrorHandler = (err) => {
   logger.error(err);
