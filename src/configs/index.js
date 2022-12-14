@@ -41,6 +41,9 @@ const configs = {
     },
     from: process.env.EMAIL_FROM,
   },
+  otp: {
+    maxAge: ms(process.env.OTP_MAX_AGE || '15m'),
+  },
 };
 
 export default configs;

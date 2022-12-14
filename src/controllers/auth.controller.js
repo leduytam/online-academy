@@ -2,6 +2,8 @@ import httpStatus from 'http-status';
 
 import configs from '../configs/index.js';
 import User from '../models/user.model.js';
+import emailService from '../services/email.service.js';
+import otpService from '../services/otp.service.js';
 
 const login = async (req, res, next) => {
   if (req.error) {
@@ -28,7 +30,9 @@ const login = async (req, res, next) => {
     req.session.cookie.maxAge = configs.rememberMeMaxAge;
   }
 
-  res.redirect(req.session.backUrl || '/');
+  req.session.save((err) => {
+    res.redirect(req.session.backUrl || '/');
+  });
 };
 
 const register = async (req, res, next) => {
@@ -52,6 +56,9 @@ const register = async (req, res, next) => {
     password,
   });
 
+  const otp = await otpService.create(email);
+  await emailService.sendOtp(email, otp);
+
   res.status(httpStatus.CREATED).redirect('/login');
 };
 
@@ -67,11 +74,56 @@ const logout = async (req, res, next) => {
 };
 
 const verify = async (req, res, next) => {
-  // TODO: Implement verify
+  if (req.error) {
+    res.locals.error = req.error;
+    res.status(httpStatus.BAD_REQUEST).render('verify');
+    return;
+  }
+
+  const { otp } = req.body;
+  const { email, isVerified } = req.session.user;
+
+  if (isVerified) {
+    res.status(httpStatus.FORBIDDEN).redirect('/');
+    return;
+  }
+
+  const isOtpValid = await otpService.verify(email, otp);
+
+  if (!isOtpValid) {
+    res.locals.error = 'Invalid OTP';
+    res.status(httpStatus.BAD_REQUEST).render('verify');
+    return;
+  }
+
+  await User.updateOne(
+    {
+      email,
+    },
+    {
+      isVerified: true,
+    }
+  );
+
+  await otpService.deleteOtp(email);
+
+  req.session.user.isVerified = true;
+
+  req.session.save((err) => {
+    res.redirect('/');
+  });
 };
 
 const resendVerifyOtp = async (req, res, next) => {
-  // TODO: Implement resend verify otp
+  const { email } = req.session.user;
+  const otp = await otpService.create(email);
+  await emailService.sendOtp(email, otp);
+
+  req.session.message = 'New OTP has been sent to your email';
+
+  req.session.save((err) => {
+    res.redirect('/verify');
+  });
 };
 
 const getLogInView = async (req, res, next) => {
@@ -98,7 +150,12 @@ const getVerifyView = async (req, res, next) => {
     return;
   }
 
-  res.render('verify');
+  res.locals.message = req.session.message;
+  req.session.message = undefined;
+
+  req.session.save((err) => {
+    res.render('verify');
+  });
 };
 
 export default {

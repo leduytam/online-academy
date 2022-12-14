@@ -23,6 +23,15 @@ const sendEmail = async (to, subject, html) => {
   });
 };
 
+const sendOtp = async (to, otp) => {
+  await sendEmail(
+    to,
+    'Online Academy - OTP',
+    `Your OTP is <b>${otp}</b>. If you did not request this, please ignore this email.`
+  );
+};
+
 export default {
   sendEmail,
+  sendOtp,
 };
