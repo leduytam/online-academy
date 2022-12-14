@@ -43,7 +43,20 @@ const register = {
   },
 };
 
+const verify = {
+  body: {
+    otp: Joi.string()
+      .required()
+      .regex(/^\d{6}$/)
+      .messages({
+        'string.empty': 'OTP is required',
+        'string.pattern.base': 'Invalid OTP',
+      }),
+  },
+};
+
 export default {
   login,
   register,
+  verify,
 };

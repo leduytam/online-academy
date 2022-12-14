@@ -2,10 +2,9 @@ import { Schema, model } from 'mongoose';
 
 const otpSchema = new Schema(
   {
-    userId: {
+    email: {
       type: String,
       required: true,
-      ref: 'User',
     },
     otp: {
       type: String,
