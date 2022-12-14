@@ -7,8 +7,8 @@
         <input
           class='m-2 text-center form-control rounded otp-digit'
           type='text'
-          id='first'
           maxlength='1'
+          autofocus
         />
         <input
           class='m-2 text-center form-control rounded otp-digit'
@@ -50,7 +50,7 @@
       <form action='/logout' method='POST' class='mb-0'>
         <button type='submit' class='btn btn-link'>Log out</button>
       </form>
-      <form action='#' class='mb-0'>
+      <form action='/resend-verify-otp' class='mb-0'>
         <button type='submit' class='btn btn-link'>Resend OTP</button>
       </form>
     </div>

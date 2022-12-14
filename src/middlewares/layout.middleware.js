@@ -3,12 +3,12 @@ const roleLayout = (req, res, next) => {
   next();
 };
 
-const baseLayout = (req, res, next) => {
-  res.locals.layout = 'base';
+const emptyLayout = (req, res, next) => {
+  res.locals.layout = 'empty';
   next();
 };
 
 export default {
   roleLayout,
-  baseLayout,
+  emptyLayout,
 };
