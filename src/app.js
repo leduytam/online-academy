@@ -45,6 +45,8 @@ if (configs.env === 'production') {
       message: 'Too many requests! Please try again later',
     })
   );
+
+  app.set('trust proxy', 1);
 }
 
 app.use(morgan(configs.env === 'development' ? 'dev' : 'tiny'));

@@ -8,7 +8,7 @@ import homeRoute from './home.route.js';
 
 const router = express.Router();
 
-router.all('*', layoutMiddleware.roleLayout, localMiddleware.user);
+router.all('*', layoutMiddleware.roleLayout, localMiddleware);
 router.use(homeRoute);
 router.use(authRoute);
 
