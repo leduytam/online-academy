@@ -1,9 +1,75 @@
 <navbar class='navbar navbar-expand-lg py-0'>
   <div class='container-fluid p-3 px-md-4 bg-white border-bottom shadow-sm'>
     <a class='navbar-brand' href='/'>
-      <i class='fas fa-home'></i>
-      Home
+      <img
+        src='assets/app/oa-logo-small.png'
+        class='img-fluid rounded'
+        alt='oa-logo-small'
+      />
     </a>
+
+    <div class='dropdown'>
+      <button
+        class='btn btn-secondary dropdown-toggle'
+        type='button'
+        data-bs-toggle='dropdown'
+        aria-expanded='false'
+      >
+        Dropdown button
+      </button>
+      <ul class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
+        <li><a class='dropdown-item' href='#'>Action</a></li>
+        <li>
+          <a class='dropdown-item' href='#'>Another action</a>
+        </li>
+        <li>
+          <a class='dropdown-item' href='#'>
+            Submenu &raquo;
+          </a>
+          <ul class='dropdown-menu dropdown-submenu'>
+            <li>
+              <a class='dropdown-item' href='#'>Submenu item 1</a>
+            </li>
+            <li>
+              <a class='dropdown-item' href='#'>Submenu item 2</a>
+            </li>
+            <li>
+              <a class='dropdown-item' href='#'>Submenu item 3 &raquo; </a>
+              <ul class='dropdown-menu dropdown-submenu'>
+                <li>
+                  <a class='dropdown-item' href='#'>Multi level 1</a>
+                </li>
+                <li>
+                  <a class='dropdown-item' href='#'>Multi level 2</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a class='dropdown-item' href='#'>Submenu item 4</a>
+            </li>
+            <li>
+              <a class='dropdown-item' href='#'>Submenu item 5</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    {{! SEARCH BAR }}
+    <form class='mb-0 flex-grow-1'>
+      <div class='input-group rounded'>
+        <input
+          type='search'
+          class='form-control rounded'
+          placeholder='Search'
+          aria-label='Search'
+          aria-describedby='search-addon'
+        />
+        <span class='input-group-text border-0' id='search-addon'>
+          <i class='fas fa-search'></i>
+        </span>
+      </div>
+    </form>
 
     <button
       class='navbar-toggler'
@@ -17,8 +83,8 @@
       <span class='navbar-toggler-icon'></span>
     </button>
 
-    <div class='collapse navbar-collapse' id='navbarNavDropdown'>
-      <ul class='navbar-nav ms-auto'>
+    <div class='collapse navbar-collapse flex-grow-0' id='navbarNavDropdown'>
+      <ul class='navbar-nav'>
         {{#if user}}
           <li class='nav-item dropdown'>
             <a
