@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.use(homeRoute);
 router.use(authRoute);
-router.use(adminRoute);
+router.use('/admin', adminRoute);
 
 router.get('/profile', auth.protect, async (req, res, next) => {
   res.render('students/profile', {
