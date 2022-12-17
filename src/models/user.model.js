@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { Schema, model } from 'mongoose';
+import { ERole } from '../constant';
 
 const userSchema = new Schema({
   email: {
@@ -18,8 +19,8 @@ const userSchema = new Schema({
   },
   role: {
     type: String,
-    enum: ['student', 'teacher', 'admin'],
-    default: 'student',
+    enum: ERole,
+    default: ERole.Student,
   },
 });
 
