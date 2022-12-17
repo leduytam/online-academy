@@ -1,0 +1,15 @@
+.btn-app {
+  overflow: hidden;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02rem;
+  border-radius: 0px;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  &:focus {
+    box-shadow: none;
+    border: 2px solid rgb(88, 154, 110);
+  }
+}
