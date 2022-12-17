@@ -1,23 +1,23 @@
-.search {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
 .search input {
   height: 45px;
   text-indent: 30px;
-}
 
-.search input:focus {
-  box-shadow: none;
-  border: 2px solid rgb(88, 154, 110);
+  &:focus {
+    box-shadow: none;
+    border: 2px solid rgb(88, 154, 110);
+  }
 }
 
 .search .btn-search {
   position: absolute;
-  left: 20px;
-  height: 30px;
+  left: 1.25rem;
+  border: none;
+
+  &:hover {
+    color: rgb(152, 145, 145);
+  }
+
+  &:focus {
+    box-shadow: none;
+  }
 }
