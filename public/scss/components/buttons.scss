@@ -5,11 +5,16 @@
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.02rem;
+  min-width: 6.25rem;
   border-radius: 0px;
   transition: all 0.3s ease-in-out;
   cursor: pointer;
   &:focus {
     box-shadow: none;
     border: 2px solid rgb(88, 154, 110);
+  }
+  &:hover{
+    background-color: rgb(88, 154, 110);
+    color: #fff;
   }
 }
