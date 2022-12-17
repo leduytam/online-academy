@@ -6,9 +6,7 @@ import logger from './utils/logger.js';
 
 logger.log('info', 'Connecting to MongoDB...');
 
-let server;
-
-server = app.listen(configs.port, () => {
+const server = app.listen(configs.port, () => {
   logger.info(`Server is running at http://localhost:${configs.port}`);
 });
 
