@@ -1,12 +1,76 @@
 <navbar class='navbar navbar-expand-lg py-0'>
   <div class='container-fluid p-3 px-md-4 bg-white border-bottom shadow-sm'>
-    <a class='navbar-brand' href='/'>
-      <i class='fas fa-home'></i>
-      Home
+
+    {{! LOGO }}
+    <a class='d-flex align-items-center justify-content-center' href='/'>
+      <img
+        src='assets/app/oa-logo-small.png'
+        class='img-fluid rounded text-center'
+        alt='oa-logo-small'
+      />
     </a>
 
+    {{! CATEGORIES }}
+    <div class='dropdown mx-3'>
+      <span type='button' data-bs-toggle='dropdown' aria-expanded='false'>
+        Categories
+      </span>
+      <ul class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
+        <li><a class='dropdown-item' href='#'>Action</a></li>
+        <li>
+          <a class='dropdown-item' href='#'>Another action</a>
+        </li>
+        <li>
+          <a class='dropdown-item' href='#'>
+            Submenu &raquo;
+          </a>
+          <ul class='dropdown-sub-menu dropdown-submenu'>
+            <li>
+              <a class='dropdown-item' href='#'>Submenu item 1</a>
+            </li>
+            <li>
+              <a class='dropdown-item' href='#'>Submenu item 2</a>
+            </li>
+            <li>
+              <a class='dropdown-item' href='#'>Submenu item 3 &raquo; </a>
+              <ul class='dropdown-menu dropdown-submenu'>
+                <li>
+                  <a class='dropdown-item' href='#'>Multi level 1</a>
+                </li>
+                <li>
+                  <a class='dropdown-item' href='#'>Multi level 2</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a class='dropdown-item' href='#'>Submenu item 4</a>
+            </li>
+            <li>
+              <a class='dropdown-item' href='#'>Submenu item 5</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    {{! SEARCH BAR }}
+    <form class='mb-0 flex-grow-1'>
+      <div class='row height d-flex justify-content-center align-items-center'>
+        <div class='search d-flex justify-content-center align-items-center relative position-relative'>
+          <button class='btn bg-white btn-search btn-sm' type='button'>
+            <i class='fa fa-search'></i>
+          </button>
+          <input
+            type='text'
+            class='form-control rounded-pill' 
+            placeholder='Have a question? Ask Now'
+          />
+        </div>
+      </div>
+    </form>
+
     <button
-      class='navbar-toggler'
+      class='navbar-toggler ms-3'
       type='button'
       data-bs-toggle='collapse'
       data-bs-target='#navbarNavDropdown'
@@ -17,8 +81,11 @@
       <span class='navbar-toggler-icon'></span>
     </button>
 
-    <div class='collapse navbar-collapse' id='navbarNavDropdown'>
-      <ul class='navbar-nav ms-auto'>
+    <div
+      class='collapse navbar-collapse flex-grow-0 ms-3'
+      id='navbarNavDropdown'
+    >
+      <ul class='navbar-nav d-flex align-items-center justify-content-around'>
         {{#if user}}
           <li class='nav-item dropdown'>
             <a
@@ -60,10 +127,8 @@
           </li>
         {{else}}
           <li class='nav-item'>
-            <a class='nav-link' href='/login'>Login</a>
-          </li>
-          <li class='nav-item'>
-            <a class='nav-link' href='/register'>Register</a>
+            <a class='btn btn-outline-dark btn-app rounded-0' href='/login'>Login</a>
+            <a class='btn btn-outline-dark btn-app rounded-0' href='/register'>Register</a>
           </li>
         {{/if}}
       </ul>
