@@ -1,12 +1,13 @@
-<div class='row'>
-  <div class='col-sm-9 col-md-7 col-lg-5 mx-auto'>
-    <div class='card border-0 shadow-lg rounded-3 my-5'>
+<div class='row flex-grow-1 mx-0 align-items-center justify-content-center'>
+  <div class='col-sm-9 col-md-7 col-lg-6 col-xl-5 col-xxl-4'>
+    <div class='card border-0 shadow-lg rounded-3'>
       <div class='card-body p-4 p-sm-5'>
-        <h3 class='card-title text-center mb-5'>Register</h3>
-        <form method='post'>
+        <h3 class='card-title text-center mb-4'>
+          Create an account
+        </h3>
+        <form id='frm-register' action='/register' method='post' novalidate>
           <div class='form-floating mb-3'>
             <input
-              id='name'
               type='text'
               class='form-control'
               name='name'
@@ -14,7 +15,11 @@
               required='required'
               autofocus
             />
-            <label for='name'>Name</label>
+            <label>
+              Name
+              <span class='text-danger'>*</span>
+            </label>
+            <div class='invalid-feedback'>Your name is required</div>
           </div>
 
           <div class='form-floating mb-3'>
@@ -25,8 +30,13 @@
               name='email'
               placeholder='name@example.com'
               required='required'
+              pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
             />
-            <label for='email'>Email address</label>
+            <label>
+              Email address
+              <span class='text-danger'>*</span>
+            </label>
+            <div class='invalid-feedback'>Please enter a valid email address</div>
           </div>
 
           <div class='form-floating mb-3'>
@@ -36,48 +46,110 @@
               class='form-control'
               name='password'
               placeholder='Password'
+              pattern='^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'
               required='required'
-              minlength='8'
             />
-            <label for='password'>Password</label>
+            <label>
+              Password
+              <span class='text-danger'>*</span>
+            </label>
+            <div class='invalid-feedback'>
+              Password must be followed by:
+              <ul class='mb-0'>
+                <li>At least 8 characters</li>
+                <li>At least 1 uppercase letter</li>
+                <li>At least 1 lowercase letter</li>
+                <li>At least 1 number</li>
+                <li>At least 1 special character (#?!@$%^&*-)</li>
+              </ul>
+            </div>
           </div>
 
           <div class='form-floating mb-3'>
             <input
-              id='confirmPassword'
+              id='confirm-password'
               type='password'
               class='form-control'
               placeholder='Confirm Password'
               name='confirmPassword'
               required='required'
-              minlength='8'
             />
-            <label for='confirmPassword'>Confirm Password</label>
+            <label>
+              Confirm Password
+              <span class='text-danger'>*</span>
+            </label>
+            <div class='invalid-feedback'>Password and confirm password do not
+              match</div>
           </div>
 
-          {{#if errorMessage}}
+          <div class='d-flex mb-3 gap-3'>
+            <div class='form-floating flex-grow-1'>
+              <input
+                name='otp'
+                type='text'
+                class='form-control'
+                placeholder='OTP'
+                maxlength='6'
+                required='required'
+                pattern='^\d{6}$'
+              />
+              <label for='otp'>
+                OTP
+                <span class='text-danger'>*</span>
+              </label>
+            </div>
+
+            <button
+              id='btn-send-otp'
+              type='button'
+              class='btn btn-outline-secondary px-4'
+              disabled='disabled'
+            >
+              Send OTP
+            </button>
+          </div>
+
+          <div class='form-check mb-3'>
+            <input
+              id='agree'
+              class='form-check-input'
+              type='checkbox'
+              required='required'
+            />
+            <label class='form-check-label' for='agree'>
+              I agree to the
+              <u>Terms of Service</u>
+              and
+              <u>Privacy Policy</u>
+            </label>
+          </div>
+
+          {{#if error}}
             <div class='alert alert-danger' role='alert'>
-              {{errorMessage}}
+              {{error}}
             </div>
           {{/if}}
 
-          <div class='d-grid'>
-            <button
-              class='btn btn-primary btn-register text-uppercase fw-bold'
-              type='submit'
-            >Register</button>
-          </div>
+          {{#if success}}
+            <div class='alert alert-success' role='alert'>
+              {{success}}
+            </div>
+          {{/if}}
+
+          <div id='alert-otp' class='alert d-none' role='alert'></div>
+
+          <button class='btn btn-primary fs-6 fw-bold py-3 w-100' type='submit'>
+            Register
+          </button>
         </form>
 
         <div class='text-center mt-4'>
-          <p>Already have an account? <a href='/login'>Log in</a></p>
+          Already have an account?
+          <a href='/login'>Log in</a>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<style>
-  .btn-register { font-size: 0.9rem; letter-spacing: 0.05rem; padding: 0.75rem
-  1rem; }
-</style>
+<script src='/js/register.js'></script>
