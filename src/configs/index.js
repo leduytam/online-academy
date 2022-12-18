@@ -4,45 +4,55 @@ import ms from 'ms';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import envSchema from '../validations/env.validation.js';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 dotenv.config({
   path: path.join(__dirname, '..', '..', '.env'),
 });
 
+const { value: env, error } = envSchema.validate(process.env, {
+  abortEarly: false,
+});
+
+if (error) {
+  throw new Error(`ENV Errors: ${error.message}`);
+}
+
 const configs = {
-  env: process.env.NODE_ENV || 'development',
-  port: +process.env.PORT || 8000,
+  env: env.NODE_ENV,
+  port: env.PORT,
   mongoose: {
-    url: process.env.MONGODB_URL,
+    url: env.MONGODB_URL,
     options: {},
   },
   session: {
-    secret: process.env.SESSION_SECRET,
+    secret: env.SESSION_SECRET,
     resave: true,
     saveUninitialized: false,
     cookie: {
-      maxAge: ms(process.env.SESSION_MAX_AGE || '2h'),
-      secure: process.env.NODE_ENV === 'production',
+      maxAge: ms(env.SESSION_MAX_AGE),
+      secure: env.NODE_ENV === 'production',
     },
     store: MongoStore.create({
-      mongoUrl: process.env.MONGODB_URL,
+      mongoUrl: env.MONGODB_URL,
     }),
   },
-  rememberMeMaxAge: ms(process.env.REMEMBER_ME_MAX_AGE || '7d'),
+  rememberMeMaxAge: ms(env.REMEMBER_ME_MAX_AGE),
   email: {
     smtp: {
-      host: process.env.SMTP_HOST,
-      port: +process.env.SMTP_PORT,
+      host: env.SMTP_HOST,
+      port: env.SMTP_PORT,
       auth: {
-        user: process.env.SMTP_USERNAME,
-        pass: process.env.SMTP_PASSWORD,
+        user: env.SMTP_USERNAME,
+        pass: env.SMTP_PASSWORD,
       },
     },
-    from: process.env.EMAIL_FROM,
+    from: env.EMAIL_FROM,
   },
   otp: {
-    maxAge: ms(process.env.OTP_MAX_AGE || '15m'),
+    maxAge: ms(env.OTP_MAX_AGE),
   },
 };
 
