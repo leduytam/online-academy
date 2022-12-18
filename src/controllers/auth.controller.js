@@ -158,6 +158,10 @@ const getVerifyView = async (req, res, next) => {
   });
 };
 
+const getForgotPasswordView = async (req, res, next) => {
+  res.render('forgotPassword');
+};
+
 export default {
   login,
   register,
@@ -167,4 +171,5 @@ export default {
   getLogInView,
   getRegisterView,
   getVerifyView,
+  getForgotPasswordView,
 };
