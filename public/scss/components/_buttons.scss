@@ -18,17 +18,17 @@
 
 // override bootstrap form-check-input
 .form-check-input.no-validate:valid {
-  border: $form-check-input-border !important;
+  border: $form-check-input-border;
 
   &:checked {
-    background-color: $form-check-input-checked-bg-color !important;
+    background-color: $form-check-input-checked-bg-color;
   }
 
   &:focus {
-    box-shadow: $form-check-input-focus-box-shadow !important;
+    box-shadow: $form-check-input-focus-box-shadow;
   }
 
   ~ .form-check-label {
-    color: $body-color !important;
+    color: $body-color;
   }
 }
