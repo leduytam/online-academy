@@ -1,18 +1,48 @@
+import httpStatus from 'http-status';
 import Joi from 'joi';
 import _ from 'lodash';
 
-const validate = (schema, abortEarly = true) => {
+export const validateRedirect = (
+  schema,
+  failureRedirect,
+  abortEarly = true
+) => {
   return (req, res, next) => {
     const validSchema = _.pick(schema, ['body', 'params', 'query']);
 
-    const { error } = Joi.compile(validSchema)
+    const { error: errors } = Joi.compile(validSchema)
       .prefs({ abortEarly })
       .validate(_.pick(req, Object.keys(validSchema)));
 
-    req.error = error?.details.map((detail) => detail.message).join(', ');
+    if (!errors) {
+      next();
+      return;
+    }
 
-    next();
+    req.flash(
+      'error',
+      errors.details.map((detail) => detail.message).join(', ')
+    );
+
+    res.redirect(failureRedirect || req.path);
   };
 };
 
-export default validate;
+export const validateReJson = (schema, abortEarly = true) => {
+  return (req, res, next) => {
+    const validSchema = _.pick(schema, ['body', 'params', 'query']);
+
+    const { error: errors } = Joi.compile(validSchema)
+      .prefs({ abortEarly })
+      .validate(_.pick(req, Object.keys(validSchema)));
+
+    if (!errors) {
+      next();
+      return;
+    }
+
+    res.status(httpStatus.BAD_REQUEST).json({
+      message: errors.details.map((detail) => detail.message).join(', '),
+    });
+  };
+};

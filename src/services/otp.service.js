@@ -2,27 +2,26 @@ import configs from '../configs/index.js';
 import Otp from '../models/otp.model.js';
 import generateOtp from '../utils/generateOtp.js';
 
-const create = async (email) => {
-  await Otp.findOneAndDelete({ email });
+const deleteOtp = async (email, type) => {
+  await Otp.findOneAndDelete({ email, type });
+};
 
-  const otpCode = generateOtp();
+const create = async (email, type) => {
+  await deleteOtp(email, type);
 
   const otpDoc = await Otp.create({
     email,
-    otp: otpCode,
+    otp: generateOtp(),
+    type,
     expires: new Date(Date.now() + configs.otp.maxAge),
   });
 
   return otpDoc.otp;
 };
 
-const verify = async (email, otp) => {
-  const otpDoc = await Otp.findOne({ email, otp });
-  return otpDoc && otpDoc.expires > Date.now();
-};
-
-const deleteOtp = async (email) => {
-  await Otp.findOneAndDelete({ email });
+const verify = async (email, otp, type) => {
+  const otpDoc = await Otp.findOne({ email, otp, type });
+  return !!otpDoc && otpDoc.expires > new Date();
 };
 
 export default {

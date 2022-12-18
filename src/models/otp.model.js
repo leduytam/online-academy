@@ -14,9 +14,13 @@ const otpSchema = new Schema(
       type: Date,
       required: true,
     },
+    type: {
+      type: String,
+      enum: ['verify', 'reset-password'],
+      required: true,
+    },
   },
   {
-    timestamps: false,
     versionKey: false,
   }
 );
