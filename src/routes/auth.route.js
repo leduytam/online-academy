@@ -29,4 +29,6 @@ router
   .route('/resend-verify-otp')
   .post(auth.protect, layout.emptyLayout, authController.resendVerifyOtp);
 
+router.route('/forgot-password').get(authController.getForgotPasswordView);
+
 export default router;
