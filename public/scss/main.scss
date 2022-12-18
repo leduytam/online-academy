@@ -1,7 +1,11 @@
-// components
-@import './components/buttons.scss';
-@import './components/search.scss';
+@import 'bootstrap';
+@import 'utilities';
 
-@import 'student.scss';
-@import 'header.scss';
+// Components
+@import 'components/buttons';
+@import 'components/search';
+@import 'components/dropdowns';
 
+// Layouts
+
+// Pages

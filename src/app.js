@@ -51,16 +51,7 @@ if (configs.env === 'production') {
 
 app.use(morgan(configs.env === 'development' ? 'dev' : 'tiny'));
 
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      useDefaults: true,
-      directives: {
-        scriptSrc: ["'self'", "'unsafe-inline'", 'https://cdn.jsdelivr.net'],
-      },
-    },
-  })
-);
+app.use(helmet());
 
 app.use(express.json());
 
@@ -77,6 +68,28 @@ app.use(mongoSanitize());
 app.use(compression());
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
+
+// Static bootstrap
+app.use(
+  '/js',
+  express.static(
+    path.join(__dirname, '..', 'node_modules', 'bootstrap', 'dist', 'js')
+  )
+);
+app.use(
+  '/js',
+  express.static(
+    path.join(
+      __dirname,
+      '..',
+      'node_modules',
+      '@popperjs',
+      'core',
+      'dist',
+      'umd'
+    )
+  )
+);
 
 app.use('/', routes);
 

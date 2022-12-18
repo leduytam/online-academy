@@ -1,0 +1,34 @@
+.btn-app {
+  overflow: hidden;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02rem;
+  min-width: 6.25rem;
+  cursor: pointer;
+  &:focus {
+    box-shadow: none;
+  }
+  &:hover {
+    background-color: rgb(88, 154, 110);
+    color: #fff;
+  }
+}
+
+// override bootstrap form-check-input
+.form-check-input.no-validate:valid {
+  border: $form-check-input-border !important;
+
+  &:checked {
+    background-color: $form-check-input-checked-bg-color !important;
+  }
+
+  &:focus {
+    box-shadow: $form-check-input-focus-box-shadow !important;
+  }
+
+  ~ .form-check-label {
+    color: $body-color !important;
+  }
+}
