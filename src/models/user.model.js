@@ -21,10 +21,6 @@ const userSchema = new Schema({
     enum: ['student', 'teacher', 'admin'],
     default: 'student',
   },
-  isVerified: {
-    type: Boolean,
-    default: false,
-  },
 });
 
 userSchema.pre('save', async function (req, res, next) {

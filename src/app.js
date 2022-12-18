@@ -1,4 +1,5 @@
 import compression from 'compression';
+import flash from 'connect-flash';
 import cors from 'cors';
 import express from 'express';
 import 'express-async-errors';
@@ -19,6 +20,7 @@ import {
   errorConverter,
   errorHandler,
 } from './middlewares/error.middleware.js';
+import local from './middlewares/local.middleware.js';
 import routes from './routes/index.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -76,21 +78,9 @@ app.use(
     path.join(__dirname, '..', 'node_modules', 'bootstrap', 'dist', 'js')
   )
 );
-app.use(
-  '/js',
-  express.static(
-    path.join(
-      __dirname,
-      '..',
-      'node_modules',
-      '@popperjs',
-      'core',
-      'dist',
-      'umd'
-    )
-  )
-);
 
+app.use(flash());
+app.use(local.layout(), local.user, local.message);
 app.use('/', routes);
 
 app.use(error404Handler);

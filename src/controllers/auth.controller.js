@@ -6,19 +6,13 @@ import emailService from '../services/email.service.js';
 import otpService from '../services/otp.service.js';
 
 const login = async (req, res, next) => {
-  if (req.error) {
-    res.locals.error = req.error;
-    res.status(httpStatus.BAD_REQUEST).render('login');
-    return;
-  }
-
   const { email, password, rememberMe } = req.body;
 
   const user = await User.findOne({ email }).select('+password');
 
   if (!user || !(await user.verifyPassword(password))) {
-    res.locals.error = 'Incorrect email or password';
-    res.status(httpStatus.FORBIDDEN).render('login');
+    req.flash('error', 'Invalid email or password');
+    res.redirect('/login');
     return;
   }
 
@@ -36,19 +30,23 @@ const login = async (req, res, next) => {
 };
 
 const register = async (req, res, next) => {
-  if (req.error) {
-    res.locals.errorMessage = req.error;
-    res.status(httpStatus.BAD_REQUEST).render('register');
-    return;
-  }
-
-  const { name, email, password } = req.body;
+  const { name, email, password, otp } = req.body;
 
   if (await User.isEmailTaken(email)) {
-    res.locals.errorMessage = 'Email already in use';
-    res.status(httpStatus.BAD_REQUEST).render('register');
+    req.flash('error', 'Email already in use');
+    res.redirect('/register');
     return;
   }
+
+  const isOtpValid = await otpService.verify(email, otp, 'verify');
+
+  if (!isOtpValid) {
+    req.flash('error', 'Invalid OTP');
+    res.redirect('/register');
+    return;
+  }
+
+  await otpService.deleteOtp(email, 'verify');
 
   await User.create({
     name,
@@ -56,106 +54,75 @@ const register = async (req, res, next) => {
     password,
   });
 
-  const otp = await otpService.create(email);
-  await emailService.sendOtp(email, otp);
-
-  res.status(httpStatus.CREATED).redirect('/login');
+  req.flash('success', 'Account created successfully');
+  res.redirect('/login');
 };
 
 const logout = async (req, res, next) => {
   req.session.destroy((err) => {
-    if (err) {
-      next(err);
-      return;
-    }
-
     res.redirect(req.headers.referer || '/');
   });
 };
 
-const verify = async (req, res, next) => {
-  if (req.error) {
-    res.locals.error = req.error;
-    res.status(httpStatus.BAD_REQUEST).render('verify');
+const resetPassword = async (req, res, next) => {
+  const { email, password, otp } = req.body;
+
+  const user = await User.findOne({ email });
+
+  const isOtpValid = await otpService.verify(email, otp, 'reset-password');
+
+  if (!isOtpValid || !user) {
+    req.flash('error', 'Failed to reset password. Please try again later.');
+    res.redirect('/forgot-password');
     return;
   }
 
-  const { otp } = req.body;
-  const { email, isVerified } = req.session.user;
+  await otpService.deleteOtp(email, 'reset-password');
 
-  if (isVerified) {
-    res.status(httpStatus.FORBIDDEN).redirect('/');
+  user.password = password;
+  await user.save();
+
+  req.flash('success', 'Password reset successfully');
+  res.redirect('/login');
+};
+
+const sendVerifyOtp = async (req, res, next) => {
+  const { email } = req.body;
+
+  if (await User.isEmailTaken(email)) {
+    res.status(httpStatus.BAD_REQUEST).json({
+      message: 'Email is already taken',
+    });
     return;
   }
 
-  const isOtpValid = await otpService.verify(email, otp);
+  const otp = await otpService.create(email, 'verify');
+  emailService.sendOtp(email, otp);
 
-  if (!isOtpValid) {
-    res.locals.error = 'Invalid OTP';
-    res.status(httpStatus.BAD_REQUEST).render('verify');
-    return;
-  }
-
-  await User.updateOne(
-    {
-      email,
-    },
-    {
-      isVerified: true,
-    }
-  );
-
-  await otpService.deleteOtp(email);
-
-  req.session.user.isVerified = true;
-
-  req.session.save((err) => {
-    res.redirect('/');
+  res.status(httpStatus.OK).json({
+    message: 'OTP has been sent to your email',
   });
 };
 
-const resendVerifyOtp = async (req, res, next) => {
-  const { email } = req.session.user;
-  const otp = await otpService.create(email);
-  await emailService.sendOtp(email, otp);
+const sendResetPasswordOtp = async (req, res, next) => {
+  const { email } = req.body;
 
-  req.session.message = 'New OTP has been sent to your email';
+  if (await User.isEmailTaken(email)) {
+    const otp = await otpService.create(email, 'reset-password');
+    emailService.sendOtp(email, otp);
+  }
 
-  req.session.save((err) => {
-    res.redirect('/verify');
+  res.status(httpStatus.OK).json({
+    message: 'An OTP has been sent to your email',
   });
 };
 
 const getLogInView = async (req, res, next) => {
-  if (req.session.user) {
-    res.redirect('/');
-    return;
-  }
-
   res.render('login');
 };
 
 const getRegisterView = async (req, res, next) => {
-  if (req.session.user) {
-    res.redirect('/');
-    return;
-  }
-
   res.render('register');
-};
-
-const getVerifyView = async (req, res, next) => {
-  if (req.session?.user?.isVerified) {
-    res.redirect('/');
-    return;
-  }
-
-  res.locals.message = req.session.message;
-  req.session.message = undefined;
-
-  req.session.save((err) => {
-    res.render('verify');
-  });
 };
 
 const getForgotPasswordView = async (req, res, next) => {
@@ -166,10 +133,10 @@ export default {
   login,
   register,
   logout,
-  verify,
-  resendVerifyOtp,
+  resetPassword,
+  sendVerifyOtp,
+  sendResetPasswordOtp,
   getLogInView,
   getRegisterView,
-  getVerifyView,
   getForgotPasswordView,
 };
