@@ -66,6 +66,29 @@ const sendResetPasswordOtp = {
   },
 };
 
+const changePassword = {
+  body: {
+    oldPassword: Joi.string().required().messages({
+      'string.empty': 'Old password is required',
+    }),
+    newPassword: Joi.string()
+      .required()
+      .regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/)
+      .messages({
+        'string.empty': 'New password is required',
+        'string.pattern.base':
+          'Password must contain at least 8 characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character',
+      }),
+    confirmNewPassword: Joi.string()
+      .required()
+      .equal(Joi.ref('newPassword'))
+      .messages({
+        'any.only': 'New password and confirm new password do not match',
+        'string.empty': 'Confirm new password is required',
+      }),
+  },
+};
+
 const resetPassword = {
   body: {
     email: Joi.string().email().required().messages({
@@ -100,6 +123,7 @@ const resetPassword = {
 export default {
   login,
   register,
+  changePassword,
   resetPassword,
   sendVerifyOtp,
   sendResetPasswordOtp,
