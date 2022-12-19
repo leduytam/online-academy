@@ -11,8 +11,10 @@ const login = async (req, res, next) => {
   const user = await User.findOne({ email }).select('+password');
 
   if (!user || !(await user.verifyPassword(password))) {
-    req.flash('error', 'Invalid email or password');
-    res.redirect('/login');
+    req.session.error = 'Invalid email or password';
+    req.session.save((err) => {
+      res.redirect('/login');
+    });
     return;
   }
 
@@ -33,16 +35,20 @@ const register = async (req, res, next) => {
   const { name, email, password, otp } = req.body;
 
   if (await User.isEmailTaken(email)) {
-    req.flash('error', 'Email already in use');
-    res.redirect('/register');
+    req.session.error = 'Email already in use';
+    req.session.save((err) => {
+      res.redirect('/register');
+    });
     return;
   }
 
   const isOtpValid = await otpService.verify(email, otp, 'verify');
 
   if (!isOtpValid) {
-    req.flash('error', 'Invalid OTP');
-    res.redirect('/register');
+    req.session.error = 'Invalid OTP';
+    req.session.save((err) => {
+      res.redirect('/register');
+    });
     return;
   }
 
@@ -54,8 +60,10 @@ const register = async (req, res, next) => {
     password,
   });
 
-  req.flash('success', 'Account created successfully');
-  res.redirect('/login');
+  req.session.success = 'Account created successfully';
+  req.session.save((err) => {
+    res.redirect('/login');
+  });
 };
 
 const logout = async (req, res, next) => {
@@ -72,8 +80,10 @@ const resetPassword = async (req, res, next) => {
   const isOtpValid = await otpService.verify(email, otp, 'reset-password');
 
   if (!isOtpValid || !user) {
-    req.flash('error', 'Failed to reset password. Please try again later.');
-    res.redirect('/forgot-password');
+    req.session.error = 'Failed to reset password. Please try again later.';
+    req.session.save((err) => {
+      res.redirect('/forgot-password');
+    });
     return;
   }
 
@@ -82,8 +92,10 @@ const resetPassword = async (req, res, next) => {
   user.password = password;
   await user.save();
 
-  req.flash('success', 'Password reset successfully');
-  res.redirect('/login');
+  req.session.success = 'Password reset successfully';
+  req.session.save((err) => {
+    res.redirect('/login');
+  });
 };
 
 const sendVerifyOtp = async (req, res, next) => {

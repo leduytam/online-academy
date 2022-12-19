@@ -1,9 +1,17 @@
 const message = (req, res, next) => {
-  const [error] = req.flash('error');
-  const [success] = req.flash('success');
+  if (req.session.error || req.session.success) {
+    res.locals.error = req.session.error;
+    res.locals.success = req.session.success;
 
-  res.locals.error = error;
-  res.locals.success = success;
+    req.session.error = undefined;
+    req.session.success = undefined;
+
+    req.session.save((err) => {
+      next();
+    });
+
+    return;
+  }
 
   next();
 };
