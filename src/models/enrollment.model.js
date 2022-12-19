@@ -4,13 +4,18 @@ const enrollmentSchema = new Schema(
     {
         courseId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Course'
+            ref: 'Course',
+            require: true
         }, 
         studentId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
+            ref: 'User',
+            require: true
         },
-        done: Boolean,
+        done: {
+            type: Boolean,
+            default: false
+        },
         completedLessons: [
             {
                 lessonId: {

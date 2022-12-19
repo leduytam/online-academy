@@ -13,13 +13,42 @@ const courseSchema = new Schema(
             lowercase: true,
             unique: true
         },
-        briefDescirption: String,
-        detail: String,
-        done: Boolean,
-        price: Number,
+        coverPhoto: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Media',
+            require: true
+        },
+        briefDescirption: {
+            type: String,
+            require: true
+        },
+        detailDescription: {
+            type: String,
+            require: true
+        },
+        done: {
+            type: Boolean,
+            default: false
+        },
+        price: {
+            type: Number,
+            require: true
+        },
+        category: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'SubCategory',
+            require: true
+        },
+        sections: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Section'
+            }
+        ],
         instructor: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
+            ref: 'User',
+            require: true
         }
     }, 
     {
@@ -38,7 +67,7 @@ courseSchema.pre('validate', function(next) {
 })
 
 courseSchema.method.slugify = () => {
-    this.slug = slugify(this.name)
+    this.slug = slugify(this.name) + '-' + Date.now()
 }
 
 export default model('Course', courseSchema);

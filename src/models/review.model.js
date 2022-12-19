@@ -9,16 +9,18 @@ const reviewSchema = new Schema(
         },
         rating: {
             type: Number,
-            enum: ERating,
+            enum: [ERating.ONE_START, ERating.TWO_START, ERating.THREE_START, ERating.FOUR_START, ERating.FIVE_START],
             require: true
         },
         course: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Course'
+            ref: 'Course',
+            require: true
         },
         owner: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
+            ref: 'User',
+            require: true
         }
     }, 
     {

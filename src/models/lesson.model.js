@@ -1,4 +1,4 @@
-import mongoose, { Schema, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import mongooseUniqueValidator from 'mongoose-unique-validator';
 import slugify from 'slugify';
 
@@ -8,12 +8,19 @@ const lessonSchema = new Schema(
             type: String,
             require: true
         },
-        content: String,
+        content: {
+            type: String,
+            require: true
+        },
         slug: {
-            tyle: String,
+            type: String,
             lowercase: true,
             unique: true
         },
+        video: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Media'
+        }
     }, 
     {
         timestamps: true
@@ -31,7 +38,7 @@ lessonSchema.pre('validate', function(next) {
 })
 
 lessonSchema.method.slugify = () => {
-    this.slug = slugify(this.name)
+    this.slug = slugify(this.name) + '-' + Date.now()
 }
 
 export default model('Lesson', lessonSchema);
