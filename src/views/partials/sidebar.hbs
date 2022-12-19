@@ -1,31 +1,32 @@
-<div
-  class='nav d-flex flex-column'
-  style='width: 15%; height: 100%; background-color: #ffff; padding: 20px;'
->
-  <h2>Udemy Online</h2>
-  <nav class='navbar navbar-light d-flex flex-column'>
+<div class='nav d-flex flex-column bg-dark text-light p-3 h-100 w-15 overflow-hidden'>
+  <div class='d-flex align-items-center'>
+    <img
+      src='/assets/app/oa-logo-small.png'
+      alt='avatar'
+      class='img-fluid rounded-circle logo'
+    />
+    <h2 class='text-uppercase my-0 ms-2 fs-4'>admin</h2>
+  </div>
+  <nav class='navbar navbar-light d-flex flex-column text-light'>
     <a
-      class='navbar-brand d-flex align-items-center'
+      class='navbar-brand d-flex align-items-center text-light w-100 py-3 fs-section'
       href='/admin'
-      style='width: 100%; padding: 20px 0;'
     >
-      <i class='bi bi-house-door-fill' style="margin-right: 20px;"></i>
+      <i class="fa-solid fa-house me-3"></i>
       Dashboard
     </a>
     <a
-      class='navbar-brand d-flex align-items-center'
+      class='navbar-brand d-flex align-items-center text-light w-100 py-3 fs-section'
       href='/admin/management-users'
-      style='width: 100%; padding: 20px 0;'
     >
-      <i class='bi bi-people-fill' style="margin-right: 20px;"></i>
+      <i class="fa-solid fa-users me-3"></i>
       Management Users
     </a>
     <a
-      class='navbar-brand d-flex align-items-center'
+      class='navbar-brand d-flex align-items-center text-light w-100 py-3 fs-section'
       href='/admin/management-courses'
-      style='width: 100%; padding: 20px 0;'
     >
-      <i class='bi bi-book-fill' style="margin-right: 20px;"></i>
+      <i class="fa-solid fa-book-open me-3"></i>
       Management Courses
     </a>
   </nav>

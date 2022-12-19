@@ -1,0 +1,30 @@
+.avatar {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border: 2px solid #c3c0c0;
+}
+
+.w-5 {
+  width: 5%;
+}
+
+.hover {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.w-15 {
+  min-width: 15%;
+}
+
+.logo {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+}
+
+.fs-section {
+  font-size: 1rem;
+}
