@@ -31,6 +31,14 @@ router
 router.post('/logout', authController.logout);
 
 router
+  .route('/change-password')
+  .post(
+    auth.protect,
+    validateReJson(authValidation.changePassword),
+    authController.changePassword
+  );
+
+router
   .route('/forgot-password')
   .get(auth.preventAuth, authController.getForgotPasswordView);
 

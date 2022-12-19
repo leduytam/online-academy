@@ -72,6 +72,28 @@ const logout = async (req, res, next) => {
   });
 };
 
+const changePassword = async (req, res, next) => {
+  const { oldPassword, newPassword } = req.body;
+
+  const { _id } = req.session.user;
+
+  const user = await User.findById(_id).select('+password');
+
+  if (!(await user.verifyPassword(oldPassword))) {
+    res.status(httpStatus.BAD_REQUEST).json({
+      message: 'Old password is incorrect. Please try again.',
+    });
+    return;
+  }
+
+  user.password = newPassword;
+  await user.save();
+
+  res.status(httpStatus.OK).json({
+    message: 'Password changed successfully',
+  });
+};
+
 const resetPassword = async (req, res, next) => {
   const { email, password, otp } = req.body;
 
@@ -145,6 +167,7 @@ export default {
   login,
   register,
   logout,
+  changePassword,
   resetPassword,
   sendVerifyOtp,
   sendResetPasswordOtp,
