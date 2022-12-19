@@ -52,16 +52,25 @@ if (configs.env === 'production') {
 
 app.use(morgan(configs.env === 'development' ? 'dev' : 'tiny'));
 
-app.use(helmet());
+app.use(cors());
+app.options('*', cors());
 
+app.use(
+  helmet({
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: false,
+    contentSecurityPolicy: false,
+    crossOriginOpenerPolicy: false,
+    frameguard: { action: 'SAMEORIGIN' },
+  })
+);
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
 app.use(session({ ...configs.session }));
 
-app.use(cors());
-app.options('*', cors());
+
 
 app.use(xss());
 app.use(mongoSanitize());
