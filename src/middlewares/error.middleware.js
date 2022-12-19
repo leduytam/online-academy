@@ -21,19 +21,17 @@ export const error404Handler = (req, res, next) => {
 };
 
 export const errorHandler = (err, req, res, next) => {
-  res.locals.statusCode = err.statusCode;
-  res.locals.message = err.message;
+  const error = {
+    statusCode: err.statusCode,
+    message: err.message,
+    stack: err.stack.replaceAll('\n', '<br />'),
+  };
 
-  if (configs.env === 'production' && !err.isOperational) {
-    res.locals.statusCode = httpStatus.INTERNAL_SERVER_ERROR;
-    res.locals.message = httpStatus[httpStatus.INTERNAL_SERVER_ERROR];
+  if (configs.env === 'production') {
+    res.redirect('/500');
+    return;
   }
 
-  if (configs.env === 'development') {
-    logger.error(err);
-    res.locals.stack = err.stack;
-  }
-
-  res.status(res.locals.statusCode);
-  res.render('error');
+  logger.error(err);
+  res.render('errors/error', { error, layout: 'empty', title: 'Error' });
 };
