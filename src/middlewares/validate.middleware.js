@@ -19,12 +19,13 @@ export const validateRedirect = (
       return;
     }
 
-    req.flash(
-      'error',
-      errors.details.map((detail) => detail.message).join(', ')
-    );
+    req.session.error = errors.details
+      .map((detail) => detail.message)
+      .join(', ');
 
-    res.redirect(failureRedirect || req.path);
+    req.session.save((err) => {
+      res.redirect(failureRedirect || req.path);
+    });
   };
 };
 

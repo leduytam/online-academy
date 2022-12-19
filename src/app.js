@@ -1,5 +1,4 @@
 import compression from 'compression';
-import flash from 'connect-flash';
 import cors from 'cors';
 import express from 'express';
 import 'express-async-errors';
@@ -79,7 +78,6 @@ app.use(
   )
 );
 
-app.use(flash());
 app.use(local.layout(), local.user, local.message);
 app.use('/', routes);
 
