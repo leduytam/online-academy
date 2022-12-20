@@ -1,114 +1,76 @@
-<div class='page-heading container mt-5 h-75'>
-  <section class='section'>
-    <div class='card'>
-      <div class='card-header'>
-        Users Datatable
-      </div>
-      <div class='card-body'>
-        <div
-          class='dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns'
-        >
-          <div class='dataTable-top'>
-            <div class='dataTable-dropdown'>
-              <select class='dataTable-selector form-select'>
-                <option value='5'>5</option>
-                <option value='10' selected>10</option>
-                <option value='15'>15</option>
-                <option value='20'>20</option>
-                <option value='25'>25</option>
-              </select>
-              <label>entries per page</label>
-            </div>
-            <div class='dataTable-search d-flex'>
-              <input
-                class='dataTable-input'
-                placeholder='Search...'
-                type='text'
-              />
-              <button class='btn btn-outline-primary ms-3' type='submit'>
-                <i class='fa-solid fa-user-plus'></i>
-                Add
-              </button>
-            </div>
-          </div>
-          <div class='dataTable-container'>
-            <table class='table table-striped dataTable-table' id='table1'>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th class='text-center'>Status</th>
-                  <th class='text-center'>Role</th>
-                  <th class='text-center'>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Graiden</td>
-                  <td>vehicula.aliquet@semconsequat.co.uk</td>
-                  <td class='text-center'>
-                    <span class='badge bg-success'>Active</span>
-                  </td>
-                  <td class='text-center'>
-                    <span class='badge bg-success'>User</span>
-                  </td>
-                  <td class='text-center'>
-                    <button
-                      type='button'
-                      class='btn btn-link btn-sm btn-rounded'
-                    >
-                      <i class='fa-solid fa-pen-to-square me-2'></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Chaim</td>
-                  <td>email@gmail.com</td>
-                  <td class='text-center'>
-                    <span class='badge bg-danger'>Inactive</span>
-                  </td>
-                  <td class='text-center'>
-                    <span class='badge bg-info'>Intructor</span>
-                  </td>
-                  <td class='text-center'>
-                    <button
-                      type='button'
-                      class='btn btn-link btn-sm btn-rounded'
-                    >
-                      <i class='fa-solid fa-pen-to-square me-2'></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class='dataTable-bottom'>
-            <div class='dataTable-info'>Showing 1 to 10 of 26 entries</div>
-            <nav aria-label='...'>
-              <ul
-                class='pagination pagination-primary float-end dataTable-pagination'
-              >
-                <li class='page-item pager'>
-                  <a href='#' class='page-link' data-page='1'>‹</a>
-                </li>
-                <li class='page-item active'>
-                  <a href='#' class='page-link' data-page='1'>1</a>
-                </li>
-                <li class='page-item'>
-                  <a href='#' class='page-link' data-page='2'>2</a>
-                </li>
-                <li class='page-item'>
-                  <a href='#' class='page-link' data-page='3'>3</a>
-                </li>
-                <li class='page-item pager'>
-                  <a href='#' class='page-link' data-page='2'>›</a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </section>
+<div class='container my-5 overflow-hidden'>
+  <div class='search d-flex justify-content-between' style='margin-top: 20px;'>
+    <form class='form-inline my-2 my-lg-0 d-flex'>
+      <input
+        class='form-control mr-sm-2'
+        type='search'
+        placeholder='Search'
+        aria-label='Search'
+        style='width: 180px;'
+      />
+      <button class='btn btn-outline-success my-2 my-sm-0' type='submit'>
+        <i class="bi bi-search"></i>
+        Search
+      </button>
+    </form>
+    <form class='form-inline my-2 my-lg-0'>
+      <button class='btn btn-outline-success my-2 my-sm-0' type='submit'>
+        <i class="bi bi-person-fill-add"></i>
+        Add
+      </button>
+    </form>
+  </div>
+  <table class='table table-hover align-middle mb-0 bg-white table-bordered'>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Role</th>
+        <th>Action</th>
+      </tr>
+    {{#each users }}
+      <tr>
+        <td>
+          <p class='fw-bold mb-1'>{{this.name}}</p>
+        </td>
+        <td>
+          <p class='text-muted mb-0'>{{this.email}}</p>
+        </td>
+        <td>
+          <span class='badge bg-info text-dark'>{{this.status}}</span>
+        </td>
+        <td>Student</td>
+        <td>
+          <button
+            type='button'
+            class='btn btn-link btn-rounded btn-sm fw-bold'
+            data-mdb-ripple-color='dark'
+          >
+            Edit
+          </button>
+        </td>
+      </tr>
+    {{/each}}
+  </table>
+  <nav aria-label='...'>
+    <ul class='pagination justify-content-end'>
+      <li class='page-item disabled'>
+        <a
+          class='page-link'
+          href='#'
+          tabindex='-1'
+          aria-disabled='true'
+        >Previous</a>
+      </li>
+      <li class='page-item'><a class='page-link' href='#'>1</a></li>
+      <li class='page-item active' aria-current='page'>
+        <a class='page-link' href='#'>2</a>
+      </li>
+      <li class='page-item'><a class='page-link' href='#'>3</a></li>
+      <li class='page-item'>
+        <a class='page-link' href='#'>Next</a>
+      </li>
+    </ul>
+  </nav>
+  {{log users}}
 </div>

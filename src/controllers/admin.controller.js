@@ -1,3 +1,5 @@
+import User from '../models/user.model.js';
+
 const get = async (req, res, next) => {
   res.render('admin/dashboard', {
     title: 'Admin page',
@@ -5,8 +7,11 @@ const get = async (req, res, next) => {
 };
 
 const getUsers = async (req, res, next) => {
+  // find all user without password
+  const users = await User.find({}, '-password').lean();
   res.render('admin/managementUsers', {
     title: 'Manage users',
+    users,
   });
 };
 
