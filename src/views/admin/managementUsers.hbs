@@ -1,52 +1,77 @@
-<div class='container my-5 overflow-hidden'>
-  <div class='search d-flex justify-content-between' style='margin-top: 20px;'>
+<div class='mx-2'>
+  
+  <div class='search d-flex row' style='margin-top: 20px;'>
     <form class='form-inline my-2 my-lg-0 d-flex'>
       <input
         class='form-control mr-sm-2'
         type='search'
         placeholder='Search'
         aria-label='Search'
-        style='width: 180px;'
       />
       <button class='btn btn-outline-success my-2 my-sm-0' type='submit'>
         <i class="bi bi-search"></i>
         Search
       </button>
     </form>
-    <form class='form-inline my-2 my-lg-0'>
+    <form class='form-inline my-2'>
       <button class='btn btn-outline-success my-2 my-sm-0' type='submit'>
         <i class="bi bi-person-fill-add"></i>
         Add
       </button>
     </form>
   </div>
+
   <table class='table table-hover align-middle mb-0 bg-white table-bordered'>
       <tr>
         <th>Name</th>
         <th>Email</th>
-        <th>Status</th>
         <th>Role</th>
+        <th>Created at</th>
+        <th>Updated at</th>
         <th>Action</th>
       </tr>
     {{#each users }}
       <tr>
+        {{!-- name --}}
         <td>
           <p class='fw-bold mb-1'>{{this.name}}</p>
         </td>
+        {{!-- email --}}
         <td>
           <p class='text-muted mb-0'>{{this.email}}</p>
         </td>
+        {{!-- role --}}
+        <td>{{this.role}}</td>
+
+        {{!-- created --}}
+        <td>{{this.createdAt}}</td>
+
+        {{!-- updated --}}
+        <td>{{this.updatedAt}}</td>
+
+        {{!-- action --}}
         <td>
-          <span class='badge bg-info text-dark'>{{this.status}}</span>
-        </td>
-        <td>Student</td>
-        <td>
+          {{!-- edit --}}
+          <a
+            type='button'
+            class='btn btn-warning btn-rounded btn-sm fw-bold'
+            data-mdb-ripple-color='dark'
+          >
+            Edit
+          </a>
+          <button
+            type='button'
+            class='btn btn-danger btn-rounded btn-sm fw-bold'
+            data-mdb-ripple-color='dark'
+          >
+            Delete
+          </button>
           <button
             type='button'
             class='btn btn-link btn-rounded btn-sm fw-bold'
             data-mdb-ripple-color='dark'
           >
-            Edit
+            Review
           </button>
         </td>
       </tr>
