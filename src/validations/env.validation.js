@@ -26,5 +26,6 @@ export default Joi.object()
     GCS_PUBLIC_BUCKET: Joi.string().required(),
     GCS_PRIVATE_BUCKET: Joi.string().required(),
     GCS_SIGNED_URL_EXPIRES_IN: Joi.string().default('1h'),
+    API_URL: Joi.string().required(),
   })
   .options({ stripUnknown: true });
