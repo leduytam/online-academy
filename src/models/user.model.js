@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { Schema, model } from 'mongoose';
-import { ERole } from '../constant';
+import { ERole } from '../constant/index.js';
 
 const userSchema = new Schema(
   {
