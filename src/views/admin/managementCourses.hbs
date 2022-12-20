@@ -19,12 +19,16 @@
               </select>
               <label>entries per page</label>
             </div>
-            <div class='dataTable-search'>
+            <div class='dataTable-search d-flex'>
               <input
                 class='dataTable-input'
                 placeholder='Search...'
                 type='text'
               />
+              <button class='btn btn-outline-primary ms-3' type='submit'>
+                <i class='fa-solid fa-user-plus'></i>
+                Add
+              </button>
             </div>
           </div>
           <div class='dataTable-container'>
@@ -64,7 +68,7 @@
                     <span class='badge bg-danger'>Inactive</span>
                   </td>
                   <td class='text-center'>
-                    <span class='badge bg-success'>Intructor</span>
+                    <span class='badge bg-info'>Intructor</span>
                   </td>
                   <td class='text-center'>
                     <button
@@ -81,21 +85,23 @@
           <div class='dataTable-bottom'>
             <div class='dataTable-info'>Showing 1 to 10 of 26 entries</div>
             <nav aria-label='...'>
-              <ul class='pagination pagination-primary float-end dataTable-pagination'>
+              <ul
+                class='pagination pagination-primary float-end dataTable-pagination'
+              >
                 <li class='page-item pager'>
-                  <a href="#" class="page-link" data-page="1">‹</a>
+                  <a href='#' class='page-link' data-page='1'>‹</a>
                 </li>
                 <li class='page-item active'>
-                  <a href="#" class="page-link" data-page="1">1</a>
+                  <a href='#' class='page-link' data-page='1'>1</a>
                 </li>
                 <li class='page-item'>
-                  <a href="#" class="page-link" data-page="2">2</a>
+                  <a href='#' class='page-link' data-page='2'>2</a>
                 </li>
                 <li class='page-item'>
-                  <a href="#" class="page-link" data-page="3">3</a>
+                  <a href='#' class='page-link' data-page='3'>3</a>
                 </li>
                 <li class='page-item pager'>
-                  <a href="#" class="page-link" data-page="2">›</a>
+                  <a href='#' class='page-link' data-page='2'>›</a>
                 </li>
               </ul>
             </nav>
