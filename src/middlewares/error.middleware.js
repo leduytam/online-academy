@@ -17,7 +17,7 @@ export const errorConverter = (err, req, res, next) => {
 
 export const error404Handler = (req, res, next) => {
   res.status(httpStatus.NOT_FOUND);
-  res.render('notFound');
+  res.render('404');
 };
 
 export const errorHandler = (err, req, res, next) => {
