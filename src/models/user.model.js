@@ -1,37 +1,32 @@
 import bcrypt from 'bcryptjs';
 import { Schema, model } from 'mongoose';
+
 import { ERole } from '../constant/index.js';
 
-const userSchema = new Schema(
-  {
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-    password: {
-      type: String,
-      required: true,
-      select: false,
-    },
-    role: {
-      type: String,
-      enum: [ERole.ADMIN, ERole.TEACHER, ERole.STUDENT],
-      default: ERole.STUDENT,
-    },
-    avatar: {
-      type: String,
-    },
-    isVerified: {
-      type: Boolean,
-      default: false,
-    },
-  }
-);
+const userSchema = new Schema({
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+    select: false,
+  },
+  role: {
+    type: String,
+    enum: [ERole.ADMIN, ERole.TEACHER, ERole.STUDENT],
+    default: ERole.STUDENT,
+  },
+  avatar: {
+    type: String,
+  },
+});
 
 userSchema.pre('save', async function (req, res, next) {
   if (this.isNew || this.isModified('password')) {

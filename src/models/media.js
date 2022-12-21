@@ -1,40 +1,41 @@
 import { Schema, model } from 'mongoose';
+import slugify from 'slugify';
 
 const mediaSchema = new Schema(
-    {
-        name: {
-            type: String,
-            require: true
-        },
-        size: {
-            type: Number
-        },
-        type: {
-            type: String,
-            require: true
-        },
-        slug: {
-            tyle: String,
-            lowercase: true,
-            unique: true
-        },
-        duration: Number,
-    }, 
-    {
-        timestamps: true
-    }
-)
+  {
+    name: {
+      type: String,
+      require: true,
+    },
+    size: {
+      type: Number,
+    },
+    type: {
+      type: String,
+      require: true,
+    },
+    slug: {
+      tyle: String,
+      lowercase: true,
+      unique: true,
+    },
+    duration: Number,
+  },
+  {
+    timestamps: true,
+  }
+);
 
-mediaSchema.pre('validate', function(next) {
-    if(!this.slug) {
-        this.slugify()
-    }
+mediaSchema.pre('validate', function (next) {
+  if (!this.slug) {
+    this.slugify();
+  }
 
-    next();
-})
+  next();
+});
 
 mediaSchema.method.slugify = () => {
-    this.slug = slugify(this.name) + '-' + Date.now()
-}
+  this.slug = `${slugify(this.name)}-${Date.now()}`;
+};
 
 export default model('Media', mediaSchema);
