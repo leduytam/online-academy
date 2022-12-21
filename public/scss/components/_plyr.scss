@@ -1,0 +1,7 @@
+.plyr {
+  &:fullscreen {
+    video {
+      max-height: 100% !important;
+    }
+  }
+}

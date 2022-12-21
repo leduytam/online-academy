@@ -1,0 +1,19 @@
+.text-small {
+  font-size: 0.75rem;
+}
+
+@each $breakpoint, $value in $grid-breakpoints {
+  .hide-on-#{$breakpoint} {
+    @include media-breakpoint-down($breakpoint) {
+      display: none;
+    }
+  }
+}
+
+.ellipsis-text {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

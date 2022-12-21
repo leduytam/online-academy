@@ -1,0 +1,38 @@
+.nav-tabs {
+  border: none;
+
+  .nav-link {
+    color: $text-muted;
+    font-weight: 500;
+    font-size: $font-size-base;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    border: none;
+  }
+
+  .nav-link:hover {
+    border: none;
+    text-shadow: 0 0 2px rgba(map-get($theme-colors, 'dark'), 0.3);
+  }
+
+  .nav-link.active {
+    border: none;
+    position: relative;
+    color: map-get($theme-colors, 'dark');
+
+    &:after {
+      content: '';
+      width: 100%;
+      position: absolute;
+      bottom: 0;
+      height: 2px;
+      background-color: map-get($theme-colors, 'dark');
+      left: 0;
+      box-shadow: 0 2px 5px rgba(map-get($theme-colors, 'dark'), 0.5);
+    }
+  }
+}
+
+.tab-content {
+  padding: 1.5rem 0;
+}
