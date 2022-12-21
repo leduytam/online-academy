@@ -5,9 +5,11 @@
 @import 'components/buttons';
 @import 'components/search';
 @import 'components/dropdowns';
-@import 'layouts/_admin';
-@import 'layouts/_dataTable';
+@import 'components/navs';
+@import 'components/plyr';
 
 // Layouts
+@import 'layouts/admin';
+@import 'layouts/dataTable';
 
 // Pages
