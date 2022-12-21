@@ -1,5 +1,7 @@
 public/css
 
+oa-gcs-key.json
+
 # Code coverage
 coverage
 
