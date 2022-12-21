@@ -70,8 +70,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(session({ ...configs.session }));
 
-
-
 app.use(xss());
 app.use(mongoSanitize());
 
