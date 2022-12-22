@@ -1,4 +1,5 @@
 import User from '../models/user.model.js';
+import logger from '../utils/logger.js';
 
 const getUsersView = async (req, res, next) => {
   const users = await User.find({}).lean();
@@ -48,15 +49,23 @@ const getUsersList = async (req, res, next) => {
 
 const createUser = async (req, res, next) => {
   try {
-    const { email, name, password, role } = req.body;
+    const { email, name, role } = req.body;
+    if (await User.isEmailTaken(email)) {
+      req.flash('error_msg', 'Email is already taken');
+      res.redirect('/admin/users-list');
+      return;
+    }
     const user = await User.create({
       email,
       name,
-      password,
+      password: 'Qwerty@123',
       role,
     });
-    res.send({ status: true, code: 200, data: user });
+    await user.save();
+    req.flash('success_msg', `Created user ${user.name} successfully`);
+    res.redirect('/admin/users-list');
   } catch (e) {
+    logger.error(e);
     res.send({ status: false, message: e.message });
   }
 };

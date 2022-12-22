@@ -3,18 +3,22 @@
     <div class="row">
 
         <div class="col-md-12">
-            <form action="/add_seller" method="post" enctype="multipart/form-data">
-                <div class="form-group">
+            <form action="/api/v1/admin/create-user" method='post' novalidate>
+                <div class="form-group my-3">
                     <label for="name">Name</label>
                     <input type="text" name="name" class="form-control" required>
                 </div>
-                <div class="form-group">
+                <div class="form-group my-3">
                     <label for="email">Email</label>
                     <input type="email" name="email" class="form-control" required>
                 </div>
-                <div class="form-group">
-                    <label for="mobile">Role</label>
-                    <input type="text" name="mobile" class="form-control" required>
+                <div class="input-group my-3">
+                    <label class="input-group-text" for="roleGroup">Role</label>
+                    <select class="form-select" id="roleGroup" name="role">
+                        <option value="student">Student</option>
+                        <option value="teacher">Teacher</option>
+                        <option value="admin">Admin</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="image">Avatar</label>
