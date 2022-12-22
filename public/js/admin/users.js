@@ -1,13 +1,10 @@
-import axios from 'axios';
-
 $(document).ready(function () {
-  console.log('ready >>>>>>>>>>>');
-  $('#users-table').DataTable({
-    ajax(data, callback, settings) {
+  $('#users_table').DataTable({
+    ajax: function(data, callback, settings) {
       const currentPage =
         Math.ceil(settings._iDisplayStart / settings._iDisplayLength) + 1;
       axios
-        .get(`/api/v1/admin/users?limit=20&page=${currentPage}`)
+        .get(`/admin/api/v1/admin/users?limit=20&page=${currentPage}`)
         .then((res) => {
           const tmpJson = {
             recordsTotal: res.data.totalPages * 20,
@@ -21,19 +18,9 @@ $(document).ready(function () {
           console.log(e);
         });
     },
-    dom: 'Bfrtip',
-    displayStart: 0,
     serverSide: true,
-    pageLength: 20,
     processing: true,
-    bLengthChange: false,
     columns: [
-      {
-        data: '_id',
-        render(data, type, row) {
-          return data;
-        },
-      },
       {
         data: 'name',
         render(data, type, row) {
@@ -47,19 +34,22 @@ $(document).ready(function () {
         },
       },
       {
-        data: 'mobile',
+        data: 'role',
         render(data, type, row) {
           return data;
         },
       },
       {
-        data: '_id',
+        data: 'createdAt',
         render(data, type, row) {
-          return `<a class="btn btn-primary btn-sm"
-                href="/edit_seller/${data}">Edit</a> <a class="btn btn-danger btn-sm"
-                href="/delete_seller/${data}">Delete</a>
-                `;
-        },
+          return data;
+        }
+      },
+      {
+        data: 'updatedAt',
+        render(data, type, row) {
+          return data;
+        }
       },
     ],
   });
