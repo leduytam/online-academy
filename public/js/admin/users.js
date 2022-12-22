@@ -4,13 +4,14 @@ $(document).ready(function () {
       const currentPage =
         Math.ceil(settings._iDisplayStart / settings._iDisplayLength) + 1;
       axios
-        .get(`/admin/api/v1/admin/users?limit=20&page=${currentPage}`)
+        .get(`/api/v1/admin/users?limit=20&page=${currentPage}`)
         .then((res) => {
           const tmpJson = {
             recordsTotal: res.data.totalPages * 20,
             recordsFiltered: res.data.totalPages * 20,
             data: res.data.data,
             currentPage: res.data.currentPage,
+            
           };
           callback(tmpJson);
         })
@@ -18,6 +19,7 @@ $(document).ready(function () {
           console.log(e);
         });
     },
+    deferRender: true,
     serverSide: true,
     processing: true,
     columns: [
