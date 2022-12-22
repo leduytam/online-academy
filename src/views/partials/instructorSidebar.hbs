@@ -1,33 +1,50 @@
-<div class='d-flex flex-column bg-dark text-light p-3 h-100 w-15 overflow-hidden'>
-  <div class='d-flex align-items-center'>
-    <img
-      src='/assets/app/oa-logo-small.png'
-      alt='avatar'
-      class='img-fluid rounded-circle logo'
-    />
-    <h2 class='text-uppercase my-0 ms-2 fs-4'>admin</h2>
+<div class='sidebar-wrapper active'>
+  <div class='sidebar-header'>
+    <div class='d-flex justify-content-between'>
+      <div class='d-flex align-items-center'>
+        <img
+          src='/assets/app/oa-logo-small.png'
+          alt='avatar'
+          class='img-fluid rounded-circle logo'
+        />
+        <h2 class='text-uppercase my-0 ms-2 fs-4'>instructor</h2>
+      </div>
+      <div class='toggler'>
+        <a href='#' class='sidebar-hide d-xl-none d-block'><i
+            class='fa-solid fa-xmark'
+          ></i></a>
+      </div>
+    </div>
   </div>
-  <nav class='navbar navbar-light d-flex flex-column text-light'>
-    <a
-      class='navbar-brand d-flex align-items-center text-light w-100 py-3 fs-section'
-      href='/admin'
-    >
-      <i class="fa-solid fa-house me-3"></i>
-      Courses
-    </a>
-    <a
-      class='navbar-brand d-flex align-items-center text-light w-100 py-3 fs-section'
-      href='/admin/management-users'
-    >
-      <i class="fa-solid fa-users me-3"></i>
-      Profile
-    </a>
-    <a
-      class='navbar-brand d-flex align-items-center text-light w-100 py-3 fs-section'
-      href='/admin/management-courses'
-    >
-      <i class="fa-solid fa-book-open me-3"></i>
-      Logout
-    </a>
-  </nav>
+
+  <ul class='menu'>
+    <li class='sidebar-item'>
+      <a href='/instructor' class='sidebar-link'>
+        <i class='fa-brands fa-youtube'></i>
+        <span>Courses</span>
+      </a>
+    </li>
+
+    <li class='sidebar-item'>
+      <a href='/instructor/profile' class='sidebar-link'>
+        <i class='fa-solid fa-user'></i>
+        <span>Profile</span>
+      </a>
+    </li>
+
+    <li class='sidebar-item mt-auto'>
+      <form id='logout' action='/logout' method='post' class='my-0'>
+        <button
+          class='sidebar-link btn btn-outline-secondary px-4 w-100 border-0'
+          type='submit'
+        >
+          <i class='fa-solid fa-right-from-bracket'></i>
+          <span>Logout</span>
+        </button>
+      </form>
+    </li>
+  </ul>
+  <button class='sidebar-toggler btn x'><i
+      class='fa-solid fa-bars'
+    ></i></button>
 </div>
