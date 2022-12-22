@@ -6,7 +6,7 @@ const getUsersList = async (req, res, next) => {
     limit = Number(limit);
     page = Number(page);
     const skip = (page - 1) * limit;
-    const users = await User.find({}, '-password +createdAt +updatedAt')
+    const users = await User.find({})
       .sort({ createdAt: -1 })
       .limit(limit)
       .skip(skip);
@@ -26,6 +26,22 @@ const getUsersList = async (req, res, next) => {
   }
 };
 
+const createUser = async (req, res, next) => {
+  try {
+    const { email, name, password, role } = req.body;
+    const user = await User.create({
+      email,
+      name,
+      password,
+      role,
+    });
+    res.send({ status: true, code: 200, data: user });
+  } catch (e) {
+    res.send({ status: false, message: e.message });
+  }
+};
+
 export default {
   getUsersList,
+  createUser,
 };
