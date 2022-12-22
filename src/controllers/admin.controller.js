@@ -1,27 +1,23 @@
-import User from '../models/user.model.js';
-
-const get = async (req, res, next) => {
-  res.render('admin/dashboard', {
-    title: 'Admin page',
-  });
-};
-
-const getUsers = async (req, res, next) => {
-  const users = await User.find({}, '-password').lean();
-  res.render('admin/managementUsers', {
+const getUsersView = async (req, res, next) => {
+  res.render('admin/users-list', {
     title: 'Manage users',
-    users,
   });
 };
 
-const getCourses = async (req, res, next) => {
+const getCoursesView = async (req, res, next) => {
   res.render('admin/managementCourses', {
     title: 'Manage courses',
   });
 };
 
+const createUserView = async (req, res, next) => {
+  res.render('admin/create-user', {
+    title: 'Create user',
+  });
+};
+
 export default {
-  get,
-  getUsers,
-  getCourses,
+  getUsersView,
+  getCourses: getCoursesView,
+  createUserView,
 };

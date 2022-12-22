@@ -6,7 +6,6 @@ $(document).ready(function () {
       axios
         .get(`/admin/api/v1/admin/users?limit=20&page=${currentPage}`)
         .then((res) => {
-          console.log(res.data)
           const tmpJson = {
             recordsTotal: res.data.totalPages * 20,
             recordsFiltered: res.data.totalPages * 20,
@@ -24,9 +23,10 @@ $(document).ready(function () {
     columns: [
       {
         data: '_id',
+        name: '_id',
         render(data, type, row) {
           return data;
-        }
+        },
       },
       {
         data: 'name',

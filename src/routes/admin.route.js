@@ -7,10 +7,9 @@ import m from '../middlewares/auth.middleware.js';
 const router = express.Router();
 
 // View
-router.get('/', AdminController.get);
 
-router.get('/management-users', AdminController.getUsers);
-
+router.get('/users-list', AdminController.getUsersView);
+router.get('/create-user', AdminController.createUserView);
 router.get('/management-courses', AdminController.getCourses);
 
 //API
