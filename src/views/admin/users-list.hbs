@@ -20,6 +20,8 @@
         <th>Name</th>
         <th>Email</th>
         <th>Role</th>
+        <th>Deleted</th>
+        <th>Updated at</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -31,6 +33,14 @@
           <td>{{this.email}}</td>
           <td>{{this.role}}</td>
           <td>
+            {{#if this.isDeleted}}
+              <span class='badge bg-danger'>Deleted</span>
+            {{else}}
+              <span class='badge bg-success'>Active</span>
+            {{/if}}
+          </td>
+          <td>{{this.updatedAt}}</td>
+          <td>
             <a
               type='button'
               class='btn btn-warning btn-rounded btn-sm fw-bold'
@@ -38,13 +48,29 @@
             >
               Edit
             </a>
-            <button
-              type='button'
-              class='btn btn-danger btn-rounded btn-sm fw-bold'
-              data-mdb-ripple-color='dark'
-            >
-              Delete
-            </button>
+
+            {{#if this.isDeleted}}
+              <button
+                type='button'
+                class='btn btn-success'
+                id='restore-user-button'
+                data-id='{{this._id}}'
+              >
+                <i class='fa fa-check'></i>
+              </button>
+            {{else}}
+              <button
+                type='button'
+                class='btn btn-danger open-delete-modal'
+                data-bs-toggle='modal'
+                data-bs-target='#deleteModal'
+                data-id='{{this._id}}'
+                data-email='{{this.email}}'
+              >
+                <i class='fa fa-trash'></i>
+              </button>
+            {{/if}}
+
             <button
               type='button'
               class='btn btn-link btn-rounded btn-sm fw-bold'
@@ -57,8 +83,59 @@
       {{/each}}
     </tbody>
   </table>
+
+  {{! Confirm delete user? }}
+  <div
+    class='modal fade'
+    id='deleteModal'
+    tabindex='-1'
+    aria-labelledby='deleteModalLabel'
+    aria-hidden='true'
+  >
+    <div class='modal-dialog modal-dialog-centered'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          <h5 class='modal-title' id='deleteModalLabel'>Delete user</h5>
+          <button
+            type='button'
+            class='btn-close'
+            data-bs-dismiss='modal'
+            aria-label='Close'
+          ></button>
+        </div>
+        <div class='modal-body'>
+          <p>Are you sure to delete this user?</p>
+          <p id='delete-user-id' class='fw-bold'></p>
+          <p id='delete-user-email' class='fw-bold'></p>
+        </div>
+        <div class='modal-footer'>
+          <button
+            type='button'
+            class='btn btn-secondary'
+            data-bs-dismiss='modal'
+          >Close</button>
+          <button
+            type='button'
+            class='btn btn-danger'
+            id='delete-user-confirm'
+          >Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
   $(document).ready(function () { $('#users-list').DataTable(); });
+  $(document).on('click', '.open-delete-modal', function () { const id =
+  $(this).data('id'); const email = $(this).data('email');
+  $('#delete-user-id').text(`Id: #${id}`); $('#delete-user-email').text(`Email:
+  ${email}`); }); $(document).on('click', '#delete-user-confirm', function () {
+  const id = $('#delete-user-id').text().split('#')[1]; $.ajax({ url:
+  `/api/v1/admin/delete-user/${id}`, type: 'POST', success: function (result) {
+  window.location.reload(); }, }); }); $(document).on('click',
+  '#restore-user-button', function () { const id = $(this).data('id'); $.ajax({
+  url: `/api/v1/admin/delete-user/${id}`, type: 'POST', success: function
+  (result) { window.location.reload(); }, }); });
 </script>

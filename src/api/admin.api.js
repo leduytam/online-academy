@@ -16,4 +16,10 @@ router.post(
   AdminController.createUser
 );
 
+router.post(
+  '/delete-user/:id',
+  auth.restrictTo(ERole.ADMIN),
+  AdminController.deleteUser
+);
+
 export default router;

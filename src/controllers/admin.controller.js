@@ -66,6 +66,26 @@ const createUser = async (req, res, next) => {
     res.redirect('/admin/users-list');
   } catch (e) {
     logger.error(e);
+    req.flash('error_msg', e.message);
+    res.send({ status: false, message: e.message });
+  }
+};
+
+const deleteUser = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    if (!user) {
+      res.send({ status: false, message: 'User not found' });
+      return;
+    }
+    user.isDeleted = !user.isDeleted;
+    await user.save();
+    req.flash('success_msg', `Deleted user ${user.name} successfully`);
+    res.redirect('/admin/users-list');
+  } catch (e) {
+    logger.error(e);
+    req.flash('error_msg', e.message);
     res.send({ status: false, message: e.message });
   }
 };
@@ -76,4 +96,5 @@ export default {
   createUserView,
   getUsersList,
   createUser,
+  deleteUser,
 };
