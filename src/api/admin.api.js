@@ -9,6 +9,7 @@ import AdminSchema from '../validations/admin.validation.js';
 const router = express.Router();
 
 router.get('/users', AdminController.getUsersList);
+router.get('/users/:id', AdminController.getUserById);
 router.post(
   '/create-user',
   auth.restrictTo(ERole.ADMIN),

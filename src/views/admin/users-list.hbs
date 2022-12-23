@@ -43,18 +43,17 @@
           <td>
             <a
               type='button'
-              class='btn btn-warning btn-rounded btn-sm fw-bold'
+              class='btn btn-warning'
               data-mdb-ripple-color='dark'
-              href="/admin/edit-user/{{this._id}}"
+              href='/admin/edit-user/{{this._id}}'
             >
-              Edit
+              <i class='fa fa-pen'></i>
             </a>
 
             {{#if this.isDeleted}}
               <button
                 type='button'
                 class='btn btn-success restore-user-button'
-                
                 data-id='{{this._id}}'
               >
                 <i class='fa fa-check'></i>
@@ -74,10 +73,14 @@
 
             <button
               type='button'
-              class='btn btn-link btn-rounded btn-sm fw-bold'
+              class='btn btn-primary open-user-info-modal'
               data-mdb-ripple-color='dark'
+              data-bs-toggle='modal'
+              data-bs-target='#userInfoModal'
+              data-id='{{this._id}}'
             >
-              Review
+              <i class='fa fa-info-circle'></i>
+
             </button>
           </td>
         </tr>
@@ -125,6 +128,42 @@
     </div>
   </div>
 
+  {{! User info modal }}
+  <div
+    class='modal fade'
+    id='userInfoModal'
+    tabindex='-1'
+    aria-labelledby='userInfoModalLabel'
+    aria-hidden='true'
+  >
+    <div class='modal-dialog modal-dialog-scrollable'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          <h5 class='modal-title' id='userInfoModalLabel'>User info</h5>
+          <button
+            type='button'
+            class='btn-close'
+            data-bs-dismiss='modal'
+            aria-label='Close'
+          ></button>
+        </div>
+        <div class='modal-body'>
+          <p id='user-info-id' class='fw-bold'></p>
+          <p id='user-info-email' class='fw-bold'></p>
+          <p id='user-info-role' class='fw-bold'></p>
+          <p id='user-info-isDeleted' class='fw-bold'></p>
+          <p id='user-info-updatedAt' class='fw-bold'></p>
+        </div>
+        <div class='modal-footer'>
+          <button
+            type='button'
+            class='btn btn-secondary'
+            data-bs-dismiss='modal'
+          >Close</button>
+        </div>
+      </div>
+    </div>
+
 </div>
 
-<script src="/js/admin/users.js"></script>
+<script src='/js/admin/users.js'></script>

@@ -117,17 +117,41 @@ const editUser = async (req, res, next) => {
       res.redirect('/admin/users-list');
       return;
     }
-    if (User.isEmailTaken(email)) {
-      req.flash('error_msg', 'Email is already taken');
+    if (user.isDeleted) {
+      req.flash('error_msg', 'User is deleted');
       res.redirect('/admin/users-list');
       return;
     }
-    user.email = email;
+    if (user.email !== email) {
+      if (await User.isEmailTaken(email)) {
+        req.flash('error_msg', 'Email is already taken');
+        res.redirect('/admin/users-list');
+        return;
+      }
+      user.email = email;
+    }
     user.name = name;
     user.role = role;
     await user.save();
     req.flash('success_msg', `Edited user ${user.name} successfully`);
     res.redirect('/admin/users-list');
+  } catch (e) {
+    logger.error(e);
+    req.flash('error_msg', e.message);
+    res.send({ status: false, message: e.message });
+  }
+};
+
+const getUserById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    if (!user) {
+      req.flash('error_msg', 'User not found');
+      res.redirect('/admin/users-list');
+      return;
+    }
+    res.send({ status: true, data: user });
   } catch (e) {
     logger.error(e);
     req.flash('error_msg', e.message);
@@ -145,4 +169,5 @@ export default {
   createUser,
   deleteUser,
   editUser,
+  getUserById,
 };

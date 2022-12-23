@@ -29,3 +29,19 @@ $(document).on('click','.restore-user-button', function () {
     }, 
   }); 
 });
+
+$(document).on('click', '.open-user-info-modal', function () {
+  const id = $(this).data('id');
+  $.ajax({
+    url: `/api/v1/admin/users/${id}`,
+    type: 'GET',
+    success: function (result) {
+      $('#user-info-id').text(`Id: #${result.data._id}`);
+      $('#user-info-email').text(`Email: ${result.data.email}`);
+      $('#user-info-name').text(`Name: ${result.data.name}`);
+      $('#user-info-role').text(`Role: ${result.data.role}`);
+      $('#user-info-isDeleted').text(`Is deleted: ${result.data.isDeleted}`);
+      $('#user-info-updatedAt').text(`Updated at: ${result.data.updatedAt}`);
+    },
+  });
+});
