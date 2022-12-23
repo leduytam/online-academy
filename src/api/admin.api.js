@@ -22,4 +22,11 @@ router.post(
   AdminController.deleteUser
 );
 
+router.post(
+  '/edit-user/:id',
+  auth.restrictTo(ERole.ADMIN),
+  validateRedirect(AdminSchema.editUserBody),
+  AdminController.editUser
+);
+
 export default router;

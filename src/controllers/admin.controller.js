@@ -1,6 +1,7 @@
 import User from '../models/user.model.js';
 import logger from '../utils/logger.js';
 
+// View
 const getUsersView = async (req, res, next) => {
   const users = await User.find({}).lean();
   res.render('admin/users-list', {
@@ -15,12 +16,28 @@ const getCoursesView = async (req, res, next) => {
   });
 };
 
-const createUserView = async (req, res, next) => {
+const getCreateUserView = async (req, res, next) => {
   res.render('admin/create-user', {
     title: 'Create user',
   });
 };
 
+const getEditUserView = async (req, res, next) => {
+  const { id } = req.params;
+  const user = await User.findById(id).lean();
+  res.render(`admin/edit-user`, {
+    title: 'Edit user',
+    user,
+  });
+};
+
+const getDashboardView = async (req, res, next) => {
+  res.render('admin/dashboard', {
+    title: 'Admin dashboard',
+  });
+};
+
+// Action
 const getUsersList = async (req, res, next) => {
   try {
     let { limit, page } = req.query;
@@ -90,11 +107,42 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
+const editUser = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { name, role, email } = req.body;
+    const user = await User.findById(id);
+    if (!user) {
+      req.flash('error_msg', 'User not found');
+      res.redirect('/admin/users-list');
+      return;
+    }
+    if (User.isEmailTaken(email)) {
+      req.flash('error_msg', 'Email is already taken');
+      res.redirect('/admin/users-list');
+      return;
+    }
+    user.email = email;
+    user.name = name;
+    user.role = role;
+    await user.save();
+    req.flash('success_msg', `Edited user ${user.name} successfully`);
+    res.redirect('/admin/users-list');
+  } catch (e) {
+    logger.error(e);
+    req.flash('error_msg', e.message);
+    res.send({ status: false, message: e.message });
+  }
+};
+
 export default {
   getUsersView,
   getCoursesView,
-  createUserView,
+  getDashboardView,
+  getCreateUserView,
+  getEditUserView,
   getUsersList,
   createUser,
   deleteUser,
+  editUser,
 };

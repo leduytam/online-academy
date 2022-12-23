@@ -45,6 +45,7 @@
               type='button'
               class='btn btn-warning btn-rounded btn-sm fw-bold'
               data-mdb-ripple-color='dark'
+              href="/admin/edit-user/{{this._id}}"
             >
               Edit
             </a>
@@ -52,8 +53,8 @@
             {{#if this.isDeleted}}
               <button
                 type='button'
-                class='btn btn-success'
-                id='restore-user-button'
+                class='btn btn-success restore-user-button'
+                
                 data-id='{{this._id}}'
               >
                 <i class='fa fa-check'></i>
@@ -126,16 +127,4 @@
 
 </div>
 
-<script>
-  $(document).ready(function () { $('#users-list').DataTable(); });
-  $(document).on('click', '.open-delete-modal', function () { const id =
-  $(this).data('id'); const email = $(this).data('email');
-  $('#delete-user-id').text(`Id: #${id}`); $('#delete-user-email').text(`Email:
-  ${email}`); }); $(document).on('click', '#delete-user-confirm', function () {
-  const id = $('#delete-user-id').text().split('#')[1]; $.ajax({ url:
-  `/api/v1/admin/delete-user/${id}`, type: 'POST', success: function (result) {
-  window.location.reload(); }, }); }); $(document).on('click',
-  '#restore-user-button', function () { const id = $(this).data('id'); $.ajax({
-  url: `/api/v1/admin/delete-user/${id}`, type: 'POST', success: function
-  (result) { window.location.reload(); }, }); });
-</script>
+<script src="/js/admin/users.js"></script>
