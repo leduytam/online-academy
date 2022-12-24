@@ -19,4 +19,10 @@ module.exports = {
     'no-unused-vars': ['error', { argsIgnorePattern: 'err|req|res|next|val' }],
     'import/extensions': ['error', 'always', { ignorePackages: true }],
   },
+  'prettier/prettier': [
+  'error',
+  {
+    'endOfLine': 'auto',
+  }
+]
 };
