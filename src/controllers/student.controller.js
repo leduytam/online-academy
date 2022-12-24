@@ -85,9 +85,18 @@ const uploadProfileImage = async (req, res, next) => {
   });
 };
 
+const getMyCoursesView = async (req, res, next) => {
+  res.render('students/myCourses', {
+    title: 'My courses',
+  });
+};
+
 export default {
   getHomeView,
   getProfileView,
   updateInformation,
   uploadProfileImage,
+  uploadImage,
+  getLessonView,
+  getMyCoursesView,
 };
