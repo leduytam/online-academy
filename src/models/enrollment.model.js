@@ -1,12 +1,12 @@
 import { Schema, model } from 'mongoose';
 
 const enrollmentSchema = new Schema({
-  courseId: {
+  course: {
     type: Schema.Types.ObjectId,
     ref: 'Course',
     require: true,
   },
-  studentId: {
+  student: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     require: true,
@@ -15,14 +15,17 @@ const enrollmentSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  completedLessons: [
-    {
-      lessonId: {
+  completedLessons: {
+    type: [
+      {
         type: Schema.Types.ObjectId,
         ref: 'Lesson',
       },
-    },
-  ],
+    ],
+    default: [],
+  },
 });
+
+enrollmentSchema.index({ course: 1, student: 1 }, { unique: true });
 
 export default model('Enrollment', enrollmentSchema);

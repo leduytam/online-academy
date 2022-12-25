@@ -5,12 +5,15 @@ const sectionSchema = new Schema({
     type: String,
     require: true,
   },
-  lessons: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Lesson',
-    },
-  ],
+  lessons: {
+    type: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Lesson',
+      },
+    ],
+    default: [],
+  },
 });
 
 export default model('Section', sectionSchema);

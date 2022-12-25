@@ -1,5 +1,5 @@
 const ERole = {
-  TEACHER: 'teacher',
+  INSTRUCTOR: 'instructor',
   STUDENT: 'student',
   ADMIN: 'admin',
 };
