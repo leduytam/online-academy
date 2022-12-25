@@ -5,8 +5,12 @@ const categorySchema = new Schema({
     type: String,
     require: true,
   },
-  description: String,
-  subCategories: [
+  slug: {
+    type: String,
+    unique: true,
+    slug: 'name',
+  },
+  subcategories: [
     {
       type: Schema.Types.ObjectId,
       ref: 'SubCategory',

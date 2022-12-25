@@ -5,7 +5,11 @@ const subCategorySchema = new Schema({
     type: String,
     require: true,
   },
-  description: String,
+  slug: {
+    type: String,
+    unique: true,
+    slug: 'name',
+  },
 });
 
 export default model('SubCategory', subCategorySchema);

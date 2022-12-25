@@ -13,6 +13,11 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  username: {
+    type: String,
+    slug: 'name',
+    unique: true,
+  },
   password: {
     type: String,
     required: true,
@@ -20,11 +25,15 @@ const userSchema = new Schema({
   },
   role: {
     type: String,
-    enum: [ERole.ADMIN, ERole.TEACHER, ERole.STUDENT],
+    enum: [ERole.ADMIN, ERole.INSTRUCTOR, ERole.STUDENT],
     default: ERole.STUDENT,
   },
   avatar: {
     type: String,
+  },
+  isDeleted: {
+    type: Boolean,
+    default: false,
   },
 });
 

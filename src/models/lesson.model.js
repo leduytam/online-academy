@@ -1,41 +1,31 @@
 import { Schema, model } from 'mongoose';
-import mongooseUniqueValidator from 'mongoose-unique-validator';
-import slugify from 'slugify';
+import uniqueSlug from 'unique-slug';
 
 const lessonSchema = new Schema({
   name: {
     type: String,
     require: true,
   },
-  content: {
-    type: String,
-    require: true,
-  },
   slug: {
     type: String,
-    lowercase: true,
     unique: true,
   },
   video: {
     type: Schema.Types.ObjectId,
     ref: 'Media',
   },
+  preview: {
+    type: Boolean,
+    default: false,
+  },
 });
 
-lessonSchema.plugin(mongooseUniqueValidator, {
-  message: 'This course is already taken',
-});
-
-lessonSchema.pre('validate', function (next) {
-  if (!this.slug) {
-    this.slugify();
+lessonSchema.pre('save', function (next) {
+  if (this.isNew) {
+    this.slug = uniqueSlug();
   }
 
   next();
 });
-
-lessonSchema.method.slugify = () => {
-  this.slug = `${slugify(this.name)}-${Date.now()}`;
-};
 
 export default model('Lesson', lessonSchema);
