@@ -63,6 +63,7 @@ const configs = {
     privateBucket: env.GCS_PRIVATE_BUCKET,
     signedUrlExpiresIn: ms(env.GCS_SIGNED_URL_EXPIRES_IN),
   },
+  apiUrl: env.API_URL,
 };
 
 export default configs;

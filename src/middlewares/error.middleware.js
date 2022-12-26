@@ -20,6 +20,7 @@ export const error404Handler = (req, res, next) => {
 };
 
 export const errorHandler = (err, req, res, next) => {
+  logger.error(err);
   const error = {
     statusCode: err.statusCode,
     message: err.message,

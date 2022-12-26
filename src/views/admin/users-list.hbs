@@ -1,0 +1,169 @@
+<div class='mx-2'>
+
+  <div class='search d-flex row' style='margin-top: 20px;'>
+    <form class='form-inline my-2'>
+      <a
+        class='btn btn-outline-success'
+        type='submit'
+        href='/admin/create-user'
+      >
+        <i class='bi bi-person-fill-add'></i>
+        Add
+      </a>
+    </form>
+  </div>
+
+  <table id='users-list' class='table table-striped' style='width:100%'>
+    <thead>
+      <tr>
+        <th>User Id</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Deleted</th>
+        <th>Updated at</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each users}}
+        <tr>
+          <td>{{this._id}}</td>
+          <td>{{this.name}}</td>
+          <td>{{this.email}}</td>
+          <td>{{this.role}}</td>
+          <td>
+            {{#if this.isDeleted}}
+              <span class='badge bg-danger'>Deleted</span>
+            {{else}}
+              <span class='badge bg-success'>Active</span>
+            {{/if}}
+          </td>
+          <td>{{this.updatedAt}}</td>
+          <td>
+            <a
+              type='button'
+              class='btn btn-warning'
+              data-mdb-ripple-color='dark'
+              href='/admin/edit-user/{{this._id}}'
+            >
+              <i class='fa fa-pen'></i>
+            </a>
+
+            {{#if this.isDeleted}}
+              <button
+                type='button'
+                class='btn btn-success restore-user-button'
+                data-id='{{this._id}}'
+              >
+                <i class='fa fa-check'></i>
+              </button>
+            {{else}}
+              <button
+                type='button'
+                class='btn btn-danger open-delete-modal'
+                data-bs-toggle='modal'
+                data-bs-target='#deleteModal'
+                data-id='{{this._id}}'
+                data-email='{{this.email}}'
+              >
+                <i class='fa fa-trash'></i>
+              </button>
+            {{/if}}
+
+            <button
+              type='button'
+              class='btn btn-primary open-user-info-modal'
+              data-mdb-ripple-color='dark'
+              data-bs-toggle='modal'
+              data-bs-target='#userInfoModal'
+              data-id='{{this._id}}'
+            >
+              <i class='fa fa-info-circle'></i>
+
+            </button>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  {{! Confirm delete user? }}
+  <div
+    class='modal fade'
+    id='deleteModal'
+    tabindex='-1'
+    aria-labelledby='deleteModalLabel'
+    aria-hidden='true'
+  >
+    <div class='modal-dialog modal-dialog-centered'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          <h5 class='modal-title' id='deleteModalLabel'>Delete user</h5>
+          <button
+            type='button'
+            class='btn-close'
+            data-bs-dismiss='modal'
+            aria-label='Close'
+          ></button>
+        </div>
+        <div class='modal-body'>
+          <p>Are you sure to delete this user?</p>
+          <p id='delete-user-id' class='fw-bold'></p>
+          <p id='delete-user-email' class='fw-bold'></p>
+        </div>
+        <div class='modal-footer'>
+          <button
+            type='button'
+            class='btn btn-secondary'
+            data-bs-dismiss='modal'
+          >Close</button>
+          <button
+            type='button'
+            class='btn btn-danger'
+            id='delete-user-confirm'
+          >Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{! User info modal }}
+  <div
+    class='modal fade'
+    id='userInfoModal'
+    tabindex='-1'
+    aria-labelledby='userInfoModalLabel'
+    aria-hidden='true'
+  >
+    <div class='modal-dialog modal-dialog-scrollable'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          <h5 class='modal-title' id='userInfoModalLabel'>User info</h5>
+          <button
+            type='button'
+            class='btn-close'
+            data-bs-dismiss='modal'
+            aria-label='Close'
+          ></button>
+        </div>
+        <div class='modal-body'>
+          <p id='user-info-id' class='fw-bold'></p>
+          <p id='user-info-email' class='fw-bold'></p>
+          <p id='user-info-role' class='fw-bold'></p>
+          <p id='user-info-isDeleted' class='fw-bold'></p>
+          <p id='user-info-updatedAt' class='fw-bold'></p>
+        </div>
+        <div class='modal-footer'>
+          <button
+            type='button'
+            class='btn btn-secondary'
+            data-bs-dismiss='modal'
+          >Close</button>
+        </div>
+      </div>
+    </div>
+
+</div>
+
+<script src='/js/admin/users.js'></script>

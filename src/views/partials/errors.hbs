@@ -1,0 +1,45 @@
+{{#each errors}}
+  {{#each this}}
+    <div class='alert alert-danger alert-dismissible fade show' role='alert'>
+      {{this}}
+
+    </div>
+  {{/each}}
+{{/each}}
+
+
+{{#if success_msg}}
+  <div class='alert alert-success alert-dismissible fade show' role='alert'>
+    {{success_msg}}
+  </div>
+
+  <div class="position-fixed top-0 end-10 p-3" style="z-index: 11">
+  <div id="liveToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <img src="/assets/app/oa-logo-small.png" class="rounded me-2" alt="...">
+      <strong class="me-auto">Admin User</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+
+    <div class="toast-body">
+      {{success_msg}}
+    </div>
+  </div>
+</div>
+{{/if}}
+
+
+{{#if error_msg}}
+  <div class='alert alert-danger alert-dismissible fade show' role='alert'>
+    {{error_msg}}
+
+  </div>
+{{/if}}
+
+
+{{#if error}}
+  <div class='alert alert-danger alert-dismissible fade show' role='alert'>
+    {{error}}
+
+  </div>
+{{/if}}

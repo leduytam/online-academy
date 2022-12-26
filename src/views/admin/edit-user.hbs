@@ -1,0 +1,43 @@
+<h2 style="text-align: center;">Edit User </h2>
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-12">
+            <form action="/api/v1/admin/edit-user/{{this.user._id}}" method="post" novalidate>
+                <div class="form-group my-3">
+                    <label>Id</label>
+                    <p class="fw-bold">{{this.user._id}}</p>
+                </div>
+                <div class="form-group my-3">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" class="form-control" value="{{this.user.name}}" required>
+                </div>
+                <div class="form-group my-3">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" class="form-control" value="{{this.user.email}}" required>
+                </div>
+                <div class="input-group my-3">
+                    <label class="input-group-text" for="roleGroup">Role</label>
+                    <select class="form-select" id="roleGroup" name="role">
+                        <option value="student">Student</option>
+                        <option value="teacher">Teacher</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="image">Avatar</label>
+                    <input type="file" name="image" class="form-control" >
+                </div>
+                <button type="submit" class="btn btn-primary w-100 my-3">Edit</button>
+        </div>
+
+
+        </form>
+    </div>
+</div>
+</div>
+
+<script>
+    const roleGroup = document.getElementById('roleGroup');
+    roleGroup.value = "{{this.user.role}}";
+</script>

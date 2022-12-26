@@ -1,5 +1,7 @@
 import express from 'express';
 
+import adminApi from '../api/admin.api.js';
+import configs from '../configs/index.js';
 import adminRoute from './admin.route.js';
 import authRoute from './auth.route.js';
 import errorRoute from './error.route.js';
@@ -11,5 +13,8 @@ router.use(studentRoute);
 router.use(authRoute);
 router.use(errorRoute);
 router.use('/admin', adminRoute);
+
+// api
+router.use(`${configs.apiUrl}/admin`, adminApi);
 
 export default router;
