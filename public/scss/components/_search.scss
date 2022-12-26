@@ -1,11 +1,6 @@
 .search-header input {
   height: 45px;
   text-indent: 30px;
-
-  &:focus {
-    box-shadow: none;
-    border: 2px solid rgb(88, 154, 110);
-  }
 }
 
 .search-header .btn-search {
