@@ -1,3 +1,5 @@
+import ERole from '../constant/role.js';
+
 const protect = (req, res, next) => {
   if (req.session.user) {
     next();
@@ -17,7 +19,7 @@ const preventAuth = (req, res, next) => {
 
 const restrictTo = (roles) => {
   return (req, res, next) => {
-    const userRole = req.session?.user?.role || 'student';
+    const userRole = req.session?.user?.role || ERole.STUDENT;
 
     if (roles.includes(userRole)) {
       next();
