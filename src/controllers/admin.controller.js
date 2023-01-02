@@ -4,7 +4,7 @@ import logger from '../utils/logger.js';
 // View
 const getUsersView = async (req, res, next) => {
   const users = await User.find({}).lean();
-  res.render('admin/users', {
+  res.render('admin/users/users', {
     title: 'Manage users',
     users,
   });
@@ -17,7 +17,7 @@ const getCoursesView = async (req, res, next) => {
 };
 
 const getCreateUserView = async (req, res, next) => {
-  res.render('admin/create-user', {
+  res.render('admin/users/create-user', {
     title: 'Create user',
   });
 };
@@ -25,7 +25,7 @@ const getCreateUserView = async (req, res, next) => {
 const getEditUserView = async (req, res, next) => {
   const { id } = req.params;
   const user = await User.findById(id).lean();
-  res.render(`admin/edit-user`, {
+  res.render(`admin/users/edit-user`, {
     title: 'Edit user',
     user,
   });
