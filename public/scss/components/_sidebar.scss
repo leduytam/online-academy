@@ -99,12 +99,13 @@
   transition: left 0.5s ease-out;
 
   .sidebar-header {
-    padding: 2rem 2rem 1rem;
     font-size: 2rem;
     font-weight: bold;
+    padding: auto;
+    color:rgb(240, 241, 245)
 
     img {
-      height: 1.2rem;
+      height: 2rem;
     }
   }
 
@@ -118,7 +119,7 @@
   .menu {
     flex: 1;
     padding-left: 0;
-    margin-top: 2rem;
+    margin-top: 1rem;
     padding: 0 2rem;
     font-weight: 600;
     display: flex;
@@ -127,7 +128,7 @@
     .sidebar-link {
       display: block;
       padding: 0.7rem 1rem;
-      font-size: 1.3rem;
+      font-size: 1rem;
       display: flex;
       align-items: center;
       transition: all 0.5s;

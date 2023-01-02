@@ -6,9 +6,6 @@
     <link
       rel='stylesheet'
       href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css'
-      integrity='sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=='
-      crossorigin='anonymous'
-      referrerpolicy='no-referrer'
     />
     <link rel='icon' type='image/x-icon' href='/assets/app/oa-icon.ico' />
     <link rel='stylesheet' href='https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css' />
@@ -22,11 +19,6 @@
     <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/fixedheader/3.2.3/js/dataTables.fixedHeader.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"></script>
-    <script>
-      Handlebars.registerHelper('eq', function (arg1, arg2, options) {
-        return arg1 == arg2 ? options.fn(this) : options.inverse(this);
-      });
-    </script>
 
     <title>OA | Admin | {{title}}</title>
   </head>
@@ -34,8 +26,10 @@
     <div class='container-fluid d-flex flex-row p-0 h-100'>
       {{> sidebar-admin}}
       <div class="content" style="width: 100%">
-        {{title}}
         {{> header-admin}}
+        <div class="w-100 d-flex align-items-center justify-content-center mt-2">
+          <h2>{{title}}</h2>
+        </div>
         {{> errors}}
         {{{body}}}
       </div>

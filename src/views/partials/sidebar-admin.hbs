@@ -1,27 +1,23 @@
 <div class='sidebar-wrapper-admin active'>
-  <div class='sidebar-header'>
-    <div class='d-flex justify-content-between'>
-      <div class='d-flex align-items-center'>
-        <img
-          src='/assets/app/oa-logo-small.png'
-          alt='avatar'
-          class='img-fluid rounded-circle logo'
-        />
-        <h2 class='text-uppercase my-0 ms-2 fs-4'>Admin</h2>
-      </div>
-      <div class='toggler'>
-        <a href='#' class='sidebar-hide d-xl-none d-block'><i
-            class='fa-solid fa-xmark'
-          ></i></a>
-      </div>
-    </div>
+  <div class='sidebar-header my-3'>
+    <a
+      class='d-flex align-items-center justify-content-center text-decoration-none'
+      href='/admin/#'
+    >
+      <img
+        src='/assets/app/oa-logo-small.png'
+        alt='avatar'
+        class='img-fluid rounded-circle logo'
+      />
+      <p class='text-uppercase fs-7 my-0 text-white ms-3'>Admin</p>
+    </a>
   </div>
 
   <ul class='menu'>
     <li class='sidebar-item'>
       <div class='sidebar-item-control'>
         <a href='/admin/courses' class='sidebar-link'>
-          <i class="bi bi-youtube"></i>
+          <i class='bi bi-youtube'></i>
           <div>
             <span>Courses</span>
           </div>
@@ -66,6 +62,202 @@
         </button>
       </div>
       <div class='collapse' id='collapse-menu-user'>
+        <div class='card card-body'>
+          Some placeholder content for the collapse component. This panel is
+          hidden by default but revealed when the user activates the relevant
+          trigger.
+        </div>
+      </div>
+    </li>
+
+    <li class='sidebar-item'>
+      <div class='sidebar-item-control'>
+        <a href='/admin/enrollments' class='sidebar-link'>
+          <i class='fa-solid fa-file-contract'></i>
+          <div>
+            <span>Enrollments</span>
+          </div>
+        </a>
+        <button
+          class='btn btn-dark btn-sm sidebar-item-button'
+          type='button'
+          data-bs-toggle='collapse'
+          data-bs-target='#collapse-menu-enrollment'
+          aria-expanded='false'
+          aria-controls='collapse-menu-enrollment'
+        >
+          <i class='bi bi-caret-down-fill'></i>
+        </button>
+      </div>
+      <div class='collapse' id='collapse-menu-enrollment'>
+        <div class='card card-body'>
+          Some placeholder content for the collapse component. This panel is
+          hidden by default but revealed when the user activates the relevant
+          trigger.
+        </div>
+      </div>
+    </li>
+
+    <li class='sidebar-item'>
+      <div class='sidebar-item-control'>
+        <a href='/admin/lessons' class='sidebar-link'>
+          <i class='fa-solid fa-person-chalkboard'></i>
+          <div>
+            <span>Lessons</span>
+          </div>
+        </a>
+        <button
+          class='btn btn-dark btn-sm sidebar-item-button'
+          type='button'
+          data-bs-toggle='collapse'
+          data-bs-target='#collapse-menu-lesson'
+          aria-expanded='false'
+          aria-controls='collapse-menu-lesson'
+        >
+          <i class='bi bi-caret-down-fill'></i>
+        </button>
+      </div>
+      <div class='collapse' id='collapse-menu-lesson'>
+        <div class='card card-body'>
+          Some placeholder content for the collapse component. This panel is
+          hidden by default but revealed when the user activates the relevant
+          trigger.
+        </div>
+      </div>
+    </li>
+
+    <li class='sidebar-item'>
+      <div class='sidebar-item-control'>
+        <a href='/admin/medias' class='sidebar-link'>
+          <i class='bi bi-music-note-list'></i>
+          <div>
+            <span>Medias</span>
+          </div>
+        </a>
+        <button
+          class='btn btn-dark btn-sm sidebar-item-button'
+          type='button'
+          data-bs-toggle='collapse'
+          data-bs-target='#collapse-menu-media'
+          aria-expanded='false'
+          aria-controls='collapse-menu-media'
+        >
+          <i class='bi bi-caret-down-fill'></i>
+        </button>
+      </div>
+      <div class='collapse' id='collapse-menu-media'>
+        <div class='card card-body'>
+          Some placeholder content for the collapse component. This panel is
+          hidden by default but revealed when the user activates the relevant
+          trigger.
+        </div>
+      </div>
+    </li>
+
+    <li class='sidebar-item'>
+      <div class='sidebar-item-control'>
+        <a href='/admin/otps' class='sidebar-link'>
+          <i class='fa-solid fa-mobile-screen'></i>
+          <div>
+            <span>OTP</span>
+          </div>
+        </a>
+        <button
+          class='btn btn-dark btn-sm sidebar-item-button'
+          type='button'
+          data-bs-toggle='collapse'
+          data-bs-target='#collapse-menu-otp'
+          aria-expanded='false'
+          aria-controls='collapse-menu-otp'
+        >
+          <i class='bi bi-caret-down-fill'></i>
+        </button>
+      </div>
+      <div class='collapse' id='collapse-menu-otp'>
+        <div class='card card-body'>
+          Some placeholder content for the collapse component. This panel is
+          hidden by default but revealed when the user activates the relevant
+          trigger.
+        </div>
+      </div>
+    </li>
+
+    <li class='sidebar-item'>
+      <div class='sidebar-item-control'>
+        <a href='/admin/sections' class='sidebar-link'>
+          <i class='fa-solid fa-section'></i>
+          <div>
+            <span>Sections</span>
+          </div>
+        </a>
+        <button
+          class='btn btn-dark btn-sm sidebar-item-button'
+          type='button'
+          data-bs-toggle='collapse'
+          data-bs-target='#collapse-menu-section'
+          aria-expanded='false'
+          aria-controls='collapse-menu-section'
+        >
+          <i class='bi bi-caret-down-fill'></i>
+        </button>
+      </div>
+      <div class='collapse' id='collapse-menu-section'>
+        <div class='card card-body'>
+          Some placeholder content for the collapse component. This panel is
+          hidden by default but revealed when the user activates the relevant
+          trigger.
+        </div>
+      </div>
+    </li>
+
+    <li class='sidebar-item'>
+      <div class='sidebar-item-control'>
+        <a href='/admin/reviews' class='sidebar-link'>
+          <i class='fa-solid fa-comment'></i>
+          <div>
+            <span>Reviews</span>
+          </div>
+        </a>
+        <button
+          class='btn btn-dark btn-sm sidebar-item-button'
+          type='button'
+          data-bs-toggle='collapse'
+          data-bs-target='#collapse-menu-review'
+          aria-expanded='false'
+          aria-controls='collapse-menu-review'
+        >
+          <i class='bi bi-caret-down-fill'></i>
+        </button>
+      </div>
+      <div class='collapse' id='collapse-menu-review'>
+        <div class='card card-body'>
+          Some placeholder content for the collapse component. This panel is
+          hidden by default but revealed when the user activates the relevant
+          trigger.
+        </div>
+      </div>
+    </li>
+
+    <li class='sidebar-item'>
+      <div class='sidebar-item-control'>
+        <a href='/admin/categories' class='sidebar-link'>
+          <i class='fa-solid fa-grid-2'></i>
+          <div>
+            <span>Categories</span>
+          </div>
+        </a>
+        <button
+          class='btn btn-dark btn-sm sidebar-item-button'
+          type='button'
+          data-bs-toggle='collapse'
+          data-bs-target='#collapse-menu-category'
+          aria-expanded='false'
+          aria-controls='collapse-menu-category'
+        >
+          <i class='bi bi-caret-down-fill'></i>
+        </button>
+      </div>
+      <div class='collapse' id='collapse-menu-category'>
         <div class='card card-body'>
           Some placeholder content for the collapse component. This panel is
           hidden by default but revealed when the user activates the relevant
