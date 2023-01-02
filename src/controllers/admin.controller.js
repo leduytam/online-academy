@@ -4,7 +4,7 @@ import logger from '../utils/logger.js';
 // View
 const getUsersView = async (req, res, next) => {
   const users = await User.find({}).lean();
-  res.render('admin/users-list', {
+  res.render('admin/users', {
     title: 'Manage users',
     users,
   });
@@ -68,8 +68,10 @@ const createUser = async (req, res, next) => {
   try {
     const { email, name, role } = req.body;
     if (await User.isEmailTaken(email)) {
-      req.flash('error_msg', 'Email is already taken');
-      res.redirect('/admin/users-list');
+      if (req.flash) {
+        req.flash('error_msg', 'Email is already taken');
+      }
+      res.redirect('/admin/users');
       return;
     }
     const user = await User.create({
@@ -80,7 +82,7 @@ const createUser = async (req, res, next) => {
     });
     await user.save();
     req.flash('success_msg', `Created user ${user.name} successfully`);
-    res.redirect('/admin/users-list');
+    res.redirect('/admin/users');
   } catch (e) {
     logger.error(e);
     req.flash('error_msg', e.message);
@@ -99,7 +101,7 @@ const deleteUser = async (req, res, next) => {
     user.isDeleted = !user.isDeleted;
     await user.save();
     req.flash('success_msg', `Deleted user ${user.name} successfully`);
-    res.redirect('/admin/users-list');
+    res.redirect('/admin/users');
   } catch (e) {
     logger.error(e);
     req.flash('error_msg', e.message);
@@ -114,18 +116,18 @@ const editUser = async (req, res, next) => {
     const user = await User.findById(id);
     if (!user) {
       req.flash('error_msg', 'User not found');
-      res.redirect('/admin/users-list');
+      res.redirect('/admin/users');
       return;
     }
     if (user.isDeleted) {
       req.flash('error_msg', 'User is deleted');
-      res.redirect('/admin/users-list');
+      res.redirect('/admin/users');
       return;
     }
     if (user.email !== email) {
       if (await User.isEmailTaken(email)) {
         req.flash('error_msg', 'Email is already taken');
-        res.redirect('/admin/users-list');
+        res.redirect('/admin/users');
         return;
       }
       user.email = email;
@@ -134,7 +136,7 @@ const editUser = async (req, res, next) => {
     user.role = role;
     await user.save();
     req.flash('success_msg', `Edited user ${user.name} successfully`);
-    res.redirect('/admin/users-list');
+    res.redirect('/admin/users');
   } catch (e) {
     logger.error(e);
     req.flash('error_msg', e.message);
@@ -148,7 +150,7 @@ const getUserById = async (req, res, next) => {
     const user = await User.findById(id);
     if (!user) {
       req.flash('error_msg', 'User not found');
-      res.redirect('/admin/users-list');
+      res.redirect('/admin/users');
       return;
     }
     res.send({ status: true, data: user });

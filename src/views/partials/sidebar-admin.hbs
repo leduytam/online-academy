@@ -1,35 +1,92 @@
-<div
-  class='d-flex flex-column bg-dark text-light p-3 w-15 overflow-hidden'
->
-  <div class='d-flex align-items-center'>
-    <img
-      src='/assets/app/oa-logo-small.png'
-      alt='avatar'
-      class='img-fluid rounded-circle logo'
-    />
-    <h2 class='text-uppercase my-0 ms-2 fs-4'>admin</h2>
+<div class='sidebar-wrapper-admin active'>
+  <div class='sidebar-header'>
+    <div class='d-flex justify-content-between'>
+      <div class='d-flex align-items-center'>
+        <img
+          src='/assets/app/oa-logo-small.png'
+          alt='avatar'
+          class='img-fluid rounded-circle logo'
+        />
+        <h2 class='text-uppercase my-0 ms-2 fs-4'>Admin</h2>
+      </div>
+      <div class='toggler'>
+        <a href='#' class='sidebar-hide d-xl-none d-block'><i
+            class='fa-solid fa-xmark'
+          ></i></a>
+      </div>
+    </div>
   </div>
-  <nav class='navbar navbar-light d-flex flex-column text-light'>
-    <a
-      class='navbar-brand d-flex align-items-center text-light w-100 py-3 fs-section'
-      href='/admin'
-    >
-      <i class='fa-solid fa-house me-3'></i>
-      Dashboard
-    </a>
-    <a
-      class='navbar-brand d-flex align-items-center text-light w-100 py-3 fs-section'
-      href='/admin/users-list'
-    >
-      <i class='fa-solid fa-users me-3'></i>
-      Users
-    </a>
-    <a
-      class='navbar-brand d-flex align-items-center text-light w-100 py-3 fs-section'
-      href='/admin/management-courses'
-    >
-      <i class='fa-solid fa-book-open me-3'></i>
-      Management Courses
-    </a>
-  </nav>
+
+  <ul class='menu'>
+    <li class='sidebar-item'>
+      <div class='sidebar-item-control'>
+        <a href='/admin/courses' class='sidebar-link'>
+          <i class="bi bi-youtube"></i>
+          <div>
+            <span>Courses</span>
+          </div>
+        </a>
+        <button
+          class='btn btn-dark btn-sm sidebar-item-button'
+          type='button'
+          data-bs-toggle='collapse'
+          data-bs-target='#collapse-menu-course'
+          aria-expanded='false'
+          aria-controls='collapse-menu-course'
+        >
+          <i class='bi bi-caret-down-fill'></i>
+        </button>
+      </div>
+      <div class='collapse' id='collapse-menu-course'>
+        <div class='card card-body'>
+          Some placeholder content for the collapse component. This panel is
+          hidden by default but revealed when the user activates the relevant
+          trigger.
+        </div>
+      </div>
+    </li>
+
+    <li class='sidebar-item'>
+      <div class='sidebar-item-control'>
+        <a href='/admin/users' class='sidebar-link'>
+          <i class='fa-solid fa-user'></i>
+          <div>
+            <span>Users</span>
+          </div>
+        </a>
+        <button
+          class='btn btn-dark btn-sm sidebar-item-button'
+          type='button'
+          data-bs-toggle='collapse'
+          data-bs-target='#collapse-menu-user'
+          aria-expanded='false'
+          aria-controls='collapse-menu-user'
+        >
+          <i class='bi bi-caret-down-fill'></i>
+        </button>
+      </div>
+      <div class='collapse' id='collapse-menu-user'>
+        <div class='card card-body'>
+          Some placeholder content for the collapse component. This panel is
+          hidden by default but revealed when the user activates the relevant
+          trigger.
+        </div>
+      </div>
+    </li>
+
+    <li class='sidebar-item mt-auto'>
+      <form id='logout' action='/logout' method='post' class='my-0'>
+        <button
+          class='sidebar-link btn btn-outline-secondary px-4 w-100 border-0'
+          type='submit'
+        >
+          <i class='fa-solid fa-right-from-bracket'></i>
+          <span>Logout</span>
+        </button>
+      </form>
+    </li>
+  </ul>
+  <button class='sidebar-toggler btn x'><i
+      class='fa-solid fa-bars'
+    ></i></button>
 </div>
