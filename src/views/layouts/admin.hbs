@@ -17,25 +17,26 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.2.3/css/fixedHeader.dataTables.min.css">
     <link rel='stylesheet' href='/css/main.css' />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/fixedheader/3.2.3/js/dataTables.fixedHeader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"></script>
     <script>
       Handlebars.registerHelper('eq', function (arg1, arg2, options) {
         return arg1 == arg2 ? options.fn(this) : options.inverse(this);
       });
     </script>
 
-    <title>{{title}}</title>
+    <title>OA | Admin | {{title}}</title>
   </head>
   <body>
     <div class='container-fluid d-flex flex-row p-0 h-100'>
       {{> sidebar-admin}}
       <div class="content" style="width: 100%">
+        {{title}}
         {{> header-admin}}
-        {{> errors}}  
+        {{> errors}}
         {{{body}}}
       </div>
       

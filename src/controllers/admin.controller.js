@@ -1,18 +1,21 @@
+import Course from '../models/course.model.js';
 import User from '../models/user.model.js';
 import logger from '../utils/logger.js';
 
 // View
 const getUsersView = async (req, res, next) => {
   const users = await User.find({}).lean();
-  res.render('admin/users/users', {
+  res.render('admin/users/users-list', {
     title: 'Manage users',
     users,
   });
 };
 
 const getCoursesView = async (req, res, next) => {
-  res.render('admin/managementCourses', {
+  const courses = await Course.find({}).lean();
+  res.render('admin/courses/courses-list', {
     title: 'Manage courses',
+    courses,
   });
 };
 
@@ -153,7 +156,51 @@ const getUserById = async (req, res, next) => {
       res.redirect('/admin/users');
       return;
     }
-    res.send({ status: true, data: user });
+    const courses = await Course.find({ instructor: user._id });
+
+    const resultData = {
+      ...user.toObject(),
+      courses: courses.map((course) => course.toObject()),
+    };
+    res.send({
+      status: true,
+      data: resultData,
+    });
+  } catch (e) {
+    logger.error(e);
+    req.flash('error_msg', e.message);
+    res.send({ status: false, message: e.message });
+  }
+};
+
+const getCourseById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const course = await Course.findById(id);
+    if (!course) {
+      req.flash('error_msg', 'Course not found');
+      res.redirect('/admin/courses');
+      return;
+    }
+    res.send({ status: true, data: course });
+  } catch (e) {
+    logger.error(e);
+    req.flash('error_msg', e.message);
+    res.send({ status: false, message: e.message });
+  }
+};
+
+const getCoursesOfUser = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    if (!user) {
+      req.flash('error_msg', 'User not found');
+      res.redirect('/admin/users');
+      return;
+    }
+    const courses = await Course.find({ instructor: user._id });
+    res.send({ status: true, data: courses });
   } catch (e) {
     logger.error(e);
     req.flash('error_msg', e.message);
@@ -172,4 +219,6 @@ export default {
   deleteUser,
   editUser,
   getUserById,
+  getCourseById,
+  getCoursesOfUser,
 };

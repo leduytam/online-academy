@@ -1,11 +1,10 @@
 $(document).ready(function () {
-  // Setup - add a text input to each footer cell
   $('#users-list thead tr')
       .clone(true)
       .addClass('filters')
       .appendTo('#users-list thead');
 
-  var table = $('#users-list').DataTable({
+  $('#users-list').DataTable({
       orderCellsTop: true,
       fixedHeader: true,
       initComplete: function () {
@@ -16,14 +15,12 @@ $(document).ready(function () {
               .columns()
               .eq(0)
               .each(function (colIdx) {
-                  // Set the header cell to contain the input element
                   var cell = $('.filters th').eq(
                       $(api.column(colIdx).header()).index()
                   );
                   var title = $(cell).text();
                   $(cell).html('<input type="text" placeholder="' + title + '" />');
 
-                  // On every keypress in this input
                   $(
                       'input',
                       $('.filters th').eq($(api.column(colIdx).header()).index())
@@ -32,7 +29,7 @@ $(document).ready(function () {
                       .on('change', function (e) {
                           // Get the search value
                           $(this).attr('title', $(this).val());
-                          var regexr = '({search})'; //$(this).parents('th').find('select').val();
+                          var regexr = '({search})';
 
                           cursorPosition = this.selectionStart;
                           // Search the column for that value
@@ -96,12 +93,38 @@ $(document).on('click', '.open-user-info-modal', function () {
     url: `/api/v1/admin/users/${id}`,
     type: 'GET',
     success: function (result) {
-      $('#user-info-id').text(`Id: #${result.data._id}`);
-      $('#user-info-email').text(`Email: ${result.data.email}`);
-      $('#user-info-name').text(`Name: ${result.data.name}`);
-      $('#user-info-role').text(`Role: ${result.data.role}`);
-      $('#user-info-isDeleted').text(`Is deleted: ${result.data.isDeleted}`);
-      $('#user-info-updatedAt').text(`Updated at: ${result.data.updatedAt}`);
+      $('#user-info-id').text(`#${result.data._id}`);
+      $('#user-info-email').text(`${result.data.email}`);
+      $('#user-info-name').text(`${result.data.name}`);
+      $('#user-info-role').text(`${result.data.role}`);
+      $('#user-info-isDeleted').empty();
+      $('#user-info-isDeleted').append(
+        `
+          ${
+            result.data.isDeleted
+              ? `<span class="badge bg-danger">Deleted</span>`
+              : `<span class="badge bg-success">Active</span>`
+          }
+        `
+      )
+      $('#user-info-updatedAt').text(`Updated at: ${new Date(result.data.updatedAt).toLocaleString()}`);
+      $('#user-info-courses').empty();
+      result.data.courses.forEach((course) => {
+        $('#user-info-courses').append(
+          `<li class="list-group-item">
+            <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">${course.name}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">${course.briefDescirption}</h6>
+              <p class="card-text">${course.slug}</p>
+              <a href="#" class="card-link">Visit course</a>
+            </div>
+        </div>
+          
+          </li>`
+        );
+      }
+      );
     },
   });
 });

@@ -5,9 +5,13 @@ import AdminController from '../controllers/admin.controller.js';
 const router = express.Router();
 
 router.get('/', AdminController.getDashboardView);
+
+// USER
 router.get('/users', AdminController.getUsersView);
 router.get('/create-user', AdminController.getCreateUserView);
 router.get('/edit-user/:id', AdminController.getEditUserView);
-router.get('/management-courses', AdminController.getCoursesView);
+
+// COURSE
+router.get('/courses', AdminController.getCoursesView);
 
 export default router;
