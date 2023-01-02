@@ -26,17 +26,6 @@
               aria-selected='false'
             >Profile picture</a>
           </li>
-          <li class='nav-item' role='presentation'>
-            <a
-              class='nav-link'
-              id='settings-tab'
-              data-bs-toggle='tab'
-              href='#settings'
-              role='tab'
-              aria-controls='settings'
-              aria-selected='false'
-            >Privacy settings</a>
-          </li>
         </ul>
         <div class='tab-content' id='myTabContent'>
           <div
@@ -82,10 +71,10 @@
                         class='rt-menu-bar-container rt-menu-bar-container-sticky'
                       >
                         <div class='rt-menu-bar'>
-                          <button class='biography-button'><i
+                          <button type='button' class='biography-button'><i
                               class='fa-solid fa-b'
                             ></i></button>
-                          <button class='biography-button'><i
+                          <button type='button' class='biography-button'><i
                               class='fa-solid fa-italic'
                             ></i></button>
                         </div>
@@ -102,13 +91,6 @@
                       and coupon codes are not permitted.
                     </div>
                   </div>
-                  <div class='oa-form-group'>
-                    <label class='oa-form-label oa-heading-sm'>Language</label>
-                    <div class='ud-select-container ud-select-container-large'>
-                      <select class='ud-select-container-large ud-select'>
-                        <option value='vietnamese'>Vietnamese</option>
-                      </select></div>
-                  </div>
                 </div>
                 <div class='form-content'>
                   <div class='oa-form-group'>
@@ -118,8 +100,8 @@
                       name='website'
                       id='website'
                       class='oa-text-input-large'
-                      value="URL"
-                      disabled="true"
+                      value='URL'
+                      disabled='true'
                     />
                   </div>
                   <div class='oa-form-group'>
@@ -188,30 +170,39 @@
             role='tabpanel'
             aria-labelledby='picture-tab'
           >
-            Integer interdum diam eleifend metus lacinia, quis gravida eros
-            mollis. Fusce non sapien sit amet magna dapibus ultrices. Morbi
-            tincidunt magna ex, eget faucibus sapien bibendum non. Duis a mauris
-            ex. Ut finibus risus sed massa mattis porta. Aliquam sagittis massa
-            et purus efficitur ultricies. Integer pretium dolor at sapien
-            laoreet ultricies. Fusce congue et lorem id convallis. Nulla
-            volutpat tellus nec molestie finibus. In nec odio tincidunt eros
-            finibus ullamcorper. Ut sodales, dui nec posuere finibus, nisl sem
-            aliquam metus, eu accumsan lacus felis at odio. Sed lacus quam,
-            convallis quis condimentum ut, accumsan congue massa. Pellentesque
-            et quam vel massa pretium ullamcorper vitae eu tortor.
-          </div>
-          <div
-            class='tab-pane fade'
-            id='settings'
-            role='tabpanel'
-            aria-labelledby='settings-tab'
-          >
-            <p class='mt-2'>Duis ultrices purus non eros fermentum hendrerit.
-              Aenean ornare interdum viverra. Sed ut odio velit. Aenean eu diam
-              dictum nibh rhoncus mattis quis ac risus. Vivamus eu congue ipsum.
-              Maecenas id sollicitudin ex. Cras in ex vestibulum, posuere orci
-              at, sollicitudin purus. Morbi mollis elementum enim, in cursus sem
-              placerat ut.</p>
+            <form data-purpose='basic-info-form' class='basic-form'>
+              <div class='d-flex form-container'>
+                <div class='form-content'>
+                  <div class='oa-form-group image-container'>
+                    <label class='oa-form-label oa-heading-sm'>Image preview</label>
+                    <div class='oa-form-note oa-text-xs padding-0'>
+                      Minimum 200x200 pixels, Maximum 6000x6000 pixels
+                    </div>
+                    <div class='udlite-in-udheavy'>
+                      <div class='ud-image-upload-preview-wrapper'>
+                        <div class='image-upload-preview-with-crop'>
+                          <img
+                            src='/assets/app/google.svg'
+                            alt='google'
+                            class='img-fluid'
+                          />
+                        </div>
+                      </div>
+                      <div class='ud-image-upload-form-wrapper'>
+                        <div class='ud-form-group'>
+                          <div class='file-uploader'>
+                            <label for=''>
+                              <span class='fake-input'><span>No file selected</span></span>
+                              <span class='upload-image'><span>Upload image</span></span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
         <div class='oa-footer-btns'>
