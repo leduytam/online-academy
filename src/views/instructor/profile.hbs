@@ -55,15 +55,18 @@
                       name='full-name'
                       id='full-name'
                       class='oa-text-input-large'
+                      value={{user.name}}
                     />
                   </div>
                   <div class='oa-form-group'>
-                    <label class='oa-form-label oa-heading-sm'>Headline</label>
+                    <label class='oa-form-label oa-heading-sm'>Email</label>
                     <input
                       type='text'
-                      name='headline'
-                      id='headline'
+                      name='email'
+                      id='email'
                       class='oa-text-input-large'
+                      value={{user.email}}
+                      disabled='true'
                     />
                   </div>
                   <div class='oa-form-group'>
@@ -164,6 +167,11 @@
                   </div>
                 </div>
               </div>
+              <div class='oa-footer-btns'>
+                <button type='submit' class='save-button btn btn-primary'>
+                  <span>Save</span>
+                </button>
+              </div>
             </form>
           </div>
           <div
@@ -193,13 +201,19 @@
                       <div class='ud-image-upload-form-wrapper'>
                         <div class='ud-form-group'>
                           <div class='file-uploader'>
-                            <label for=''>
+                            <label class="fake-label">
                               <span class='fake-input'><span>No file selected</span></span>
                               <span class='upload-image'><span>Upload image</span></span>
                             </label>
+                            <input type='file' class='file-input w-100 h-100' />
                           </div>
                         </div>
                       </div>
+                    </div>
+                    <div class='oa-footer-btns mt-5'>
+                      <button type='submit' class='save-button btn btn-primary'>
+                        <span>Save</span>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -234,7 +248,8 @@
                     />
                   </div>
                   <div class='oa-form-group'>
-                    <label class='oa-form-label oa-heading-sm'>Confirm new password</label>
+                    <label class='oa-form-label oa-heading-sm'>Confirm new
+                      password</label>
                     <input
                       type='password'
                       name='confirm-new-password'
@@ -244,13 +259,13 @@
                   </div>
                 </div>
               </div>
+              <div class='oa-footer-btns mt-5'>
+                <button type='submit' class='save-button btn btn-primary'>
+                  <span>Save</span>
+                </button>
+              </div>
             </form>
           </div>
-        </div>
-        <div class='oa-footer-btns'>
-          <button type='submit' class='save-button btn btn-primary'>
-            <span>Save</span>
-          </button>
         </div>
       </div>
     </div>
