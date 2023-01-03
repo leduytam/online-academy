@@ -7,6 +7,10 @@ import User from '../models/user.model.js';
 import gcsService from '../services/gcs.service.js';
 import logger from '../utils/logger.js';
 
+import User from '../models/user.model.js';
+import Course from '../models/course.model.js';
+import Enrollment from '../models/enrollment.model.js';
+
 const getHomeView = async (req, res, next) => {
   res.render('students/home', {
     title: 'Home page',
@@ -86,15 +90,29 @@ const uploadProfileImage = async (req, res, next) => {
 };
 
 const getMyCoursesView = async (req, res, next) => {
+  const { _id } = req.session.user;
+  const enrollments = await Enrollment
+    .find({
+      student: _id,
+    })
+    .lean();
+  const coursesId = enrollments.map((enrollment) => enrollment.course);
+  const courses = await Course
+    .find({
+      _id: {
+        $in: coursesId,
+      },
+    })
+    .populate('instructor')
+    .lean();
   res.render('students/myCourses', {
     title: 'My courses',
+    courses,
   });
 };
 
 const getWishlistView = async (req, res, next) => {
-  res.render('students/wishlist', {
-    title: 'Wish list',
-  });
+  const { _id } = req.session.user
 };
 
 export default {

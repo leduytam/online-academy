@@ -10,7 +10,7 @@
         </button>
     </div>
     <div class="row">
-        {{!-- TODO: Add courses here --}}
+        {{#each courses}}
         <div class="col-3 mt-4">
             <div class="card position-relative">
                 <div class="position-absolute" style="top: 10px; right: 10px">
@@ -18,21 +18,23 @@
                         <i class="fa-solid fa-ellipsis-vertical"></i>
                     </button>
                 </div>
+                {{!-- TODO: Add href and src photo later --}}
                 <a href="#" >
                     <img src="https://files.fullstack.edu.vn/f8-prod/courses/2.png" class="card-img-top" alt="...">
                 </a>
                 <div class="card-body">
-                    <a class="card-title fw-bold fs-3" style="color:black; text-decoration:none; cursor:pointer;">Title</a>
-                    <p class="card-text fs-6 fw-light">Owner</p>
-                    <div class="progress" style="height: 5px;">
+                    <a class="card-title fw-bold fs-5" style="color:black; text-decoration:none; cursor:pointer;">{{this.name}}</a>
+                    <p class="card-text fs-6 fw-light">{{this.instructor.name}}</p>
+                    {{!-- <div class="progress" style="height: 5px;">
                         <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25"
                             aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
-                    {{!-- TODO: Add complete percentage --}}
-                    <p>% complete</p>
+                    {{!-- TODO: Add complete percentage
+                    <p>% complete</p> --}}
                 </div>
             </div>
         </div>
+        {{/each}}
     </div>
 </div>
 

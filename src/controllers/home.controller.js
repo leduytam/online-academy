@@ -4,13 +4,6 @@ const get = async (req, res, next) => {
   });
 };
 
-const getMyCourses = async (req, res, next) => {
-  res.render('students/myCourses', {
-    title: 'My courses',
-  });
-};
-
 export default {
   get,
-  getMyCourses,
 };

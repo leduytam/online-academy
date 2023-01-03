@@ -14,9 +14,9 @@ const upload = multer({
 
 router.get('/', studentController.getHomeView);
 
-router.get('/my-courses', studentController.getMyCoursesView);
-
 router.get('/wish-list', studentController.getWishlistView);
+
+router.get('/my-courses', studentController.getMyCoursesView);
 
 router.get('/lesson', studentController.getLessonView);
 router.get('/profile', studentController.getProfileView);
