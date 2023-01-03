@@ -71,7 +71,7 @@ $(document).on('click', '.open-course-info-modal', function () {
         $('#course-info-views').text(`${result.data.views}`);
         $('#course-info-brief-description').text(`${result.data.briefDescirption}`);
         $('#course-info-detail-description').html(`${result.data.detailDescription}`).contents();
-        $('#course-info-price').text(`$${result.data.price}`);
+        $('#course-info-price').text(`${result.data.price}`);
         $('#course-info-category').text(`${result.data.subCategory.name}`);
         $('#course-info-updatedAt').text(`Updated at: ${new Date(result.data.updatedAt).toLocaleString()}`);
 
