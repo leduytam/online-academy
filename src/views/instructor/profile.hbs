@@ -212,7 +212,39 @@
             role='tabpanel'
             aria-labelledby='changePassword-tab'
           >
-            <h5>Change password</h5>
+            <form data-purpose='basic-info-form' class='basic-form'>
+              <div class='d-flex form-container'>
+                <div class='form-content'>
+                  <div class='oa-form-group'>
+                    <label class='oa-form-label oa-heading-sm'>Current password</label>
+                    <input
+                      type='password'
+                      name='current-password'
+                      id='current-password'
+                      class='oa-text-input-large'
+                    />
+                  </div>
+                  <div class='oa-form-group'>
+                    <label class='oa-form-label oa-heading-sm'>New password</label>
+                    <input
+                      type='password'
+                      name='new-password'
+                      id='new-password'
+                      class='oa-text-input-large'
+                    />
+                  </div>
+                  <div class='oa-form-group'>
+                    <label class='oa-form-label oa-heading-sm'>Confirm new password</label>
+                    <input
+                      type='password'
+                      name='confirm-new-password'
+                      id='confirm-new-password'
+                      class='oa-text-input-large'
+                    />
+                  </div>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
         <div class='oa-footer-btns'>
