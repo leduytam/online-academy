@@ -1,4 +1,5 @@
 import Course from '../models/course.model.js';
+import SubCategory from '../models/subcategory.model.js';
 import User from '../models/user.model.js';
 import logger from '../utils/logger.js';
 
@@ -182,7 +183,15 @@ const getCourseById = async (req, res, next) => {
       res.redirect('/admin/courses');
       return;
     }
-    res.send({ status: true, data: course });
+    const instructor = await User.findById(course.instructor);
+    const subCategory = await SubCategory.findById(course.category);
+
+    const resultData = {
+      ...course.toObject(),
+      instructor: instructor.toObject(),
+      subCategory: subCategory?.toObject(),
+    };
+    res.send({ status: true, data: resultData });
   } catch (e) {
     logger.error(e);
     req.flash('error_msg', e.message);
