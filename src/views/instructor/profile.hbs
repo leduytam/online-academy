@@ -1,0 +1,299 @@
+<div class='container instructor-container'>
+  <div class='instructor-responsive-container'>
+    <h1 class='instructor-title'>Profile & settings</h1>
+    <div class='tab-container'>
+      <div class='card-body'>
+        <ul class='nav nav-tabs border-bottom' id='myTab' role='tablist'>
+          <li class='nav-item' role='presentation'>
+            <a
+              class='nav-link active'
+              id='information-tab'
+              data-bs-toggle='tab'
+              href='#information'
+              role='tab'
+              aria-controls='information'
+              aria-selected='true'
+            >Information</a>
+          </li>
+          <li class='nav-item' role='presentation'>
+            <a
+              class='nav-link'
+              id='picture-tab'
+              data-bs-toggle='tab'
+              href='#picture'
+              role='tab'
+              aria-controls='picture'
+              aria-selected='false'
+            >Profile picture</a>
+          </li>
+          <li class='nav-item' role='presentation'>
+            <a
+              class='nav-link'
+              id='changePassword-tab'
+              data-bs-toggle='tab'
+              href='#changePassword'
+              role='tab'
+              aria-controls='changePassword'
+              aria-selected='false'
+            >Change password</a>
+          </li>
+        </ul>
+        <div class='tab-content' id='myTabContent'>
+          <div
+            class='tab-pane fade show active'
+            id='information'
+            role='tabpanel'
+            aria-labelledby='information-tab'
+          >
+            <form data-purpose='basic-info-form' class='basic-form' >
+              <div class='d-flex form-container'>
+                <div class='form-content'>
+                  <div class='oa-form-group'>
+                    <label class='oa-form-label oa-heading-sm'>Name</label>
+                    <input
+                      type='text'
+                      name='name'
+                      id='name'
+                      class='oa-text-input-large'
+                      value={{user.name}}
+                    />
+                  </div>
+                  <div class='oa-form-group'>
+                    <label class='oa-form-label oa-heading-sm'>Email</label>
+                    <input
+                      type='text'
+                      name='email'
+                      id='email'
+                      class='oa-text-input-large'
+                      value={{user.email}}
+                      disabled='true'
+                    />
+                  </div>
+                  <div class='oa-form-group'>
+                    <label class='oa-form-label oa-heading-sm'>Biography</label>
+                    <div class='udlite-in-udheavy rt-editor-container'>
+                      <div
+                        class='rt-menu-bar-container rt-menu-bar-container-sticky'
+                      >
+                        <div class='rt-menu-bar'>
+                          <button type='button' class='biography-button'><i
+                              class='fa-solid fa-b'
+                            ></i></button>
+                          <button type='button' class='biography-button'><i
+                              class='fa-solid fa-italic'
+                            ></i></button>
+                        </div>
+                      </div>
+                      <div class='rt-editor ud-text-md'>
+                        <div class='ProseMirror'>
+                          <input type='text' class='biography-input' />
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class='oa-form-note oa-text-xs'>
+                      Your biography should have at least 50 characters, links
+                      and coupon codes are not permitted.
+                    </div>
+                  </div>
+                </div>
+                <div class='form-content'>
+                  <div class='oa-form-group'>
+                    <label class='oa-form-label oa-heading-sm'>Website</label>
+                    <input
+                      type='text'
+                      name='website'
+                      id='website'
+                      class='oa-text-input-large'
+                      value='URL'
+                      disabled='true'
+                    />
+                  </div>
+                  <div class='oa-form-group'>
+                    <label class='oa-form-label oa-heading-sm'>Twitter</label>
+                    <div
+                      class='ud-text-input-container border border-1 border-dark border-end-0'
+                    >
+                      <div class='link-to'>http://www.twitter.com/</div>
+                      <input
+                        type='text'
+                        name='twitter'
+                        id='twitter'
+                        class='oa-text-input-large'
+                      />
+                    </div>
+                  </div>
+                  <div class='oa-form-group'>
+                    <label class='oa-form-label oa-heading-sm'>Facebook</label>
+                    <div
+                      class='ud-text-input-container border border-1 border-dark border-end-0'
+                    >
+                      <div class='link-to'>http://www.facebook.com/</div>
+                      <input
+                        type='text'
+                        name='facebook'
+                        id='facebook'
+                        class='oa-text-input-large'
+                      />
+                    </div>
+                  </div>
+                  <div class='oa-form-group'>
+                    <label class='oa-form-label oa-heading-sm'>LinkedIn</label>
+                    <div
+                      class='ud-text-input-container border border-1 border-dark border-end-0'
+                    >
+                      <div class='link-to'>http://www.linkedin.com/</div>
+                      <input
+                        type='text'
+                        name='linkedin'
+                        id='linkedin'
+                        class='oa-text-input-large'
+                      />
+                    </div>
+                  </div>
+                  <div class='oa-form-group'>
+                    <label class='oa-form-label oa-heading-sm'>Youtube</label>
+                    <div
+                      class='ud-text-input-container border border-1 border-dark border-end-0'
+                    >
+                      <div class='link-to'>http://www.youtube.com/</div>
+                      <input
+                        type='text'
+                        name='youtube'
+                        id='youtube'
+                        class='oa-text-input-large'
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class='oa-footer-btns'>
+                <button type='submit' class='save-button btn btn-primary'>
+                  <span>Save</span>
+                </button>
+              </div>
+            </form>
+          </div>
+          <div
+            class='tab-pane fade'
+            id='picture'
+            role='tabpanel'
+            aria-labelledby='picture-tab'
+          >
+            <form data-purpose='basic-info-form' class='basic-form'>
+              <div class='d-flex form-container'>
+                <div class='form-content'>
+                  <div class='oa-form-group image-Name'>
+                    <label class='oa-form-label oa-heading-sm'>Image preview</label>
+                    <div class='oa-form-note oa-text-xs padding-0'>
+                      Minimum 200x200 pixels, Maximum 6000x6000 pixels
+                    </div>
+                    <div class='udlite-in-udheavy'>
+                      <div class='ud-image-upload-preview-wrapper'>
+                        <div class='image-upload-preview-with-crop'>
+                          <img
+                            src='/assets/app/google.svg'
+                            alt='avatar'
+                            class='img-fluid'
+                          />
+                        </div>
+                      </div>
+                      <div class='ud-image-upload-form-wrapper'>
+                        <div class='ud-form-group'>
+                          <div class='file-uploader'>
+                            <label class='fake-label'>
+                              <span class='fake-input'><span>No file selected</span></span>
+                              <span class='upload-image'><span>Upload image</span></span>
+                            </label>
+                            <input type='file' class='file-input w-100 h-100' />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class='oa-footer-btns mt-5'>
+                      <button type='submit' class='save-button btn btn-primary'>
+                        <span>Save</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div
+            class='tab-pane fade'
+            id='changePassword'
+            role='tabpanel'
+            aria-labelledby='changePassword-tab'
+          >
+            <form
+              id='frm-change-password'
+              action='/change-password'
+              method='POST'
+            >
+              <div class='d-flex form-container'>
+                <div class='form-content'>
+                  <div class='oa-form-group'>
+                    <label class='oa-form-label oa-heading-sm'>Old password
+                      <span class='text-danger ms-2 mt-2'>*</span>
+                    </label>
+                    <input
+                      type='password'
+                      name='oldPassword'
+                      id='oldPassword'
+                      class='oa-text-input-large'
+                      required='true'
+                    />
+                  </div>
+                  <div class='oa-form-group'>
+                    <label class='oa-form-label oa-heading-sm'>New password
+                      <span class='text-danger ms-2 mt-2'>*</span>
+                    </label>
+                    <input
+                      type='password'
+                      name='newPassword'
+                      id='newPassword'
+                      class='oa-text-input-large'
+                      required='required'
+                      pattern='^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'
+                    />
+                    <div class='invalid-feedback'>
+                      Password must be followed by:
+                      <ul class='mb-0'>
+                        <li>At least 8 characters</li>
+                        <li>At least 1 uppercase letter</li>
+                        <li>At least 1 lowercase letter</li>
+                        <li>At least 1 number</li>
+                        <li>At least 1 special character (#?!@$%^&*-)</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class='oa-form-group'>
+                    <label class='oa-form-label oa-heading-sm'>Confirm new
+                      password
+                      <span class='text-danger ms-2 mt-2'>*</span>
+                    </label>
+                    <input
+                      type='password'
+                      name='confirmNewPassword'
+                      id='confirmNewPassword'
+                      class='oa-text-input-large'
+                      required='required'
+                    />
+                    <div class='invalid-feedback'>New password and confirm new
+                      password do not match</div>
+                  </div>
+                </div>
+              </div>
+              <div class='oa-footer-btns mt-5'>
+                <button type='submit' class='save-button btn btn-primary'>
+                  <span>Save</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
