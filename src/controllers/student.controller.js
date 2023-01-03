@@ -17,8 +17,15 @@ const getMyCoursesView = async (req, res, next) => {
   });
 };
 
+const getWishlistView = async (req, res, next) => {
+  res.render('students/wishlist', {
+    title: 'Wish list',
+  });
+};
+
 export default {
   getHomeView,
   getLessonView,
   getMyCoursesView,
+  getWishlistView,
 };

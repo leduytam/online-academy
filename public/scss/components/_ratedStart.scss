@@ -1,0 +1,48 @@
+.rated-stars-s {
+  .star-ratings-css {
+    font-size: 1rem;
+  }
+}
+.rated-stars-m {
+  .star-ratings-css {
+    font-size: 2rem;
+  }
+}
+.rated-stars-l {
+  .star-ratings-css {
+    font-size: 2.5rem;
+  }
+}
+.rated-stars {
+  width: 70px;
+}
+.star-ratings-css {
+  unicode-bidi: bidi-override;
+  color: orange;
+  font-size: 1rem;
+  height: 25px;
+  position: relative;
+  display: inline-flex;
+}
+.star-ratings-css::before {
+  content: "☆☆☆☆☆";
+  opacity: 0.7;
+}
+
+$ratevalues: 0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5;
+@each $ratevalue in $ratevalues {
+  [data-rate="#{$ratevalue}"]::after {
+    width: calc(#{$ratevalue}* 20%);
+  }
+}
+.star-ratings-css::after {
+  color: orange;
+  content: "★★★★★";
+  position: absolute;
+  z-index: 1;
+  display: block;
+  left: 0;
+  top: 0;
+  width: attr(rating);
+  overflow: hidden;
+}
