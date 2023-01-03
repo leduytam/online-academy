@@ -1,18 +1,5 @@
 <div class='mx-2'>
 
-  <div class='search d-flex row' style='margin-top: 20px;'>
-    <form class='form-inline my-2'>
-      <a
-        class='btn btn-outline-success'
-        type='submit'
-        href='/admin/create-user'
-      >
-        <i class='bi bi-person-fill-add'></i>
-        Add
-      </a>
-    </form>
-  </div>
-
   <table id='courses-list' class='table table-striped' style='width:100%'>
     <thead>
       <tr>
@@ -20,6 +7,8 @@
         <th>Name</th>
         <th>Brief Description</th>
         <th>Price</th>
+        <th>Views</th>
+        <th>Status</th>
         <th>Updated at</th>
         <th>Actions</th>
       </tr>
@@ -31,8 +20,37 @@
           <td>{{this.name}}</td>
           <td>{{this.briefDescirption}}</td>
           <td>${{this.price}}</td>
+          <td>{{this.views}}</td>
+          <td>
+            {{#if this.isDeleted}}
+              <span class='badge bg-danger'>Deleted</span>
+            {{else}}
+              <span class='badge bg-success'>Active</span>
+            {{/if}}
+          </td>
           <td>{{this.updatedAt}}</td>
           <td>
+            {{#if this.isDeleted}}
+              <button
+                type='button'
+                class='btn btn-success restore-course-button'
+                data-id='{{this._id}}'
+              >
+                <i class='fa fa-check'></i>
+              </button>
+            {{else}}
+              <button
+                type='button'
+                class='btn btn-danger open-delete-modal'
+                data-bs-toggle='modal'
+                data-bs-target='#deleteModal'
+                data-id='{{this._id}}'
+                data-name='{{this.name}}'
+              >
+                <i class='fa fa-trash'></i>
+              </button>
+            {{/if}}
+            
             <button
               type='button'
               class='btn btn-primary open-course-info-modal'
@@ -129,6 +147,7 @@
             <span id='course-info-price' ></span>
           </div>
           
+          
           <div class ="mb-3">
             <span class='fw-bold'>Category: </span>
             <span id='course-info-category'class='badge bg-secondary' ></span>
@@ -159,5 +178,45 @@
     </div>
 
 </div>
+
+{{! Confirm delete course? }}
+  <div
+    class='modal fade'
+    id='deleteModal'
+    tabindex='-1'
+    aria-labelledby='deleteModalLabel'
+    aria-hidden='true'
+  >
+    <div class='modal-dialog modal-dialog-centered'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          <h5 class='modal-title' id='deleteModalLabel'>Delete course</h5>
+          <button
+            type='button'
+            class='btn-close'
+            data-bs-dismiss='modal'
+            aria-label='Close'
+          ></button>
+        </div>
+        <div class='modal-body'>
+          <p>Are you sure to delete this course?</p>
+          <p id='delete-course-id' class='fw-bold'></p>
+          <p id='delete-course-name' class='fw-bold'></p>
+        </div>
+        <div class='modal-footer'>
+          <button
+            type='button'
+            class='btn btn-secondary'
+            data-bs-dismiss='modal'
+          >Close</button>
+          <button
+            type='button'
+            class='btn btn-danger'
+            id='delete-course-confirm'
+          >Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <script src='/js/admin/courses.js'></script>

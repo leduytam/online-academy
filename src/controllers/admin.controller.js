@@ -217,6 +217,25 @@ const getCoursesOfUser = async (req, res, next) => {
   }
 };
 
+const deleteCourse = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const course = await Course.findById(id);
+    if (!course) {
+      res.send({ status: false, message: 'Course not found' });
+      return;
+    }
+    course.isDeleted = !course.isDeleted;
+    await course.save();
+    req.flash('success_msg', `Deleted course ${course.name} successfully`);
+    res.redirect('/admin/courses');
+  } catch (e) {
+    logger.error(e);
+    req.flash('error_msg', e.message);
+    res.send({ status: false, message: e.message });
+  }
+};
+
 export default {
   getUsersView,
   getCoursesView,
@@ -230,4 +249,5 @@ export default {
   getUserById,
   getCourseById,
   getCoursesOfUser,
+  deleteCourse,
 };

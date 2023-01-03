@@ -78,4 +78,35 @@ $(document).on('click', '.open-course-info-modal', function () {
       },
     });
   });
+
+  $(document).on('click', '.open-delete-modal', function () { 
+    const id = $(this).data('id'); 
+    const name = $(this).data('name'); 
   
+    $('#delete-course-id').text(`Id: #${id}`); 
+    $('#delete-course-name').text(`Name: ${name}`); 
+  }); 
+  
+
+  $(document).on('click', '#delete-course-confirm', function () {
+    const id = $('#delete-course-id').text().split('#')[1]; 
+    $.ajax({ 
+      url:`/api/v1/admin/delete-course/${id}`, 
+      type: 'POST', 
+      success: function (result) {
+        window.location.reload(); 
+      }, 
+    }); 
+  }); 
+
+  $(document).on('click','.restore-course-button', function () { 
+    const id = $(this).data('id'); 
+    $.ajax({
+      url: `/api/v1/admin/delete-course/${id}`, 
+      type: 'POST', 
+      success: function(result) { 
+        window.location.reload(); 
+      }, 
+    }); 
+  });
+

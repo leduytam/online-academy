@@ -32,5 +32,6 @@ router.post(
 
 // admin - courses
 router.get('/courses/:id', AdminController.getCourseById);
+router.post('/delete-course/:id', AdminController.deleteCourse);
 
 export default router;
