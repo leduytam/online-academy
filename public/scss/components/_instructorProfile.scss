@@ -191,6 +191,10 @@
     opacity: 0;
     position: relative;
     top: -50;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   .fake-input {

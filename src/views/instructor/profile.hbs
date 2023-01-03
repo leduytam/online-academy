@@ -45,15 +45,15 @@
             role='tabpanel'
             aria-labelledby='information-tab'
           >
-            <form data-purpose='basic-info-form' class='basic-form'>
+            <form data-purpose='basic-info-form' class='basic-form' >
               <div class='d-flex form-container'>
                 <div class='form-content'>
                   <div class='oa-form-group'>
-                    <label class='oa-form-label oa-heading-sm'>Full Name</label>
+                    <label class='oa-form-label oa-heading-sm'>Name</label>
                     <input
                       type='text'
-                      name='full-name'
-                      id='full-name'
+                      name='name'
+                      id='name'
                       class='oa-text-input-large'
                       value={{user.name}}
                     />
@@ -183,7 +183,7 @@
             <form data-purpose='basic-info-form' class='basic-form'>
               <div class='d-flex form-container'>
                 <div class='form-content'>
-                  <div class='oa-form-group image-container'>
+                  <div class='oa-form-group image-Name'>
                     <label class='oa-form-label oa-heading-sm'>Image preview</label>
                     <div class='oa-form-note oa-text-xs padding-0'>
                       Minimum 200x200 pixels, Maximum 6000x6000 pixels
@@ -193,7 +193,7 @@
                         <div class='image-upload-preview-with-crop'>
                           <img
                             src='/assets/app/google.svg'
-                            alt='google'
+                            alt='avatar'
                             class='img-fluid'
                           />
                         </div>
@@ -201,7 +201,7 @@
                       <div class='ud-image-upload-form-wrapper'>
                         <div class='ud-form-group'>
                           <div class='file-uploader'>
-                            <label class="fake-label">
+                            <label class='fake-label'>
                               <span class='fake-input'><span>No file selected</span></span>
                               <span class='upload-image'><span>Upload image</span></span>
                             </label>
@@ -226,36 +226,62 @@
             role='tabpanel'
             aria-labelledby='changePassword-tab'
           >
-            <form data-purpose='basic-info-form' class='basic-form'>
+            <form
+              id='frm-change-password'
+              action='/change-password'
+              method='POST'
+            >
               <div class='d-flex form-container'>
                 <div class='form-content'>
                   <div class='oa-form-group'>
-                    <label class='oa-form-label oa-heading-sm'>Current password</label>
+                    <label class='oa-form-label oa-heading-sm'>Old password
+                      <span class='text-danger ms-2 mt-2'>*</span>
+                    </label>
                     <input
                       type='password'
-                      name='current-password'
-                      id='current-password'
+                      name='oldPassword'
+                      id='oldPassword'
                       class='oa-text-input-large'
+                      required='true'
                     />
                   </div>
                   <div class='oa-form-group'>
-                    <label class='oa-form-label oa-heading-sm'>New password</label>
+                    <label class='oa-form-label oa-heading-sm'>New password
+                      <span class='text-danger ms-2 mt-2'>*</span>
+                    </label>
                     <input
                       type='password'
-                      name='new-password'
-                      id='new-password'
+                      name='newPassword'
+                      id='newPassword'
                       class='oa-text-input-large'
+                      required='required'
+                      pattern='^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'
                     />
+                    <div class='invalid-feedback'>
+                      Password must be followed by:
+                      <ul class='mb-0'>
+                        <li>At least 8 characters</li>
+                        <li>At least 1 uppercase letter</li>
+                        <li>At least 1 lowercase letter</li>
+                        <li>At least 1 number</li>
+                        <li>At least 1 special character (#?!@$%^&*-)</li>
+                      </ul>
+                    </div>
                   </div>
                   <div class='oa-form-group'>
                     <label class='oa-form-label oa-heading-sm'>Confirm new
-                      password</label>
+                      password
+                      <span class='text-danger ms-2 mt-2'>*</span>
+                    </label>
                     <input
                       type='password'
-                      name='confirm-new-password'
-                      id='confirm-new-password'
+                      name='confirmNewPassword'
+                      id='confirmNewPassword'
                       class='oa-text-input-large'
+                      required='required'
                     />
+                    <div class='invalid-feedback'>New password and confirm new
+                      password do not match</div>
                   </div>
                 </div>
               </div>
