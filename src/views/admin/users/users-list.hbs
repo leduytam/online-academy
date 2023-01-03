@@ -148,11 +148,35 @@
           ></button>
         </div>
         <div class='modal-body'>
-          <p id='user-info-id' class='fw-bold'></p>
-          <p id='user-info-email' class='fw-bold'></p>
-          <p id='user-info-role' class='fw-bold'></p>
-          <p id='user-info-isDeleted' class='fw-bold'></p>
-          <p id='user-info-updatedAt' class='fw-bold'></p>
+          <div class ="mb-3">
+            <span class='fw-bold'>User Id:</>
+            <span id='user-info-id'></span>
+          </div>
+
+          <div class ="mb-3">
+            <span class='fw-bold'>Email: </span>
+            <span id='user-info-email'></span>
+          </div>
+
+          <div class ="mb-3">
+            <span class='fw-bold'>Role: </sp>
+            <span id='user-info-role' class="text-uppercase" ></span>
+          </div>
+          
+          <div id='user-info-isDeleted' class ="mb-3"></div>
+          
+          <div class ="mb-3">
+            <span class='fw-bold'>Updated at: </span>
+            <span id='user-info-updatedAt' ></span>
+          </div>
+          
+          <div class="card" style="width: 100%">
+            <div class="card-header">
+                Courses
+            </div>  
+            <ul id='user-info-courses' class='list-group list-group-flush'>
+            </ul>
+          </div>
         </div>
         <div class='modal-footer'>
           <button

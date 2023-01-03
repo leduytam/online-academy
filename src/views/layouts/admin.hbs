@@ -3,6 +3,13 @@
     <meta charset='UTF-8' />
     <meta http-equiv='X-UA-Compatible' content='IE=edge' />
     <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <link rel='icon' type='image/x-icon' href='/assets/app/oa-icon.ico' />
+    <link rel='stylesheet' href='https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css' />
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css' />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.2.3/css/fixedHeader.dataTables.min.css">
+    <link rel='stylesheet' href='/css/main.css' />
     <link
       rel='stylesheet'
       href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css'
@@ -10,28 +17,23 @@
       crossorigin='anonymous'
       referrerpolicy='no-referrer'
     />
-    <link rel='icon' type='image/x-icon' href='/assets/app/oa-icon.ico' />
-    <link rel='stylesheet' href='https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css' />
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css' />
-    <link rel='stylesheet' href='/css/main.css' />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
-    <script>
-      Handlebars.registerHelper('eq', function (arg1, arg2, options) {
-        return arg1 == arg2 ? options.fn(this) : options.inverse(this);
-      });
-    </script>
+    <script src="https://cdn.datatables.net/fixedheader/3.2.3/js/dataTables.fixedHeader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"></script>
 
-    <title>{{title}}</title>
+    <title>OA | Admin | {{title}}</title>
   </head>
   <body>
     <div class='container-fluid d-flex flex-row p-0 h-100'>
       {{> sidebar-admin}}
       <div class="content" style="width: 100%">
-        {{> adminHeader}}
-        {{> errors}}  
+        {{> header-admin}}
+        <div class="w-100 d-flex align-items-center justify-content-center mt-2">
+          <h2>{{title}}</h2>
+        </div>
+        {{> errors}}
         {{{body}}}
       </div>
       

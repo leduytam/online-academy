@@ -8,6 +8,8 @@ import AdminSchema from '../validations/admin.validation.js';
 
 const router = express.Router();
 
+// admin - users
+
 router.get('/users', AdminController.getUsersList);
 router.get('/users/:id', AdminController.getUserById);
 router.post(
@@ -16,18 +18,20 @@ router.post(
   validateRedirect(AdminSchema.createUserBody),
   AdminController.createUser
 );
-
 router.post(
   '/delete-user/:id',
   auth.restrictTo(ERole.ADMIN),
   AdminController.deleteUser
 );
-
 router.post(
   '/edit-user/:id',
   auth.restrictTo(ERole.ADMIN),
   validateRedirect(AdminSchema.editUserBody),
   AdminController.editUser
 );
+
+// admin - courses
+router.get('/courses/:id', AdminController.getCourseById);
+router.post('/delete-course/:id', AdminController.deleteCourse);
 
 export default router;

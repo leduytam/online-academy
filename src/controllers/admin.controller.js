@@ -1,23 +1,27 @@
+import Course from '../models/course.model.js';
+import SubCategory from '../models/subcategory.model.js';
 import User from '../models/user.model.js';
 import logger from '../utils/logger.js';
 
 // View
 const getUsersView = async (req, res, next) => {
   const users = await User.find({}).lean();
-  res.render('admin/users-list', {
+  res.render('admin/users/users-list', {
     title: 'Manage users',
     users,
   });
 };
 
 const getCoursesView = async (req, res, next) => {
-  res.render('admin/managementCourses', {
+  const courses = await Course.find({}).lean();
+  res.render('admin/courses/courses-list', {
     title: 'Manage courses',
+    courses,
   });
 };
 
 const getCreateUserView = async (req, res, next) => {
-  res.render('admin/create-user', {
+  res.render('admin/users/create-user', {
     title: 'Create user',
   });
 };
@@ -25,7 +29,7 @@ const getCreateUserView = async (req, res, next) => {
 const getEditUserView = async (req, res, next) => {
   const { id } = req.params;
   const user = await User.findById(id).lean();
-  res.render(`admin/edit-user`, {
+  res.render(`admin/users/edit-user`, {
     title: 'Edit user',
     user,
   });
@@ -68,8 +72,10 @@ const createUser = async (req, res, next) => {
   try {
     const { email, name, role } = req.body;
     if (await User.isEmailTaken(email)) {
-      req.flash('error_msg', 'Email is already taken');
-      res.redirect('/admin/users-list');
+      if (req.flash) {
+        req.flash('error_msg', 'Email is already taken');
+      }
+      res.redirect('/admin/users');
       return;
     }
     const user = await User.create({
@@ -80,7 +86,7 @@ const createUser = async (req, res, next) => {
     });
     await user.save();
     req.flash('success_msg', `Created user ${user.name} successfully`);
-    res.redirect('/admin/users-list');
+    res.redirect('/admin/users');
   } catch (e) {
     logger.error(e);
     req.flash('error_msg', e.message);
@@ -99,7 +105,7 @@ const deleteUser = async (req, res, next) => {
     user.isDeleted = !user.isDeleted;
     await user.save();
     req.flash('success_msg', `Deleted user ${user.name} successfully`);
-    res.redirect('/admin/users-list');
+    res.redirect('/admin/users');
   } catch (e) {
     logger.error(e);
     req.flash('error_msg', e.message);
@@ -114,18 +120,18 @@ const editUser = async (req, res, next) => {
     const user = await User.findById(id);
     if (!user) {
       req.flash('error_msg', 'User not found');
-      res.redirect('/admin/users-list');
+      res.redirect('/admin/users');
       return;
     }
     if (user.isDeleted) {
       req.flash('error_msg', 'User is deleted');
-      res.redirect('/admin/users-list');
+      res.redirect('/admin/users');
       return;
     }
     if (user.email !== email) {
       if (await User.isEmailTaken(email)) {
         req.flash('error_msg', 'Email is already taken');
-        res.redirect('/admin/users-list');
+        res.redirect('/admin/users');
         return;
       }
       user.email = email;
@@ -134,7 +140,7 @@ const editUser = async (req, res, next) => {
     user.role = role;
     await user.save();
     req.flash('success_msg', `Edited user ${user.name} successfully`);
-    res.redirect('/admin/users-list');
+    res.redirect('/admin/users');
   } catch (e) {
     logger.error(e);
     req.flash('error_msg', e.message);
@@ -148,10 +154,81 @@ const getUserById = async (req, res, next) => {
     const user = await User.findById(id);
     if (!user) {
       req.flash('error_msg', 'User not found');
-      res.redirect('/admin/users-list');
+      res.redirect('/admin/users');
       return;
     }
-    res.send({ status: true, data: user });
+    const courses = await Course.find({ instructor: user._id });
+
+    const resultData = {
+      ...user.toObject(),
+      courses: courses.map((course) => course.toObject()),
+    };
+    res.send({
+      status: true,
+      data: resultData,
+    });
+  } catch (e) {
+    logger.error(e);
+    req.flash('error_msg', e.message);
+    res.send({ status: false, message: e.message });
+  }
+};
+
+const getCourseById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const course = await Course.findById(id);
+    if (!course) {
+      req.flash('error_msg', 'Course not found');
+      res.redirect('/admin/courses');
+      return;
+    }
+    const instructor = await User.findById(course.instructor);
+    const subCategory = await SubCategory.findById(course.category);
+
+    const resultData = {
+      ...course.toObject(),
+      instructor: instructor.toObject(),
+      subCategory: subCategory?.toObject(),
+    };
+    res.send({ status: true, data: resultData });
+  } catch (e) {
+    logger.error(e);
+    req.flash('error_msg', e.message);
+    res.send({ status: false, message: e.message });
+  }
+};
+
+const getCoursesOfUser = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    if (!user) {
+      req.flash('error_msg', 'User not found');
+      res.redirect('/admin/users');
+      return;
+    }
+    const courses = await Course.find({ instructor: user._id });
+    res.send({ status: true, data: courses });
+  } catch (e) {
+    logger.error(e);
+    req.flash('error_msg', e.message);
+    res.send({ status: false, message: e.message });
+  }
+};
+
+const deleteCourse = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const course = await Course.findById(id);
+    if (!course) {
+      res.send({ status: false, message: 'Course not found' });
+      return;
+    }
+    course.isDeleted = !course.isDeleted;
+    await course.save();
+    req.flash('success_msg', `Deleted course ${course.name} successfully`);
+    res.redirect('/admin/courses');
   } catch (e) {
     logger.error(e);
     req.flash('error_msg', e.message);
@@ -170,4 +247,7 @@ export default {
   deleteUser,
   editUser,
   getUserById,
+  getCourseById,
+  getCoursesOfUser,
+  deleteCourse,
 };

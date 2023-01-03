@@ -51,6 +51,10 @@ const courseSchema = new Schema({
     type: Number,
     default: 0,
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 export default model('Course', courseSchema);

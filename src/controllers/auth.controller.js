@@ -1,6 +1,7 @@
 import httpStatus from 'http-status';
 
 import configs from '../configs/index.js';
+import ERole from '../constant/role.js';
 import User from '../models/user.model.js';
 import emailService from '../services/email.service.js';
 import otpService from '../services/otp.service.js';
@@ -27,7 +28,11 @@ const login = async (req, res, next) => {
   }
 
   req.session.save((err) => {
-    res.redirect(req.session.backUrl || '/');
+    if (user.role !== ERole.ADMIN) {
+      res.redirect(req.session.backUrl || '/');
+    } else {
+      res.redirect('/admin');
+    }
   });
 };
 

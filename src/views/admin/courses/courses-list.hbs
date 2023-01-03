@@ -1,0 +1,222 @@
+<div class='mx-2'>
+
+  <table id='courses-list' class='table table-striped' style='width:100%'>
+    <thead>
+      <tr>
+        <th>Course Id</th>
+        <th>Name</th>
+        <th>Brief Description</th>
+        <th>Price</th>
+        <th>Views</th>
+        <th>Status</th>
+        <th>Updated at</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each courses}}
+        <tr>
+          <td>{{this._id}}</td>
+          <td>{{this.name}}</td>
+          <td>{{this.briefDescirption}}</td>
+          <td>${{this.price}}</td>
+          <td>{{this.views}}</td>
+          <td>
+            {{#if this.isDeleted}}
+              <span class='badge bg-danger'>Deleted</span>
+            {{else}}
+              <span class='badge bg-success'>Active</span>
+            {{/if}}
+          </td>
+          <td>{{this.updatedAt}}</td>
+          <td>
+            {{#if this.isDeleted}}
+              <button
+                type='button'
+                class='btn btn-success restore-course-button'
+                data-id='{{this._id}}'
+              >
+                <i class='fa fa-check'></i>
+              </button>
+            {{else}}
+              <button
+                type='button'
+                class='btn btn-danger open-delete-modal'
+                data-bs-toggle='modal'
+                data-bs-target='#deleteModal'
+                data-id='{{this._id}}'
+                data-name='{{this.name}}'
+              >
+                <i class='fa fa-trash'></i>
+              </button>
+            {{/if}}
+            
+            <button
+              type='button'
+              class='btn btn-primary open-course-info-modal'
+              data-mdb-ripple-color='dark'
+              data-bs-toggle='modal'
+              data-bs-target='#courseInfoModal'
+              data-id='{{this._id}}'
+            >
+              <i class='fa fa-info-circle'></i>
+
+            </button>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  {{! Course info modal }}
+  <div
+    class='modal fade'
+    id='courseInfoModal'
+    tabindex='-1'
+    aria-labelledby='userInfoModalLabel'
+    aria-hidden='true'
+  >
+    <div class='modal-dialog modal-dialog-scrollable'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          <h5 class='modal-title' id='userInfoModalLabel'>Course info</h5>
+          <button
+            type='button'
+            class='btn-close'
+            data-bs-dismiss='modal'
+            aria-label='Close'
+          ></button>
+        </div>
+        <div class='modal-body'>
+          <div class ="mb-3">
+            <span class='fw-bold'>Course Id: </span>
+            <span id='course-info-id'></span>
+          </div>
+
+          <div class ="mb-3">
+            <span class='fw-bold'>Name: </span>
+            <span id='course-info-name'></span>
+          </div>
+
+          <div class ="mb-3">
+            <a class='fw-bold text-decoration-none text-dark'>Instructor: </a>
+            <span id='course-info-instructor' ></span>
+          </div>
+
+          <div class ="mb-3">
+            <span class='fw-bold'>Slug: </span>
+            <span id='course-info-slug' ></span>
+          </div>
+
+          <div class ="mb-3">
+            <span class='fw-bold'>Views: </span>
+            <i class="fa-solid fa-eye"></i>
+            <span id='course-info-views' ></span>
+          </div>
+
+          <div class ="mb-3">
+            <span class='fw-bold'>Brief description: </span>
+            <span id='course-info-brief-description' ></span>
+          </div>
+
+          <div class ="mb-3">
+            <div class="card border-dark mb-3" style="w-100">
+                <div class="card-header">
+                  <span>Detail description</span>
+                  <button
+                    class='btn btn-outline-dark btn-sm'
+                    type='button'
+                    data-bs-toggle='collapse'
+                    data-bs-target='#course-info-detail-description'
+                    aria-expanded='false'
+                    aria-controls='course-info-detail-description'
+                  >
+                    <i class='bi bi-caret-down-fill'></i>
+                  </button>
+                </div>
+                <div class="card-body text-dark">
+                  <div id='course-info-detail-description'class='collapse' ></div>
+                </div>
+              </div>
+            
+          </div>
+
+          <div class ="mb-3">
+            <span class='fw-bold'>Price: </span>
+            <i class="fa-solid fa-dollar-sign"></i>
+            <span id='course-info-price' ></span>
+          </div>
+          
+          
+          <div class ="mb-3">
+            <span class='fw-bold'>Category: </span>
+            <span id='course-info-category'class='badge bg-secondary' ></span>
+          </div>
+          
+          <div class ="mb-3">
+            <span class='fw-bold'>Updated at: </span>
+            <span id='course-info-updatedAt' ></span>
+          </div>
+
+          <div class="card" style="width: 100%">
+            <div class="card-header">
+                Sections
+            </div>  
+            <ul id='course-info-sections' class='list-group list-group-flush'>
+            </ul>
+          </div>
+          
+        </div>
+        <div class='modal-footer'>
+          <button
+            type='button'
+            class='btn btn-secondary'
+            data-bs-dismiss='modal'
+          >Close</button>
+        </div>
+      </div>
+    </div>
+
+</div>
+
+{{! Confirm delete course? }}
+  <div
+    class='modal fade'
+    id='deleteModal'
+    tabindex='-1'
+    aria-labelledby='deleteModalLabel'
+    aria-hidden='true'
+  >
+    <div class='modal-dialog modal-dialog-centered'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          <h5 class='modal-title' id='deleteModalLabel'>Delete course</h5>
+          <button
+            type='button'
+            class='btn-close'
+            data-bs-dismiss='modal'
+            aria-label='Close'
+          ></button>
+        </div>
+        <div class='modal-body'>
+          <p>Are you sure to delete this course?</p>
+          <p id='delete-course-id' class='fw-bold'></p>
+          <p id='delete-course-name' class='fw-bold'></p>
+        </div>
+        <div class='modal-footer'>
+          <button
+            type='button'
+            class='btn btn-secondary'
+            data-bs-dismiss='modal'
+          >Close</button>
+          <button
+            type='button'
+            class='btn btn-danger'
+            id='delete-course-confirm'
+          >Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script src='/js/admin/courses.js'></script>
