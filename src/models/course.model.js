@@ -16,7 +16,7 @@ const courseSchema = new Schema({
     ref: 'Media',
     require: true,
   },
-  briefDescirption: {
+  briefDescription: {
     type: String,
     require: true,
   },
