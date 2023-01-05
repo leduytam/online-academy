@@ -7,9 +7,9 @@ const storage = new gcs.Storage(configs.gcs.storage);
 const publicBucket = storage.bucket(configs.gcs.publicBucket);
 const privateBucket = storage.bucket(configs.gcs.privateBucket);
 
-const uploadImage = async (file, slug) => {
+const uploadImage = async (file, filename) => {
   return new Promise((resolve, reject) => {
-    const blob = publicBucket.file(slug);
+    const blob = publicBucket.file(filename);
 
     const blobStream = blob.createWriteStream({
       resumable: false,
@@ -27,13 +27,13 @@ const uploadImage = async (file, slug) => {
   });
 };
 
-const deleteImage = async (slug) => {
-  await publicBucket.file(slug).delete();
+const deleteImage = async (filename) => {
+  await publicBucket.file(filename).delete();
 };
 
-const uploadVideo = async (file, slug) => {
+const uploadVideo = async (file, filename) => {
   return new Promise((resolve, reject) => {
-    const blob = privateBucket.file(slug);
+    const blob = privateBucket.file(filename);
 
     const blobStream = blob.createWriteStream({
       resumable: true,
@@ -51,22 +51,22 @@ const uploadVideo = async (file, slug) => {
   });
 };
 
-const deleteVideo = async (slug) => {
-  privateBucket.file(slug).delete();
+const deleteVideo = async (filename) => {
+  privateBucket.file(filename).delete();
 };
 
-const getPublicImageUrl = (slug) => {
-  return `https://storage.googleapis.com/${publicBucket.name}/${slug}`;
+const getPublicImageUrl = (filename) => {
+  return `https://storage.googleapis.com/${publicBucket.name}/${filename}`;
 };
 
-const getVideoSignedUrl = async (slug) => {
+const getVideoSignedUrl = async (filename) => {
   const options = {
     version: 'v4',
     action: 'read',
     expires: Date.now() + configs.gcs.signedUrlExpiresIn,
   };
 
-  const [url] = await privateBucket.file(slug).getSignedUrl(options);
+  const [url] = await privateBucket.file(filename).getSignedUrl(options);
 
   return url;
 };

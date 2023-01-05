@@ -1,403 +1,182 @@
 <html lang='en'>
-  <head>
-    <meta charset='UTF-8' />
-    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
-    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-    <link
-      rel='stylesheet'
-      href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css'
-      integrity='sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=='
-      crossorigin='anonymous'
-      referrerpolicy='no-referrer'
-    />
-    <link rel='stylesheet' href='https://cdn.plyr.io/3.7.3/plyr.css' />
-    <link rel='stylesheet' href='/css/main.css' />
-    <link rel='icon' type='image/x-icon' href='/assets/app/oa-icon.ico' />
-    <title>{{title}}</title>
-  </head>
-  <body>
-    <div class='container-fluid min-vh-100 px-0'>
-      <nav class='navbar navbar-dark bg-dark'>
-        <div class='container-fluid gap-3 flex-nowrap'>
-          <a class='navbar-brand me-0' href='/'>
-            <img
-              src='/assets/app/oa-icon.ico'
-              alt=''
-              width='24'
-              height='24'
-              class='d-inline-block align-text-top'
-            />
-            <span class='hide-on-lg fs-6'>Online Academy</span>
-          </a>
 
-          <div class='vr text-light'></div>
+<head>
+  <meta charset='UTF-8' />
+  <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css' integrity='sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==' crossorigin='anonymous' referrerpolicy='no-referrer' />
+  <link rel='stylesheet' href='https://cdn.plyr.io/3.7.3/plyr.css' />
+  <link rel='stylesheet' href='/css/main.css' />
+  <link rel='icon' type='image/x-icon' href='/assets/app/oa-icon.ico' />
+  <title>{{title}}</title>
+</head>
 
-          <a
-            class='btn btn-link text-white p-0 border-0 text-decoration-none ellipsis-text me-auto'
-            href='/courses/id'
-          >
-            NodeJS - The Complete Guide (MVC, REST APIs, GraphQL, Deno)
-          </a>
+<body>
+  <div class='container-fluid min-vh-100 px-0'>
+    <nav class='navbar navbar-dark bg-dark'>
+      <div class='container-fluid gap-3 flex-nowrap'>
+        <a class='navbar-brand me-0' href='/'>
+          <img src='/assets/app/oa-icon.ico' alt='' width='24' height='24' class='d-inline-block align-text-top' />
+          <span class='hide-on-lg fs-6'>Online Academy</span>
+        </a>
 
-          <button
-            type='button'
-            class='btn btn-sm text-white border-0 text-nowrap'
-            data-bs-toggle='modal'
-            data-bs-target='#modal-rating'
-          >
-            <span class='text-secondary me-1'>
-              <i class='fas fa-star'></i>
-            </span>
-            <span>Leave a rating</span>
-          </button>
+        <div class='vr text-light'></div>
 
-          <button
-            id='popover-progress'
-            type='button'
-            class='btn btn-sm text-white border-0 text-nowrap'
-          >
-            <span class='text-secondary me-1'>
-              <i class='fa-solid fa-hourglass-half'></i>
-            </span>
+        <a class='btn btn-link text-white p-0 border-0 text-decoration-none ellipsis-text me-auto' href='/courses/{{course.slug}}'>
+          {{course.name}}
+        </a>
 
-            <span>Your progress</span>
+        <button type='button' class='btn btn-sm text-white border-0 text-nowrap' data-bs-toggle='modal' data-bs-target='#modal-rating'>
+          <span class='text-secondary me-1'>
+            <i class='fas fa-star'></i>
+          </span>
+          <span>Leave a rating</span>
+        </button>
 
-            <span class='text-light ms-1'>
-              <i class='fa-solid fa-angle-down'></i>
-            </span>
-          </button>
+        <button id='popover-progress' type='button' class='btn btn-sm text-white border-0 text-nowrap'>
+          <span class='text-secondary me-1'>
+            <i class='fa-solid fa-hourglass-half'></i>
+          </span>
 
-          <div class='d-none'>
-            <div id='popover-progress-content'>
-              <p class='mb-1'>142 of 543 complete.</p>
-              <div class='progress'>
-                <div
-                  class='progress-bar progress-bar-striped progress-bar-animated'
-                  role='progressbar'
-                  aria-label='Animated striped example'
-                  aria-valuenow='26'
-                  aria-valuemin='0'
-                  aria-valuemax='100'
-                  style='width: 26%'
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
+          <span>Your progress</span>
 
-      <div class='container-fluid p-0'>
-        <div class='row g-0'>
-          <div class='col'>
-            <video
-              class='w-100'
-              controls
-              crossorigin
-              playsinline
-              poster='https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg'
-              id='player'
-              style='max-height: 60rem'
-            >
-              <!-- Video files -->
-              <source
-                src='https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4'
-                type='video/mp4'
-                size='576'
-              />
-              <source
-                src='https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4'
-                type='video/mp4'
-                size='720'
-              />
-              <source
-                src='https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-1080p.mp4'
-                type='video/mp4'
-                size='1080'
-              />
-              <source
-                src='https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-1440p.mp4'
-                type='video/mp4'
-                size='1440'
-              />
+          <span class='text-light ms-1'>
+            <i class='fa-solid fa-angle-down'></i>
+          </span>
+        </button>
 
-              <!-- Caption files -->
-              <track
-                kind='captions'
-                label='English'
-                srclang='en'
-                src='https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt'
-                default
-              />
-              <track
-                kind='captions'
-                label='Français'
-                srclang='fr'
-                src='https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt'
-              />
-
-              <!-- Fallback for browsers that don't support the <video> element -->
-              <a
-                href='https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4'
-                download
-              >Download</a>
-            </video>
-          </div>
-        </div>
-
-        <div class='row g-0'>
-          <div class='col-12 col-lg-10 offset-0 offset-lg-1'>
-            <div class='mx-4'>
-              <ul class='nav nav-tabs' id='lesson-tab' role='tablist'>
-                <li class='nav-item' role='presentation'>
-                  <button
-                    class='nav-link active'
-                    id='course-content-tab'
-                    data-bs-toggle='tab'
-                    data-bs-target='#course-content-tab-pane'
-                    type='button'
-                    role='tab'
-                    aria-controls='course-content-tab-pane'
-                    aria-selected='true'
-                  >
-                    Course content
-                  </button>
-                </li>
-
-                <li class='nav-item' role='presentation'>
-                  <button
-                    class='nav-link'
-                    id='overview-tab'
-                    data-bs-toggle='tab'
-                    data-bs-target='#overview-tab-pane'
-                    type='button'
-                    role='tab'
-                    aria-controls='overview-tab-pane'
-                  >
-                    Overview
-                  </button>
-                </li>
-                <li class='nav-item' role='presentation'>
-                  <button
-                    class='nav-link'
-                    id='reviews-tab'
-                    data-bs-toggle='tab'
-                    data-bs-target='#reviews-tab-pane'
-                    type='button'
-                    role='tab'
-                    aria-controls='reviews-tab-pane'
-                    aria-selected='false'
-                  >
-                    Reviews
-                  </button>
-                </li>
-              </ul>
-
-              <div class='tab-content'>
-                <div
-                  class='tab-pane fade show active'
-                  id='course-content-tab-pane'
-                  role='tabpanel'
-                  aria-labelledby='course-content-tab'
-                  tabindex='0'
-                >
-
-                  <div class='accordion'>
-                    <div class='accordion-item'>
-                      <h2 class='accordion-header' id='accordian-item-1'>
-                        <button
-                          class='accordion-button collapsed'
-                          type='button'
-                          data-bs-toggle='collapse'
-                          data-bs-target='#accordian-item-collapse-1'
-                          aria-expanded='false'
-                          aria-controls='accordian-item-collapse-1'
-                        >
-                          <div>
-                            <h6 class='mb-1 fw-bold'>Section 1: Introduction</h6>
-                            <p class='m-0 text-muted text-small'>
-                              9 / 9 | 40min
-                            </p>
-                          </div>
-                        </button>
-                      </h2>
-                      <div
-                        id='accordian-item-collapse-1'
-                        class='accordion-collapse collapse'
-                        aria-labelledby='accordian-item-1'
-                      >
-                        <div class='accordion-body px-0'>
-                          <div class='list-group'>
-                            <a
-                              href='#'
-                              class='list-group-item list-group-item-action active'
-                            >
-                              <div class='d-flex'>
-                                <input
-                                  type='checkbox'
-                                  class='form-check-input'
-                                  checked='checked'
-                                />
-
-                                <div class='ms-3'>
-                                  <p class='mb-1'>
-                                    1. Introduction
-                                  </p>
-                                  <p class='m-0 text-muted text-small'>
-                                    <span class='me-1'>
-                                      <i
-                                        class='fa-solid fa-circle-play text-dark'
-                                      ></i>
-                                    </span>
-                                    2min
-                                  </p>
-                                </div>
-                              </div>
-                            </a>
-
-                            <a
-                              href='#'
-                              class='list-group-item list-group-item-action'
-                            >
-                              <div class='d-flex'>
-                                <input
-                                  type='checkbox'
-                                  class='form-check-input'
-                                  checked='checked'
-                                />
-
-                                <div class='ms-3'>
-                                  <p class='mb-1'>
-                                    2. What is Node.js?
-                                  </p>
-                                  <p class='m-0 text-muted text-small'>
-                                    <span class='me-1'>
-                                      <i
-                                        class='fa-solid fa-circle-play text-dark'
-                                      ></i>
-                                    </span>
-                                    5min
-                                  </p>
-                                </div>
-                              </div>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class='accordion-item'>
-                      <h2 class='accordion-header' id='accordion-item-2'>
-                        <button
-                          class='accordion-button collapsed'
-                          type='button'
-                          data-bs-toggle='collapse'
-                          data-bs-target='#accordian-item-collapse-2'
-                          aria-expanded='false'
-                          aria-controls='accordian-item-collapse-2'
-                        >
-                          <div>
-                            <h6 class='mb-1 fw-bold'>
-                              Section 2: Optional: Javascript - A Quick
-                              Refresher
-                            </h6>
-                            <p class='m-0 text-muted text-small'>
-                              14 / 14 | 51min
-                            </p>
-                          </div>
-                        </button>
-                      </h2>
-                      <div
-                        id='accordian-item-collapse-2'
-                        class='accordion-collapse collapse'
-                        aria-labelledby='accordion-item-2'
-                      >
-                        <div class='accordion-body'>
-                        </div>
-                      </div>
-                    </div>
-                    <div class='accordion-item'>
-                      <h2 class='accordion-header' id='accordian-item-2'>
-                        <button
-                          class='accordion-button collapsed'
-                          type='button'
-                          data-bs-toggle='collapse'
-                          data-bs-target='#accordian-item-collapse-3'
-                          aria-expanded='false'
-                          aria-controls='accordian-item-collapse-3'
-                        >
-                          <div>
-                            <h6 class='mb-1 fw-bold'>
-                              Section 3: Understanding the Basics
-                            </h6>
-                            <p class='m-0 text-muted text-small'>
-                              14 / 14 | 51min
-                            </p>
-                          </div>
-                        </button>
-                      </h2>
-                      <div
-                        id='accordian-item-collapse-3'
-                        class='accordion-collapse collapse'
-                        aria-labelledby='accordian-item-2'
-                      >
-                        <div class='accordion-body'>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  class='tab-pane fade'
-                  id='overview-tab-pane'
-                  role='tabpanel'
-                  aria-labelledby='overview-tab'
-                  tabindex='0'
-                >
-                  This function is not available yet.
-                </div>
-
-                <div
-                  class='tab-pane fade'
-                  id='reviews-tab-pane'
-                  role='tabpanel'
-                  aria-labelledby='reviews-tab'
-                  tabindex='0'
-                >
-                  This function is not available yet.
-                </div>
-              </div>
+        <div class='d-none'>
+          <div id='popover-progress-content'>
+            <p class='mb-1'>142 of 543 complete.</p>
+            <div class='progress'>
+              <div class='progress-bar progress-bar-striped progress-bar-animated' role='progressbar' aria-label='Animated striped example' aria-valuenow='26' aria-valuemin='0' aria-valuemax='100' style='width: 26%'></div>
             </div>
           </div>
         </div>
       </div>
+    </nav>
 
-      <div
-        class='modal fade'
-        id='modal-rating'
-        tabindex='-1'
-        aria-hidden='true'
-      >
-        <div class='modal-dialog modal-dialog-centered'>
-          <div class='modal-content'>
-            <div class='modal-header'>
-              <h1 class='modal-title fs-5'>
-                How would you rate this course?
-              </h1>
-              <button
-                type='button'
-                class='btn-close'
-                data-bs-dismiss='modal'
-                aria-label='Close'
-              ></button>
-            </div>
-            <div class='modal-body'>
+    <div class='container-fluid p-0'>
+      <div class='row g-0'>
+        <div class='col'>
+          <video class='w-100' controls playsinline id='player' style='max-height: 60rem'>
+            <source src='{{video}}' type='video/mp4'/>
+          </video>
+        </div>
+      </div>
+
+      <div class='row g-0'>
+        <div class='col-12 col-lg-10 offset-0 offset-lg-1'>
+          <div class='mx-4'>
+            <ul class='nav nav-tabs' id='lesson-tab' role='tablist'>
+              <li class='nav-item' role='presentation'>
+                <button class='nav-link active' id='course-content-tab' data-bs-toggle='tab' data-bs-target='#course-content-tab-pane' type='button' role='tab' aria-controls='course-content-tab-pane' aria-selected='true'>
+                  Course content
+                </button>
+              </li>
+
+              <li class='nav-item' role='presentation'>
+                <button class='nav-link' id='overview-tab' data-bs-toggle='tab' data-bs-target='#overview-tab-pane' type='button' role='tab' aria-controls='overview-tab-pane'>
+                  Overview
+                </button>
+              </li>
+
+              <li class='nav-item' role='presentation'>
+                <button class='nav-link' id='reviews-tab' data-bs-toggle='tab' data-bs-target='#reviews-tab-pane' type='button' role='tab' aria-controls='reviews-tab-pane' aria-selected='false'>
+                  Reviews
+                </button>
+              </li>
+            </ul>
+
+            <div class='tab-content'>
+              <div class='tab-pane fade show active' id='course-content-tab-pane' role='tabpanel' aria-labelledby='course-content-tab' tabindex='0'>
+                <div class='accordion'>
+                  {{#each course.sections as |section|}}
+                  <div class='accordion-item'>
+                    <h2 class='accordion-header' id='accordian-item-{{@index}}'>
+                      <button class='accordion-button {{#unless (equal section._id ../activeSection._id)}}collapsed{{/unless}}' type='button' data-bs-toggle='collapse' data-bs-target='#accordian-item-collapse-{{@index}}' aria-expanded='false' aria-controls='accordian-item-collapse-{{@index}}'>
+                        <div>
+                          <h6 class='mb-0 fw-bold'>Section
+                            {{math @index '+' 1}}:
+                            {{section.name}}</h6>
+                        </div>
+                      </button>
+                    </h2>
+
+                    <div id='accordian-item-collapse-{{@index}}' class='accordion-collapse collapse {{#if (equal section._id ../activeSection._id)}}show{{/if}}' aria-labelledby='accordian-item-{{@index}}'>
+                      <div class='accordion-body px-0'>
+                        <div class='list-group'>
+                          {{#each section.lessons as |lesson|}}
+                          <a href='/courses/{{../../course.slug}}/lessons/{{lesson.slug}}' class='list-group-item list-group-item-action {{#if (equal lesson._id ../../activeLesson._id)}}active{{/if}}'>
+                            <div class='d-flex'>
+                              <input type='checkbox' class='form-check-input' checked='checked' />
+
+                              <div class='ms-3'>
+                                <p class='mb-1'>
+                                  {{math @index '+' 1}}.
+                                  {{lesson.name}}
+                                </p>
+                                <p class='m-0 text-muted text-small'>
+                                  <span class='me-1'>
+                                    <i class='fa-solid fa-circle-play text-dark'></i>
+                                  </span>
+                                  {{minute lesson.video.duration}}min
+                                </p>
+                              </div>
+                            </div>
+                          </a>
+                          {{/each}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {{/each}}
+                </div>
+              </div>
+
+              <div class='tab-pane fade' id='overview-tab-pane' role='tabpanel' aria-labelledby='overview-tab' tabindex='0'>
+                <h3>About this course</h3>
+                <p>{{course.briefDescription}}</p>
+                <hr />
+
+                <div class='row'>
+                  <div class='col-3'>
+                    <p>Description</p>
+                  </div>
+
+                  <div class='col-lg-6'>
+                    {{{course.detailDescription}}}
+                  </div>
+                </div>
+              </div>
+
+              <div class='tab-pane fade' id='reviews-tab-pane' role='tabpanel' aria-labelledby='reviews-tab' tabindex='0'>
+                This function is not available yet.
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <script src='https://cdn.plyr.io/3.7.3/plyr.js'></script>
-    <script src='/js/bootstrap.bundle.min.js'></script>
-    <script src='/js/lesson.js'></script>
-  </body>
+
+    <div class='modal fade' id='modal-rating' tabindex='-1' aria-hidden='true'>
+      <div class='modal-dialog modal-dialog-centered'>
+        <div class='modal-content'>
+          <div class='modal-header'>
+            <h1 class='modal-title fs-5'>
+              How would you rate this course?
+            </h1>
+            <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+          </div>
+          <div class='modal-body'>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src='https://cdn.plyr.io/3.7.3/plyr.js'></script>
+  <script src='/js/bootstrap.bundle.min.js'></script>
+  <script src='/js/lesson.js'></script>
+</body>
+
 </html>

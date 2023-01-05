@@ -32,7 +32,26 @@ const hbs = exphbs.create({
   partialsDir: path.join(__dirname, 'views/partials'),
   defaultLayout: 'student',
   extname: '.hbs',
-  helpers: {},
+  helpers: {
+    math: (lvalue, operator, rvalue) => {
+      const lv = +lvalue;
+      const rv = +rvalue;
+
+      return {
+        '+': lv + rv,
+        '-': lv - rv,
+        '*': lv * rv,
+        '/': lv / rv,
+        '%': lv % rv,
+      }[operator];
+    },
+    minute: (seconds) => {
+      return Math.floor(seconds / 60);
+    },
+    equal: (lvalue, rvalue) => {
+      return lvalue === rvalue;
+    },
+  },
 });
 
 app.engine('.hbs', hbs.engine);
