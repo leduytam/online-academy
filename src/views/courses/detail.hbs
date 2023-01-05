@@ -1,7 +1,7 @@
 <div>
   {{! Header }}
-  <div class='w-100 bg-dark py-4' style='height: 370px'>
-    <div class='container w-50 h-75'>
+  <div class='w-100 bg-dark py-4'>
+    <div class='container'>
       {{! Breadcrumb }}
       <div>
         <nav style="--bs-breadcrumb-divider: '>';" aria-label='breadcrumb'>
@@ -10,44 +10,60 @@
         </nav>
       </div>
 
-      {{!-- Title --}}
-      <div class='d-flex flex-column' style="width: 60%">
+      {{! Title }}
+      <div class='d-flex flex-column'>
         <span class='text-white fs-2 fw-bold' id='course-header-title'></span>
       </div>
 
       {{! Brief Description }}
-      <div class='d-flex flex-column mt-3' style="width: 70%">
-        <span class='text-white fs-5' id='course-header-brief-description'></span>
+      <div class='d-flex flex-column mt-3'>
+        <span
+          class='text-white fs-5'
+          id='course-header-brief-description'
+        ></span>
       </div>
 
-      {{!-- Ratings + enrollments --}}
-      <div class='d-flex flex-row mt-3 align-items-center' style="width: 70%">
-        {{!-- Ratings --}}
-          <span id="course-header-average-rating"></span>
-          <div id="course-header-rating-stars"></div>
-          <span id="course-header-total-ratings" class='text-white ms-1'></span>
-          <span id="course-header-enrollments" class='text-white ms-2'></span>
+      {{! Ratings + enrollments }}
+      <div class='d-flex flex-row mt-3 align-items-center'>
+        {{! Ratings }}
+        <span id='course-header-average-rating'></span>
+        <div id='course-header-rating-stars'></div>
+        <span id='course-header-total-ratings' class='text-white ms-1'></span>
+        <span id='course-header-enrollments' class='text-white ms-2'></span>
       </div>
 
-      {{!-- Instructor --}}
-      <div class='d-flex flex-column mt-3' style="width: 60%">
+      {{! Instructor }}
+      <div class='d-flex flex-column mt-3'>
         <span class='text-white' id='course-header-instructor'></span>
       </div>
 
-      {{!-- Updated at --}}
-      <div class='d-flex flex-row mt-3 align-items-center' style="width: 60%">
-        <span
-          class='text-white me-1'
-        >
-          <i class="bi bi-check-circle-fill"></i>
+      {{! Updated at }}
+      <div class='d-flex flex-row mt-3 align-items-center'>
+        <span class='text-white me-1' id='course-header-updated-at-icon'>
         </span>
         <span class='text-white' id='course-header-updated-at'></span>
       </div>
+    </div>
   </div>
 
   {{! Body }}
-  <div>
+  <div class='container pt-5'>
+    {{! Section + lessons }}
+    <div>
+      <span id='course-section-title' class='fs-3 fw-bold'></span>
+      {{! Section description + expand button }}
+      <div class='d-flex flex-row w-100 mt-3'>
+        <span id='course-section-description'></span>
+        <button
+          class='btn btn-link text-decoration-none text-dark'
+          id='course-section-expand-button'
+        >
+      </div>
 
+      <div class='accordion mt-4' id='course-lessons-accordion'>
+       
+      </div>
+    </div>
   </div>
 </div>
 
