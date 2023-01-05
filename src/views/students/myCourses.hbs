@@ -1,24 +1,10 @@
 {{> studentHeaderCourse}}
 
 <div class="container mx-auto">
-    {{!-- TODO: add search bar later --}}
-    <div class="input-group mt-4">
-        <div class="form-outline">
-            <input id="search-input" type="search" id="form1" class="form-control" placeholder="Search"/>
-        </div>
-        <button id="search-button" type="button" class="btn btn-dark">
-            <i class="fas fa-search"></i>
-        </button>
-    </div>
     <div class="row">
         {{#each courses}}
         <div class="col-3 mt-4 course-card"  data-slug={{this.slug}} style="cursor: pointer;">
             <div class="card position-relative">
-                {{!-- <div class="position-absolute" style="top: 10px; right: 10px">
-                    <button type="button" class="btn btn-light">
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </button>
-                </div> --}}
                 <img src={{this.coverPhoto}} class="card-img-top" alt="Cover photo">
                 <div class="card-body">
                     <a class="fw-bold fs-6" style="color:black; text-decoration:none; cursor:pointer;">{{this.name}}</a>
@@ -44,12 +30,6 @@
             const slug = cards[i].getAttribute('data-slug');
             window.location.href = `/courses/${slug}`;
         });
-    const searchButton = document.getElementById('search-button');
-    const searchInput = document.getElementById('search-input');
-    searchButton.addEventListener('click', () => {
-        const inputValue = searchInput.value;
-        window.location.href = `/my-courses/?keyword=${inputValue}`;
-    });
     }
 
 </script>

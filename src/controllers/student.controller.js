@@ -92,7 +92,6 @@ const uploadProfileImage = async (req, res, next) => {
 };
 
 const getMyCoursesView = async (req, res, next) => {
-  const keyword = req.query.keyword || '';
   const { _id } = req.session.user;
   const enrollments = await Enrollment
     .find({
@@ -122,9 +121,9 @@ const getMyCoursesView = async (req, res, next) => {
 };
 
 const getWishlistView = async (req, res, next) => {
-  const { _id } = req.session.user
+  // const { _id } = req.session.user
   res.render('students/wishList', {
-    title: 'My courses',
+    title: 'Wish list',
   });
 };
 
