@@ -10,6 +10,8 @@ import logger from '../utils/logger.js';
 import User from '../models/user.model.js';
 import Course from '../models/course.model.js';
 import Enrollment from '../models/enrollment.model.js';
+import gcsService from '../services/gcs.service.js';
+import '../models/media.model.js';
 
 const getHomeView = async (req, res, next) => {
   res.render('students/home', {
@@ -90,6 +92,7 @@ const uploadProfileImage = async (req, res, next) => {
 };
 
 const getMyCoursesView = async (req, res, next) => {
+  const keyword = req.query.keyword || '';
   const { _id } = req.session.user;
   const enrollments = await Enrollment
     .find({
@@ -104,15 +107,25 @@ const getMyCoursesView = async (req, res, next) => {
       },
     })
     .populate('instructor')
+    .populate('coverPhoto')
     .lean();
-  res.render('students/myCourses', {
+
+    res.render('students/myCourses', {
     title: 'My courses',
-    courses,
+    courses: courses.map((course) => {
+      return {
+        ...course,
+        coverPhoto: gcsService.getPublicImageUrl(course.coverPhoto.filename),
+      }
+    })
   });
 };
 
 const getWishlistView = async (req, res, next) => {
   const { _id } = req.session.user
+  res.render('students/wishList', {
+    title: 'My courses',
+  });
 };
 
 export default {

@@ -1,6 +1,7 @@
 {{> studentHeaderCourse}}
 
 <div class="container mx-auto">
+    {{!-- TODO: add search bar later --}}
     <div class="input-group mt-4">
         <div class="form-outline">
             <input id="search-input" type="search" id="form1" class="form-control" placeholder="Search"/>
@@ -11,24 +12,22 @@
     </div>
     <div class="row">
         {{#each courses}}
-        <div class="col-3 mt-4">
+        <div class="col-3 mt-4 course-card"  data-slug={{this.slug}} style="cursor: pointer;">
             <div class="card position-relative">
-                <div class="position-absolute" style="top: 10px; right: 10px">
+                {{!-- <div class="position-absolute" style="top: 10px; right: 10px">
                     <button type="button" class="btn btn-light">
                         <i class="fa-solid fa-ellipsis-vertical"></i>
                     </button>
-                </div>
-                {{!-- TODO: Add href and src photo later --}}
-                <a href="#" >
-                    <img src="https://files.fullstack.edu.vn/f8-prod/courses/2.png" class="card-img-top" alt="...">
-                </a>
+                </div> --}}
+                <img src={{this.coverPhoto}} class="card-img-top" alt="Cover photo">
                 <div class="card-body">
-                    <a class="card-title fw-bold fs-5" style="color:black; text-decoration:none; cursor:pointer;">{{this.name}}</a>
+                    <a class="fw-bold fs-6" style="color:black; text-decoration:none; cursor:pointer;">{{this.name}}</a>
                     <p class="card-text fs-6 fw-light">{{this.instructor.name}}</p>
+                    {{!-- TODO: handle progress later --}}
                     {{!-- <div class="progress" style="height: 5px;">
                         <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25"
                             aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
+                    </div> --}}
                     {{!-- TODO: Add complete percentage
                     <p>% complete</p> --}}
                 </div>
@@ -39,10 +38,18 @@
 </div>
 
 <script>
+    const cards = document.getElementsByClassName('course-card');
+    for (let i = 0; i < cards.length; i++) {
+        cards[i].addEventListener('click', () => {
+            const slug = cards[i].getAttribute('data-slug');
+            window.location.href = `/courses/${slug}`;
+        });
     const searchButton = document.getElementById('search-button');
     const searchInput = document.getElementById('search-input');
     searchButton.addEventListener('click', () => {
-    const inputValue = searchInput.value;
-    alert(inputValue);
+        const inputValue = searchInput.value;
+        window.location.href = `/my-courses/?keyword=${inputValue}`;
     });
+    }
+
 </script>
