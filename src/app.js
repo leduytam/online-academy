@@ -3,7 +3,6 @@ import flash from 'connect-flash';
 import cors from 'cors';
 import express from 'express';
 import 'express-async-errors';
-import exphbs from 'express-handlebars';
 import mongoSanitize from 'express-mongo-sanitize';
 import rateLimit from 'express-rate-limit';
 import session from 'express-session';
@@ -13,6 +12,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import xss from 'xss-clean';
 
+import hbs from './configs/hbs.js';
 import configs from './configs/index.js';
 import './configs/mongoose.js';
 import {
@@ -26,33 +26,6 @@ import routes from './routes/index.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
-
-const hbs = exphbs.create({
-  layoutsDir: path.join(__dirname, 'views/layouts'),
-  partialsDir: path.join(__dirname, 'views/partials'),
-  defaultLayout: 'student',
-  extname: '.hbs',
-  helpers: {
-    math: (lvalue, operator, rvalue) => {
-      const lv = +lvalue;
-      const rv = +rvalue;
-
-      return {
-        '+': lv + rv,
-        '-': lv - rv,
-        '*': lv * rv,
-        '/': lv / rv,
-        '%': lv % rv,
-      }[operator];
-    },
-    minute: (seconds) => {
-      return Math.floor(seconds / 60);
-    },
-    equal: (lvalue, rvalue) => {
-      return lvalue === rvalue;
-    },
-  },
-});
 
 app.engine('.hbs', hbs.engine);
 app.set('view engine', '.hbs');

@@ -1,9 +1,19 @@
-import express from 'express';
+import { Router } from 'express';
 
-import CourseController from '../controllers/course.controller.js';
+import courseController from '../controllers/course.controller.js';
+import auth from '../middlewares/auth.middleware.js';
 
-const router = express.Router();
+const router = Router();
 
 router.get('/:slug', CourseController.getCourseDetailView);
 
+router.get(
+  '/:courseSlug/lessons/:lessonSlug',
+  auth.protect,
+  courseController.getLessonView
+);
+
+router.get('/:courseSlug/reviews', courseController.getReviews);
+
 export default router;
+

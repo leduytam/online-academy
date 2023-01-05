@@ -8,6 +8,7 @@
   <link rel='stylesheet' href='https://cdn.plyr.io/3.7.3/plyr.css' />
   <link rel='stylesheet' href='/css/main.css' />
   <link rel='icon' type='image/x-icon' href='/assets/app/oa-icon.ico' />
+  <script src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js'></script>
   <title>{{title}}</title>
 </head>
 
@@ -59,7 +60,7 @@
     <div class='container-fluid p-0'>
       <div class='row g-0'>
         <div class='col'>
-          <video class='w-100' controls playsinline id='player' style='max-height: 60rem'>
+          <video class='w-100' controls playsinline id='player' style='max-height: 50rem'>
             <source src='{{video}}' type='video/mp4'/>
           </video>
         </div>
@@ -94,7 +95,7 @@
                   {{#each course.sections as |section|}}
                   <div class='accordion-item'>
                     <h2 class='accordion-header' id='accordian-item-{{@index}}'>
-                      <button class='accordion-button {{#unless (equal section._id ../activeSection._id)}}collapsed{{/unless}}' type='button' data-bs-toggle='collapse' data-bs-target='#accordian-item-collapse-{{@index}}' aria-expanded='false' aria-controls='accordian-item-collapse-{{@index}}'>
+                      <button class='accordion-button {{#unless (eq section._id ../activeSection._id)}}collapsed{{/unless}}' type='button' data-bs-toggle='collapse' data-bs-target='#accordian-item-collapse-{{@index}}' aria-expanded='false' aria-controls='accordian-item-collapse-{{@index}}'>
                         <div>
                           <h6 class='mb-0 fw-bold'>Section
                             {{math @index '+' 1}}:
@@ -103,11 +104,11 @@
                       </button>
                     </h2>
 
-                    <div id='accordian-item-collapse-{{@index}}' class='accordion-collapse collapse {{#if (equal section._id ../activeSection._id)}}show{{/if}}' aria-labelledby='accordian-item-{{@index}}'>
+                    <div id='accordian-item-collapse-{{@index}}' class='accordion-collapse collapse {{#if (eq section._id ../activeSection._id)}}show{{/if}}' aria-labelledby='accordian-item-{{@index}}'>
                       <div class='accordion-body px-0'>
                         <div class='list-group'>
                           {{#each section.lessons as |lesson|}}
-                          <a href='/courses/{{../../course.slug}}/lessons/{{lesson.slug}}' class='list-group-item list-group-item-action {{#if (equal lesson._id ../../activeLesson._id)}}active{{/if}}'>
+                          <a href='/courses/{{../../course.slug}}/lessons/{{lesson.slug}}' class='list-group-item list-group-item-action {{#if (eq lesson._id ../../activeLesson._id)}}active{{/if}}'>
                             <div class='d-flex'>
                               <input type='checkbox' class='form-check-input' checked='checked' />
 
@@ -120,7 +121,7 @@
                                   <span class='me-1'>
                                     <i class='fa-solid fa-circle-play text-dark'></i>
                                   </span>
-                                  {{minute lesson.video.duration}}min
+                                  {{secondToMinute lesson.video.duration}}min
                                 </p>
                               </div>
                             </div>
@@ -151,7 +152,7 @@
               </div>
 
               <div class='tab-pane fade' id='reviews-tab-pane' role='tabpanel' aria-labelledby='reviews-tab' tabindex='0'>
-                This function is not available yet.
+                {{> reviews}}
               </div>
             </div>
           </div>

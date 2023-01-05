@@ -26,27 +26,21 @@ const getCourseDetail = async (slug) => {
   return course;
 };
 
-const getReviews = async (courseId, page = 1, limit = 10) => {
-  const skip = (page - 1) * limit;
-
-  const reviews = await Review.find({ course: courseId })
-    .sort('-createdAt')
-    .skip(skip)
-    .limit(limit)
-    .lean();
-
-  return reviews;
-};
-
 const getReviewStats = async (courseId) => {
-  const avgs = await Review.aggregate([
+  const course = await Course.findById(courseId);
+
+  if (!course) {
+    return null;
+  }
+
+  const avgTotal = await Review.aggregate([
     {
       $match: { course: courseId },
     },
     {
       $group: {
         _id: null,
-        rating: { $avg: '$rating' },
+        avg: { $avg: '$rating' },
         total: { $sum: 1 },
       },
     },
@@ -57,8 +51,8 @@ const getReviewStats = async (courseId) => {
     },
   ]);
 
-  const rating = avgs.length > 0 ? avgs[0].rating : 0;
-  const total = avgs.length > 0 ? avgs[0].total : 0;
+  const avg = avgTotal.length > 0 ? avgTotal[0].avg : 0;
+  const total = avgTotal.length > 0 ? avgTotal[0].total : 0;
 
   const ratings = await Review.aggregate([
     {
@@ -74,15 +68,29 @@ const getReviewStats = async (courseId) => {
       $project: {
         _id: 0,
         rating: '$_id',
-        percentage: { $multiply: [{ $divide: ['$count', total] }, 100] },
+        count: 1,
       },
-    },
-    {
-      $sort: { rating: -1 },
     },
   ]);
 
-  return { rating, total, ratings };
+  for (let i = 1; i <= 5; i += 1) {
+    if (!ratings.some((r) => r.rating === i)) {
+      ratings.push({ rating: i, count: 0 });
+    }
+  }
+
+  return {
+    avg,
+    total,
+    ratings: ratings
+      .map((rating) => {
+        return {
+          ...rating,
+          percentage: (rating.count / total) * 100,
+        };
+      })
+      .sort((a, b) => b.rating - a.rating),
+  };
 };
 
 const isEnrolled = async (courseId, studentId) => {
@@ -106,6 +114,26 @@ const isContainLesson = async (courseSlug, lessonSlug) => {
     .lean();
 
   return course.sections.some((section) => section.lessons.length > 0);
+};
+
+const getReviews = async (courseSlug, skip = 0, limit = 5) => {
+  const course = await Course.findOne({ slug: courseSlug }).lean();
+
+  if (!course) {
+    return [];
+  }
+
+  const reviews = await Review.find({ course: course._id })
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .select('rating review owner createdAt')
+    .populate({
+      path: 'owner',
+      select: 'name',
+    })
+    .lean();
+
+  return reviews.splice(0, limit);
 };
 
 export default {

@@ -1,0 +1,13 @@
+<div class='d-flex text-warning'>
+  {{#range 1 5 1}}
+    {{#if (lte this ../rating)}}
+      <i class='fa-solid fa-star'></i>
+    {{else}}
+      {{#if (lte this (math ../rating '+' 0.5))}}
+        <i class="fa-regular fa-star-half-stroke"></i>
+      {{else}}
+        <i class='fa-regular fa-star'></i>
+      {{/if}}
+    {{/if}}
+  {{/range}}
+</div>

@@ -1,0 +1,17 @@
+{{#each reviews as |review|}}
+  <div class='border-bottom py-3 text-small'>
+    <h6 class='mb-1'>{{review.owner.name}}</h6>
+
+    <div class='d-flex align-items-center mb-1'>
+      <div class='d-flex text-warning'>
+        {{> stars rating=review.rating}}
+      </div>
+
+      <div class='text-muted ms-2'>{{timeAgo review.createdAt}}</div>
+    </div>
+
+    <p class='mb-1'>
+      {{review.review}}
+    </p>
+  </div>
+{{/each}}
