@@ -145,6 +145,57 @@ const createSectionLesson = (sections) => {
 
 }
 
+const createDetailDescription = (description) => {
+  const descriptionElement = document.getElementById('course-detail-description');
+  const descriptionTitleElement = document.getElementById('course-detail-description-title');
+  descriptionTitleElement.innerHTML='Description';
+
+  const showMoreButtonElement = document.createElement('button');
+  showMoreButtonElement.classList.add('btn');
+  showMoreButtonElement.classList.add('btn-outline-primary');
+  showMoreButtonElement.classList.add('btn-sm');
+  showMoreButtonElement.classList.add('mt-2');
+  showMoreButtonElement.innerHTML = 'Show more';
+
+  const descriptionContentElement= document.createElement('div');
+  descriptionContentElement.innerHTML = description.slice(0, 200);
+  descriptionContentElement.classList.add('mt-2');
+
+  
+  descriptionElement.appendChild(descriptionContentElement);
+  descriptionElement.appendChild(showMoreButtonElement);
+
+  showMoreButtonElement.addEventListener('click', () => {
+    if (showMoreButtonElement.innerHTML === 'Show more') {
+      descriptionContentElement.innerHTML = description;
+      showMoreButtonElement.innerHTML = 'Show less';
+    }
+    else {
+      descriptionContentElement.innerHTML = description.slice(0, 200);
+      showMoreButtonElement.innerHTML = 'Show more';
+    }
+  })
+}
+
+const createPrice = (price) => {
+  const priceElement = document.getElementById('course-price');
+  priceElement.innerHTML = `
+    <div class="d-flex align-items-center">
+      <div class="me-2">
+        <i class="bi bi-cash" style="font-size: 1.5rem;"></i>
+      </div>
+        <span class="fs-2 fw-bold">
+          $${price}
+        </span>
+    </div>
+  `
+}
+
+const createThumbnail = (thumbnail) => {
+  const thumbnailElement = document.getElementById('course-thumbnail-video');
+  thumbnailElement.src = thumbnail;
+}
+
 $(document).ready(function () {
   const courseId = window.location.pathname.split('/')[2];
   axios.get('/api/v1/courses/' + courseId).then((response) => {
@@ -160,8 +211,10 @@ $(document).ready(function () {
     createReviews(reviews, enrollments);
     createCourseInstructor(instructor);
     createUpdateTime(updatedAt);
+    createPrice(data.price);
 
     // body
     createSectionLesson(sections);
+    createDetailDescription(data.detailDescription)
   });
 });
