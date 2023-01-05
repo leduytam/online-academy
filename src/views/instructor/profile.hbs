@@ -45,7 +45,7 @@
             role='tabpanel'
             aria-labelledby='information-tab'
           >
-            <form data-purpose='basic-info-form' class='basic-form' >
+            <form action='/instructor/edit-profile' method='POST'>
               <div class='d-flex form-container'>
                 <div class='form-content'>
                   <div class='oa-form-group'>
@@ -55,7 +55,7 @@
                       name='name'
                       id='name'
                       class='oa-text-input-large'
-                      value={{user.name}}
+                      value='{{user.name}}'
                     />
                   </div>
                   <div class='oa-form-group'>
@@ -65,28 +65,21 @@
                       name='email'
                       id='email'
                       class='oa-text-input-large'
-                      value={{user.email}}
+                      value='{{user.email}}'
                       disabled='true'
                     />
                   </div>
                   <div class='oa-form-group'>
                     <label class='oa-form-label oa-heading-sm'>Biography</label>
                     <div class='udlite-in-udheavy rt-editor-container'>
-                      <div
-                        class='rt-menu-bar-container rt-menu-bar-container-sticky'
-                      >
-                        <div class='rt-menu-bar'>
-                          <button type='button' class='biography-button'><i
-                              class='fa-solid fa-b'
-                            ></i></button>
-                          <button type='button' class='biography-button'><i
-                              class='fa-solid fa-italic'
-                            ></i></button>
-                        </div>
-                      </div>
                       <div class='rt-editor ud-text-md'>
                         <div class='ProseMirror'>
-                          <input type='text' class='biography-input' />
+                          <input
+                            type='text'
+                            class='biography-input'
+                            name='bio'
+                            value='{{user.bio}}'
+                          />
                         </div>
                       </div>
 
@@ -105,8 +98,7 @@
                       name='website'
                       id='website'
                       class='oa-text-input-large'
-                      value='URL'
-                      disabled='true'
+                      value='{{user.websiteLink}}'
                     />
                   </div>
                   <div class='oa-form-group'>
@@ -120,6 +112,7 @@
                         name='twitter'
                         id='twitter'
                         class='oa-text-input-large'
+                        value='{{user.twitterLink}}'
                       />
                     </div>
                   </div>
@@ -134,6 +127,7 @@
                         name='facebook'
                         id='facebook'
                         class='oa-text-input-large'
+                        value='{{user.facebookLink}}'
                       />
                     </div>
                   </div>
@@ -148,6 +142,7 @@
                         name='linkedin'
                         id='linkedin'
                         class='oa-text-input-large'
+                        value='{{user.linkedinLink}}'
                       />
                     </div>
                   </div>
@@ -162,6 +157,7 @@
                         name='youtube'
                         id='youtube'
                         class='oa-text-input-large'
+                        value='{{user.youtubeLink}}'
                       />
                     </div>
                   </div>
@@ -180,7 +176,11 @@
             role='tabpanel'
             aria-labelledby='picture-tab'
           >
-            <form data-purpose='basic-info-form' class='basic-form'>
+            <form
+              action='/instructor/upload-image'
+              method='POST'
+              enctype='multipart/form-data'
+            >
               <div class='d-flex form-container'>
                 <div class='form-content'>
                   <div class='oa-form-group image-Name'>
@@ -192,22 +192,20 @@
                       <div class='ud-image-upload-preview-wrapper'>
                         <div class='image-upload-preview-with-crop'>
                           <img
-                            src='/assets/app/google.svg'
+                            src='https://storage.googleapis.com/oa-public-bucket/{{user.avatar}}'
                             alt='avatar'
                             class='img-fluid'
                           />
                         </div>
                       </div>
-                      <div class='ud-image-upload-form-wrapper'>
-                        <div class='ud-form-group'>
-                          <div class='file-uploader'>
-                            <label class='fake-label'>
-                              <span class='fake-input'><span>No file selected</span></span>
-                              <span class='upload-image'><span>Upload image</span></span>
-                            </label>
-                            <input type='file' class='file-input w-100 h-100' />
-                          </div>
-                        </div>
+                      <div class='mb-3'>
+                        <input
+                          class='form-control'
+                          type='file'
+                          id='formFile'
+                          name='image'
+                          accept='image/*'
+                        />
                       </div>
                     </div>
                     <div class='oa-footer-btns mt-5'>

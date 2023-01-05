@@ -35,6 +35,24 @@ const userSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  bio: {
+    type: String,
+  },
+  facebookLink: {
+    type: String,
+  },
+  websiteLink: {
+    type: String,
+  },
+  twitterLink: {
+    type: String,
+  },
+  linkedinLink: {
+    type: String,
+  },
+  youtubeLink: {
+    type: String,
+  },
 });
 
 userSchema.pre('save', async function (req, res, next) {
