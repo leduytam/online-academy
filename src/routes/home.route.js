@@ -4,5 +4,6 @@ import HomeController from '../controllers/home.controller.js';
 
 const router = express.Router();
 
-router.get('/', HomeController.get);
+router.get('/', HomeController.getHomeView);
+
 export default router;

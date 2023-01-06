@@ -12,7 +12,6 @@ const upload = multer({
   },
 });
 
-router.get('/', studentController.getHomeView);
 
 router.get('/wish-list', studentController.getWishlistView);
 

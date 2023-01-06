@@ -12,6 +12,7 @@ import courseRoute from './course.route.js';
 import errorRoute from './error.route.js';
 import instructorRoute from './instructor.route.js';
 import studentRoute from './student.route.js';
+import homeRoute from './home.route.js';
 
 const router = express.Router();
 
