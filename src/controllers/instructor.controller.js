@@ -1,4 +1,5 @@
 import path from 'path';
+import uniqueSlug from 'unique-slug';
 
 import User from '../models/user.model.js';
 import gcsService from '../services/gcs.service.js';
@@ -58,7 +59,7 @@ const uploadImage = async (req, res, next) => {
 
   const extname = path.extname(file.originalname);
 
-  const slug = `${Date.now()}${extname}`;
+  const slug = `${uniqueSlug()}${Date.now()}${extname}`;
 
   try {
     userUpdate.avatar = slug;
