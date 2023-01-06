@@ -17,7 +17,7 @@ const getCourseDetailView = async (req, res, next) => {
   });
 };
 
-const getCourseDetailApi = async (req, res, next) => {
+const getCourseDetail = async (req, res, next) => {
   try {
     const { slug } = req.params;
     const course = await Course.findOne({ slug })
@@ -77,7 +77,52 @@ const getCourseDetailApi = async (req, res, next) => {
   }
 };
 
+const getRelatedCourses = async (req, res, next) => {
+  try {
+    const { slug } = req.params;
+    const course = await Course.findOne({ slug });
+    // populate the subcategory
+    const subcategory = await Subcategory.findById(course.category);
+    // get all courses in the subcategory
+    const courses = await Course.find({ category: subcategory._id });
+    // populate with media
+    const relatedCourses = await Promise.all(
+      courses.map(async (c) => {
+        const media = c.coverPhoto ? await Media.findById(c.coverPhoto) : null;
+        let thumbnail = null;
+        if (media) {
+          if (media.type === 'image') {
+            thumbnail = {
+              type: 'image',
+              url: GCSService.getPublicImageUrl(media.filename),
+            };
+          }
+          if (media.type === 'video') {
+            thumbnail = {
+              type: 'video',
+              url: await GCSService.getVideoSignedUrl(media.filename),
+            };
+          }
+        }
+        return {
+          ...c.toObject(),
+          thumbnail,
+        };
+      })
+    );
+
+    // filter out the current course
+    const data = relatedCourses.filter(
+      (c) => c._id.toString() !== course._id.toString()
+    );
+    res.status(200).send(data);
+  } catch (error) {
+    res.status(500);
+  }
+};
+
 export default {
   getCourseDetailView,
-  getCourseDetailApi,
+  getCourseDetail,
+  getRelatedCourses,
 };

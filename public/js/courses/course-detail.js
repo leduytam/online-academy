@@ -1,12 +1,12 @@
-const startNotFilled = `<i class="bi bi-star ms-1"></i>`;
-const startFilled = `<i class="bi bi-star-fill ms-1"></i>`;
-const startHalfFilled = `<i class="bi bi-star-half ms-1"></i>`;
+const starNotFilled = `<i class="bi bi-star ms-1"></i>`;
+const starFilled = `<i class="bi bi-star-fill ms-1"></i>`;
+const starHalfFilled = `<i class="bi bi-star-half ms-1"></i>`;
 
 const RatingStars = (rating) => {
 
   return (
   `
-    ${startFilled.repeat(Math.floor(rating))}${startHalfFilled.repeat(Math.ceil(rating) - Math.floor(rating))}${startNotFilled.repeat(5 - Math.ceil(rating))}
+    ${starFilled.repeat(Math.floor(rating))}${starHalfFilled.repeat(Math.ceil(rating) - Math.floor(rating))}${starNotFilled.repeat(5 - Math.ceil(rating))}
   `)
 }
 
@@ -187,7 +187,7 @@ const createPrice = (price) => {
   priceElement.innerHTML = `
     <div class="d-flex align-items-center mt-3">
       <div class="me-2">
-        <i class="bi bi-cash" style="font-size: 1.5rem;"></i>
+        <i class="bi bi-cash-coin" style="font-size: 1.5rem;"></i>
       </div>
         <span class="fs-2 fw-bold">
           $${price}
@@ -243,7 +243,7 @@ const createReviews = (reviews) => {
   titleElement.innerHTML = `
     <div class="d-flex align-items-baseline">
       <span style="color:${color}" class="me-1">
-        ${startFilled}
+        ${starFilled}
       </span> 
       ${roundedAverageRating} course rating
       &#x2022;
@@ -255,9 +255,7 @@ const createReviews = (reviews) => {
 
   const reviewsElement = document.getElementById('course-reviews');
 
-  // make the height container fit with 4 reviews
-  // then scrollable for more reviews
-  reviewsElement.style.height = `${2 * 20}rem`;
+  reviewsElement.style.height = `${2 * 17}rem`;
   
   reviewsElement.innerHTML = reviews.map((review) => {
     const reviewAvatarUrl = review.avatar ? review.avatar : `https://avatars.dicebear.com/api/miniavs/${review.owner.email}.png`;
@@ -294,49 +292,69 @@ const createReviews = (reviews) => {
   
 }
 
-$(document).ready(function () {
+const createRelatedCourses = async (slug) => {
+  const response = await axios.get('/api/v1/courses/' + slug + '/related');
+  const { data } = response;
+  console.log('related courses', data);
+  const relatedCoursesInnerElement = document.getElementById('course-related-courses-inner');
+  relatedCoursesInnerElement.innerHTML = data.map((course, index) => {
+    const courseThumbnailUrl = course.thumbnail ? course.thumbnail.url : `https://avatars.dicebear.com/api/miniavs/${course.slug}.png`;
+    return `
+      <div class="carousel-item ${index === 0 ? 'active' : ''}" data-bs-interval="10000">
+        <a href="/courses/${course.slug}" class="w-100">
+          <img src="${courseThumbnailUrl}" class="d-block w-100 rounded-3" alt="course thumbnail"
+        </a>
+        <div class="carousel-caption d-none d-md-block bg-dark p-3 rounded-3 opacity-75 mb-5">
+          <h5>${course.name}</h5>
+          <p>${course.briefDescription}</p>
+          <p><i class="bi bi-cash-coin"></i> $${course.price}</p>
+        </div>
+      </div>
+    `
+  }).join('');
+}
+
+$(document).ready(async function () {
   $('#course-page-spinner').show();
   $('#course-page').hide();
-  const courseId = window.location.pathname.split('/')[2];
-  axios.get('/api/v1/courses/' + courseId).then((response) => {
-    // course-page-spinner from flex to none to hide the spinner
-    const spinnerElement = document.getElementById('course-page-spinner');
-    spinnerElement.classList.remove('d-flex');
-    spinnerElement.classList.add('d-none');
-    // set style display to block for display the course page
-    $('#course-page').css('display', 'block');
+  const slug = window.location.pathname.split('/')[2];
+  const response = await axios.get('/api/v1/courses/' + slug)
+  const spinnerElement = document.getElementById('course-page-spinner');
+  spinnerElement.classList.remove('d-flex');
+  spinnerElement.classList.add('d-none');
+  $('#course-page').css('display', 'block');
 
-    const { data } = response;
-    const { category, 
-      subcategory, 
-      name, 
-      briefDescription, 
-      reviews, 
-      enrollments, 
-      instructor, 
-      updatedAt, 
-      sections,
-      price,
-      thumbnail,
-      detailDescription
-    } = data;
+  const { data } = response;
+  const { category, 
+    subcategory, 
+    name, 
+    briefDescription, 
+    reviews, 
+    enrollments, 
+    instructor, 
+    updatedAt, 
+    sections,
+    price,
+    thumbnail,
+    detailDescription
+  } = data;
 
-    console.log(data);
+  console.log(data);
 
-    // header
-    createBreadcrumb(category, subcategory, name);
-    createTitle(name);
-    createBriefDescription(briefDescription);
-    createRating(reviews, enrollments);
-    createCourseInstructor(instructor);
-    createUpdateTime(updatedAt);
-    createPrice(price);
-    createThumbnail(thumbnail);
+  // header
+  createBreadcrumb(category, subcategory, name);
+  createTitle(name);
+  createBriefDescription(briefDescription);
+  createRating(reviews, enrollments);
+  createCourseInstructor(instructor);
+  createUpdateTime(updatedAt);
+  createPrice(price);
+  createThumbnail(thumbnail);
 
-    // body
-    createSectionLesson(sections);
-    createDetailDescription(detailDescription)
-    createInstructor(instructor);
-    createReviews(reviews);
-  });
+  // body
+  createSectionLesson(sections);
+  createDetailDescription(detailDescription)
+  createInstructor(instructor);
+  createReviews(reviews);
+  await createRelatedCourses(slug);
 });
