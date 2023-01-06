@@ -290,6 +290,15 @@ const cudReview = async (req, res, next) => {
   res.redirect(req.headers.referer || `/courses/${courseSlug}/lessons`);
 };
 
+const getCheckoutPage = async (req, res, next) => {
+  const { slug } = req.params;
+  const course = await Course.findOne({ slug });
+  res.render('courses/checkout', {
+    title: `Check out | ${course.name}`,
+    data: course,
+  });
+};
+
 export default {
   getCourseDetailView,
   getCourseDetail,
@@ -297,4 +306,5 @@ export default {
   getLessonView,
   getReviews,
   cudReview,
+  getCheckoutPage,
 };

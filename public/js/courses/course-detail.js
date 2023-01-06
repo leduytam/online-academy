@@ -357,4 +357,12 @@ $(document).ready(async function () {
   createInstructor(instructor);
   createReviews(reviews);
   await createRelatedCourses(slug);
+
+  const buyButton = document.getElementById('course-header-buy-button');
+
+  buyButton.addEventListener('click', async (e) => {
+    // go to courses/:slug/checkout
+    window.location.href = `/courses/${slug}/checkout`;
+  })
 });
+
