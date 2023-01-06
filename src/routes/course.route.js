@@ -4,6 +4,6 @@ import CourseController from '../controllers/course.controller.js';
 
 const router = express.Router();
 
-router.get('/:id', CourseController.getCourseDetailView);
+router.get('/:slug', CourseController.getCourseDetailView);
 
 export default router;

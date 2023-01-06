@@ -1,4 +1,4 @@
-<div class="mb-5" id="course-page">
+<div class="mb-5" id="course-page" style="display:none">
   {{! Header }}
   <div class='w-100 bg-dark py-4'>
     <div class='container position-relative'>
@@ -48,10 +48,10 @@
         <div class="w-100 bg-white shadow rounded p-3">
 
           <div class="w-100 border-bottom" style="height:200px" id="course-thumbnail-video-container">
-            
+
           </div>
-          
-          
+
+
           <div id='course-price'></div>
           <button class='btn btn-primary w-100 py-2 mt-3' id='course-header-buy-button'>
             Buy now
@@ -92,30 +92,31 @@
       <div class="mt-4">
         <div id="course-instructor-title" class="fs-3 fw-bold">Instructor</div>
         <div id="course-instructor">
-          
+
         </div>
       </div>
 
       {{!-- Reviews --}}
       <div class="mt-4">
         <div id="course-reviews-header" class="fs-3 fw-bold d-flex flex-row">
-          
+
         </div>
         <div id="course-reviews" class="row mt-3 overflow-auto reviews-scroll-hide">
-          
+
         </div>
         <div id="course-reviews-button-showMore" class="row mt-3">
-          
+
         </div>
+      </div>
     </div>
   </div>
 
 </div>
 
-<div id="course-page-spinner" class="w-100 ">
+<div id="course-page-spinner" class="w-100 d-flex justify-content-center align-items-center" style="height: 100vh;">
   <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
     <span class="visually-hidden">Loading...</span>
   </div>
 </div>
 
-<script src='/js/course/index.js'></script>
+<script src='/js/courses/course-detail.js'></script>

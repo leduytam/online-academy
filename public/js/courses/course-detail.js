@@ -13,9 +13,7 @@ const RatingStars = (rating) => {
 const createBreadcrumb = (category, subcategory, name) => {
   const breadcrumb = document.getElementById('course-header-breadcrumb');
   const color = "#cec0fc";
-  // make the background transparent
   breadcrumb.style.background = 'transparent';
-  // no underline for all links
   breadcrumb.innerHTML = `
     <li class="breadcrumb-item">
       <a class="text-decoration-none fw-bold" style="color: ${color}" href="/courses/${category.slug}">${category.name}</a>
@@ -301,7 +299,10 @@ $(document).ready(function () {
   $('#course-page').hide();
   const courseId = window.location.pathname.split('/')[2];
   axios.get('/api/v1/courses/' + courseId).then((response) => {
-    $('#course-page-spinner').css('display', 'none');
+    // course-page-spinner from flex to none to hide the spinner
+    const spinnerElement = document.getElementById('course-page-spinner');
+    spinnerElement.classList.remove('d-flex');
+    spinnerElement.classList.add('d-none');
     // set style display to block for display the course page
     $('#course-page').css('display', 'block');
 

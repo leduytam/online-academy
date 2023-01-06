@@ -6,6 +6,6 @@ const router = express.Router();
 
 // admin - users
 
-router.get('/:id', courseController.getCourseDetailApi);
+router.get('/:slug', courseController.getCourseDetailApi);
 
 export default router;

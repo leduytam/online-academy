@@ -6,13 +6,12 @@ import Media from '../models/media.model.js';
 import Review from '../models/review.model.js';
 import Section from '../models/section.model.js';
 import Subcategory from '../models/subcategory.model.js';
-import User from '../models/user.model.js';
 import GCSService from '../services/gcs.service.js';
 
 const getCourseDetailView = async (req, res, next) => {
-  const { id } = req.params;
-  const course = await Course.findById(id);
-  res.render('courses/detail', {
+  const { slug } = req.params;
+  const course = await Course.findOne({ slug });
+  res.render('courses/course-detail', {
     title: course.name,
     data: course,
   });
@@ -20,14 +19,15 @@ const getCourseDetailView = async (req, res, next) => {
 
 const getCourseDetailApi = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const course = await Course.findById(id).populate('instructor');
+    const { slug } = req.params;
+    const course = await Course.findOne({ slug })
+      .populate('instructor')
+      .populate('category');
 
     const subcategory = await Subcategory.findById(course.category);
     const category = await Category.findOne({ subcategories: subcategory._id });
     const reviews = await Review.find({ course: course._id }).populate('owner');
     const enrollments = await Enrollment.find({ course: course._id });
-    const instructor = await User.findById(course.instructor);
     const sections = await Promise.all(
       course.sections.map(async (sectionId) => {
         const section = await Section.findById(sectionId);
@@ -68,7 +68,6 @@ const getCourseDetailApi = async (req, res, next) => {
       subcategory,
       reviews,
       enrollments,
-      instructor,
       sections,
       thumbnail,
     };

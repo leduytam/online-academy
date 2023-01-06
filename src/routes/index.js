@@ -15,7 +15,7 @@ const router = express.Router();
 router.use(studentRoute);
 router.use(authRoute);
 router.use(errorRoute);
-router.use('/course', courseRoute);
+router.use('/courses', courseRoute);
 router.use('/admin', adminRoute);
 router.use('/instructor', instructorRoute);
 
