@@ -1,0 +1,8 @@
+.reviews-scroll-hide ::-webkit-scrollbar {
+  display: none;
+}
+
+.reviews-scroll-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

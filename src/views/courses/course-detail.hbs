@@ -1,0 +1,122 @@
+<div class="mb-5" id="course-page" style="display:none">
+  {{! Header }}
+  <div class='w-100 bg-dark py-4'>
+    <div class='container position-relative'>
+      <div class="w-75 px-2">
+
+        {{! Breadcrumb }}
+        <div>
+          <nav style="--bs-breadcrumb-divider: '>';" aria-label='breadcrumb'>
+            <ol class='breadcrumb' id='course-header-breadcrumb'>
+            </ol>
+          </nav>
+        </div>
+
+        {{! Title }}
+        <div class='d-flex flex-column'>
+          <span class='text-white fs-2 fw-bold' id='course-header-title'></span>
+        </div>
+
+        {{! Brief Description }}
+        <div class='d-flex flex-column mt-3'>
+          <span class='text-white fs-5' id='course-header-brief-description'></span>
+        </div>
+
+        {{! Ratings + enrollments }}
+        <div class='d-flex flex-row mt-3 align-items-center'>
+          {{! Ratings }}
+          <span id='course-header-average-rating'></span>
+          <div id='course-header-rating-stars'></div>
+          <span id='course-header-total-ratings' class='text-white ms-1'></span>
+          <span id='course-header-enrollments' class='text-white ms-2'></span>
+        </div>
+
+        {{! Instructor }}
+        <div class='d-flex flex-column mt-3'>
+          <span class='text-white' id='course-header-instructor'></span>
+        </div>
+
+        {{! Updated at }}
+        <div class='d-flex flex-row mt-3 align-items-center'>
+          <span class='text-white me-1' id='course-header-updated-at-icon'>
+          </span>
+          <span class='text-white' id='course-header-updated-at'></span>
+        </div>
+      </div>
+
+      <div class="w-25 position-absolute" style="right:0px;top:50%">
+        <div class="w-100 bg-white shadow rounded p-3">
+          <div class="w-100 border-bottom" style="height:200px" id="course-thumbnail-video-container"></div>
+          <div id='course-price'></div>
+          <button class='btn btn-outline-secondary w-100 py-2 mt-3' id='course-header-buy-button'>
+            <i class="bi bi-bag"></i>
+            Buy now
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  {{! Body }}
+  <div class='container pt-5'>
+    <div class="w-75 px-2">
+
+      {{! Section description + expand button }}
+      <div>
+        <span id='course-section-title' class='fs-3 fw-bold'></span>
+        <div class='d-flex flex-row w-100 mt-3'>
+          <span id='course-section-description'></span>
+          <button class='btn btn-link text-decoration-none text-dark' id='course-section-expand-button'>
+        </div>
+
+        <div class='accordion mt-4' id='course-lessons-accordion'></div>
+      </div>
+
+      {{!-- Description --}}
+      <div class="mt-4">
+        <span id='course-detail-description-title' class='fs-3 fw-bold'></span>
+        <div id="course-detail-description"></div>
+      </div>
+
+      {{!-- Instructor --}}
+      <div class="mt-4">
+        <div class="fs-3 fw-bold">Instructor</div>
+        <div id="course-instructor"></div>
+      </div>
+
+      {{!-- Related courses --}}
+      <div class="mt-4">
+        <div class="fs-3 fw-bold mb-2">Related courses</div>
+        <div id="course-related-courses" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner" id="course-related-courses-inner" style="height: 500px;width:auto">
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#course-related-courses" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#course-related-courses" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+
+      {{!-- Reviews --}}
+      <div class="mt-4 reviews-scroll-hide">
+        <div id="course-reviews-header" class="fs-3 fw-bold d-flex flex-row"></div>
+        <div id="course-reviews" class="row mt-3 overflow-auto reviews-scroll-hide"></div>
+        <div id="course-reviews-button-showMore" class="row mt-3"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="course-page-spinner" class="w-100 d-flex justify-content-center align-items-center" style="height: 100vh;">
+  <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+
+<script src='/js/courses/course-detail.js'></script>
