@@ -8,4 +8,6 @@ router.get('/', studentController.getHomeView);
 
 router.get('/lesson', studentController.getLessonView);
 
+router.get('/profile', studentController.getProfile);
+
 export default router;
