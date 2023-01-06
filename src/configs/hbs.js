@@ -49,6 +49,15 @@ const helpers = {
 
     return accum;
   },
+  rangeReverse: (start, end, step, options) => {
+    let accum = '';
+
+    for (let i = start; i >= end; i -= step) {
+      accum += options.fn(i);
+    }
+
+    return accum;
+  },
   secondToMinute: (seconds) => Math.floor(seconds / 60),
   timeAgo: (date) => {
     return timeAgo.format(new Date(date));

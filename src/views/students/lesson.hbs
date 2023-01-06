@@ -31,7 +31,12 @@
           <span class='text-secondary me-1'>
             <i class='fas fa-star'></i>
           </span>
-          <span>Leave a rating</span>
+
+          {{#if myReview}}
+            <span>Edit rating</span>
+          {{else}}
+            <span>Leave a rating</span>
+          {{/if}}
         </button>
 
         <button id='popover-progress' type='button' class='btn btn-sm text-white border-0 text-nowrap'>
@@ -61,7 +66,7 @@
       <div class='row g-0'>
         <div class='col'>
           <video class='w-100' controls playsinline id='player' style='max-height: 50rem'>
-            <source src='{{video}}' type='video/mp4'/>
+            <source src='{{video}}' type='video/mp4' />
           </video>
         </div>
       </div>
@@ -161,7 +166,7 @@
     </div>
 
     <div class='modal fade' id='modal-rating' tabindex='-1' aria-hidden='true'>
-      <div class='modal-dialog modal-dialog-centered'>
+      <div class='modal-dialog modal-lg modal-dialog-centered'>
         <div class='modal-content'>
           <div class='modal-header'>
             <h1 class='modal-title fs-5'>
@@ -170,6 +175,38 @@
             <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
           </div>
           <div class='modal-body'>
+            <form id="frm-review" action="/courses/{{course.slug}}/reviews" method="post" class="d-flex justify-content-around mb-0">
+              <div class='d-flex flex-column fs-5 gap-2'>
+                <h6 class="mb-n1">Rating</h6>
+                {{#rangeReverse 5 1 1}}
+                <div class="form-check d-flex align-items-center gap-2">
+                  <input class="form-check-input" name="rating" type="radio" value={{this}} id="rating-{{this}}" {{#if (eq ../myReview.rating this)}}checked{{/if}}>
+                  <label class="form-check-label" for="rating-{{this}}">
+                    {{> stars rating=this}}
+                  </label>
+                </div>
+                {{/rangeReverse}}
+              </div>
+              
+              <div>
+                <h6>Review</h6>
+                <textarea id="txt-review" class='form-control fs-6' name="review" placeholder='Write your review here...' rows="6" cols="40" style="resize: none">{{myReview.review}}</textarea>
+
+                <div class="d-flex">
+                  <button id="btn-submit-review" class='btn btn-primary mt-3 ms-auto' disabled="disabled" type="submit">Submit</button>
+                </div>
+              </div>
+            </form>
+
+            {{#if myReview}}
+              <hr />
+
+              <form id="frm-delete-review" action="/courses/{{course.slug}}/reviews" method="post" class="mb-0">
+                <input type="hidden" name="rating" value="0">
+                <input type="hidden" name="review" value="">
+                <button id="btn-delete-review" class='btn btn-danger' type="submit">Delete Review</button>
+              </form>
+            {{/if}}
           </div>
         </div>
       </div>

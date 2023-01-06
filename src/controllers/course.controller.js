@@ -7,6 +7,7 @@ import Review from '../models/review.model.js';
 import Section from '../models/section.model.js';
 import Subcategory from '../models/subcategory.model.js';
 import hbs from '../configs/hbs.js';
+import Review from '../models/review.model.js';
 import courseService from '../services/course.service.js';
 import gcsService from '../services/gcs.service.js';
 
@@ -157,6 +158,10 @@ const getLessonView = async (req, res, next) => {
   const reviews = await courseService.getReviews(courseSlug);
   const reviewStats = await courseService.getReviewStats(course._id);
   const video = await gcsService.getVideoSignedUrl(activeLesson.video.filename);
+  const myReview = await courseService.getCourseReviewOfUser(
+    course._id,
+    user._id
+  );
 
   res.render('students/lesson', {
     title: course.name,
@@ -167,6 +172,7 @@ const getLessonView = async (req, res, next) => {
     video,
     reviews,
     reviewStats,
+    myReview,
   });
 };
 
@@ -183,10 +189,54 @@ const getReviews = async (req, res, next) => {
   res.send(html);
 };
 
+const cudReview = async (req, res, next) => {
+  const { courseSlug } = req.params;
+  const { rating, review } = req.body;
+  const { user } = req.session;
+
+  const course = await courseService.getCourseDetail(courseSlug);
+
+  if (!course) {
+    res.redirect('/404');
+    return;
+  }
+
+  if (!(await courseService.isEnrolled(course._id, user._id))) {
+    res.redirect('/403');
+    return;
+  }
+
+  const oldReview = await courseService.getCourseReviewOfUser(
+    course._id,
+    user._id
+  );
+
+  if (oldReview) {
+    if (+rating === 0) {
+      await Review.findByIdAndDelete(oldReview._id);
+    } else {
+      await Review.findByIdAndUpdate(oldReview._id, {
+        rating,
+        review,
+      });
+    }
+  } else {
+    await Review.create({
+      course: course._id,
+      owner: user._id,
+      rating,
+      review,
+    });
+  }
+
+  res.redirect(req.headers.referer || `/courses/${courseSlug}/lessons`);
+};
+
 export default {
   getCourseDetailView,
   getCourseDetail,
   getRelatedCourses,
   getLessonView,
   getReviews,
+  cudReview,
 };

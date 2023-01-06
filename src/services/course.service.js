@@ -136,10 +136,22 @@ const getReviews = async (courseSlug, skip = 0, limit = 5) => {
   return reviews.splice(0, limit);
 };
 
+const getCourseReviewOfUser = async (courseId, userId) => {
+  const review = await Review.findOne({
+    course: courseId,
+    owner: userId,
+  })
+    .select('rating review')
+    .lean();
+
+  return review;
+};
+
 export default {
   getCourseDetail,
   isEnrolled,
   isContainLesson,
   getReviews,
   getReviewStats,
+  getCourseReviewOfUser,
 };
