@@ -1,3 +1,15 @@
+const startNotFilled = `<i class="bi bi-star ms-1"></i>`;
+const startFilled = `<i class="bi bi-star-fill ms-1"></i>`;
+const startHalfFilled = `<i class="bi bi-star-half ms-1"></i>`;
+
+const RatingStars = (rating) => {
+
+  return (
+  `
+    ${startFilled.repeat(Math.floor(rating))}${startHalfFilled.repeat(Math.ceil(rating) - Math.floor(rating))}${startNotFilled.repeat(5 - Math.ceil(rating))}
+  `)
+}
+
 const createBreadcrumb = (category, subcategory, name) => {
   const breadcrumb = document.getElementById('course-header-breadcrumb');
   const color = "#cec0fc";
@@ -28,13 +40,11 @@ const createBriefDescription = (briefDescription) => {
   briefDescriptionElement.innerHTML = briefDescription;
 }
 
-const createReviews = (reviews, enrollments) => {
+const createRating = (reviews, enrollments) => {
   const color = "#f3ca8c"
   const ratings = reviews.map((review) => review.rating);
   const averageRating = ratings.reduce((a, b) => a + b, 0) / ratings.length;
-  const startNotFilled = `<i class="bi bi-star ms-1"></i>`;
-  const startFilled = `<i class="bi bi-star-fill ms-1"></i>`;
-  const startHalfFilled = `<i class="bi bi-star-half ms-1"></i>`;
+
   const roundedAverageRating = Math.round(averageRating * 2) / 2.0;
   
   const averageRatingElement = document.getElementById('course-header-average-rating');
@@ -47,9 +57,7 @@ const createReviews = (reviews, enrollments) => {
   averageRatingElement.innerHTML = `
     <span class="fw-bold" style="color: ${color}">${roundedAverageRating}</span>
   `
-  ratingStarsElement.innerHTML = `
-    ${startFilled.repeat(Math.floor(roundedAverageRating))}${startHalfFilled.repeat(Math.ceil(roundedAverageRating) - Math.floor(roundedAverageRating))}${startNotFilled.repeat(5 - Math.ceil(roundedAverageRating))}
-  `
+  ratingStarsElement.innerHTML = RatingStars(roundedAverageRating);
   ratingCountElement.innerHTML = `
     (${reviews.length} ratings)
   `
@@ -78,7 +86,6 @@ const createUpdateTime = (updatedAt) => {
     <i class="bi bi-clock-history"></i>
   `
 }
-
 
 const createSectionLesson = (sections) => {
   const titleElement = document.getElementById('course-section-title');
@@ -180,7 +187,7 @@ const createDetailDescription = (description) => {
 const createPrice = (price) => {
   const priceElement = document.getElementById('course-price');
   priceElement.innerHTML = `
-    <div class="d-flex align-items-center">
+    <div class="d-flex align-items-center mt-3">
       <div class="me-2">
         <i class="bi bi-cash" style="font-size: 1.5rem;"></i>
       </div>
@@ -192,15 +199,115 @@ const createPrice = (price) => {
 }
 
 const createThumbnail = (thumbnail) => {
-  const thumbnailElement = document.getElementById('course-thumbnail-video');
-  thumbnailElement.src = thumbnail;
+  const thumbnailElement = document.getElementById('course-thumbnail-video-container');
+  if (thumbnail) {
+    if (thumbnail.type === 'image') {
+      thumbnailElement.innerHTML = `
+        <img src="${thumbnail.url}" alt="course thumbnail" class="img-fluid">
+      `
+    }
+    else if (thumbnail.type === 'video') {
+      thumbnailElement.innerHTML = `
+        <video src="${thumbnail.url}" controls class="img-fluid"></video>
+      `
+    }
+  }
+}
+
+const createInstructor = (instructor) => {
+  const instructorElement = document.getElementById('course-instructor');
+  const instructorAvatarUrl = instructor.avatar ? instructor.avatar : `https://avatars.dicebear.com/api/miniavs/${instructor.email}.png`;
+  instructorElement.innerHTML = `
+    <div class="d-flex align-items-center">
+      <div class="me-2">
+        <a href="#">
+          <img src="${instructorAvatarUrl}" alt="instructor avatar" class="rounded-circle" style="width: 7rem; height: auto;">
+        </a>
+      </div>
+      <div>
+        <div class="fw-bold">${instructor.name}</div>
+        <div class="text-muted">${instructor.description || "Instructor's description"}</div>
+      </div>
+    </div>
+  `
+}
+
+const createReviews = (reviews) => {
+  const color = "#f3ca8c"
+  const ratings = reviews.map((review) => review.rating);
+  const averageRating = ratings.reduce((a, b) => a + b, 0) / ratings.length;
+  const roundedAverageRating = Math.round(averageRating * 2) / 2.0;
+
+  const reviewsTitleElement = document.getElementById('course-reviews-title');
+
+  reviewsTitleElement.innerHTML = `
+    <div class="d-flex align-items-baseline">
+      <span style="color:${color}" class="me-1">
+        ${startFilled}
+      </span> 
+      ${roundedAverageRating} course rating
+      &#x2022;
+      ${reviews.length} ratings
+    </div>
+  `
+
+  // reviews element has the row class and show 2 reviews per row
+  const reviewsElement = document.getElementById('course-reviews');
+  reviewsElement.innerHTML = reviews.map((review) => {
+    const reviewAvatarUrl = review.avatar ? review.avatar : `https://avatars.dicebear.com/api/miniavs/${review.owner}.png`;
+    return `
+      <div class="col-12 col-md-6">
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="me-2">
+                <img src="${reviewAvatarUrl}" alt="reviewer avatar" class="rounded-circle" style="width: 5rem; height: auto;">
+              </div>
+              <div>
+                <div class="fw-bold">${review.owner}</div>
+                <div class="text-muted fs-6">
+                  ${review.rating}
+                  <span style="color:${color}" class="me-1">
+                    ${RatingStars(review.rating)}
+                  </span>
+                  ${review.createdAt}
+                </div>
+              </div>
+            </div>
+            <div class="mt-3">
+              ${review.review}
+            </div>
+          </div>
+        </div>
+      </div>
+    `
+  }).join('');
+
 }
 
 $(document).ready(function () {
+  $('#course-page-spinner').show();
+  $('#course-page').hide();
   const courseId = window.location.pathname.split('/')[2];
   axios.get('/api/v1/courses/' + courseId).then((response) => {
+    $('#course-page-spinner').css('display', 'none');
+    // set style display to block for display the course page
+    $('#course-page').css('display', 'block');
+
     const { data } = response;
-    const { category, subcategory, name, briefDescription, reviews, enrollments, instructor, updatedAt, sections } = data;
+    const { category, 
+      subcategory, 
+      name, 
+      briefDescription, 
+      reviews, 
+      enrollments, 
+      instructor, 
+      updatedAt, 
+      sections,
+      price,
+      thumbnail,
+      detailDescription
+    } = data;
 
     console.log(data);
 
@@ -208,13 +315,16 @@ $(document).ready(function () {
     createBreadcrumb(category, subcategory, name);
     createTitle(name);
     createBriefDescription(briefDescription);
-    createReviews(reviews, enrollments);
+    createRating(reviews, enrollments);
     createCourseInstructor(instructor);
     createUpdateTime(updatedAt);
-    createPrice(data.price);
+    createPrice(price);
+    createThumbnail(thumbnail);
 
     // body
     createSectionLesson(sections);
-    createDetailDescription(data.detailDescription)
+    createDetailDescription(detailDescription)
+    createInstructor(instructor);
+    createReviews(reviews);
   });
 });
