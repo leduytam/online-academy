@@ -25,7 +25,7 @@ const getCourseDetailApi = async (req, res, next) => {
 
     const subcategory = await Subcategory.findById(course.category);
     const category = await Category.findOne({ subcategories: subcategory._id });
-    const reviews = await Review.find({ course: course._id });
+    const reviews = await Review.find({ course: course._id }).populate('owner');
     const enrollments = await Enrollment.find({ course: course._id });
     const instructor = await User.findById(course.instructor);
     const sections = await Promise.all(

@@ -238,9 +238,11 @@ const createReviews = (reviews) => {
   const averageRating = ratings.reduce((a, b) => a + b, 0) / ratings.length;
   const roundedAverageRating = Math.round(averageRating * 2) / 2.0;
 
-  const reviewsTitleElement = document.getElementById('course-reviews-title');
+  const reviewsTitleElement = document.getElementById('course-reviews-header');
 
-  reviewsTitleElement.innerHTML = `
+  const titleElement = document.createElement('div');
+  titleElement.id = 'course-reviews-title';
+  titleElement.innerHTML = `
     <div class="d-flex align-items-baseline">
       <span style="color:${color}" class="me-1">
         ${startFilled}
@@ -251,38 +253,47 @@ const createReviews = (reviews) => {
     </div>
   `
 
-  // reviews element has the row class and show 2 reviews per row
+  reviewsTitleElement.append(titleElement);
+
   const reviewsElement = document.getElementById('course-reviews');
+
+  // make the height container fit with 4 reviews
+  // then scrollable for more reviews
+  reviewsElement.style.height = `${2 * 20}rem`;
+  
   reviewsElement.innerHTML = reviews.map((review) => {
-    const reviewAvatarUrl = review.avatar ? review.avatar : `https://avatars.dicebear.com/api/miniavs/${review.owner}.png`;
+    const reviewAvatarUrl = review.avatar ? review.avatar : `https://avatars.dicebear.com/api/miniavs/${review.owner.email}.png`;
     return `
-      <div class="col-12 col-md-6">
-        <div class="card mb-3">
-          <div class="card-body">
-            <div class="d-flex align-items-center">
+      <div class="col-12 col-md-6" >
+        <div class="mb-3" style="height:17rem">
+          <div class="border-top">
+            <div class="d-flex align-items-center pt-2 h-25">
               <div class="me-2">
-                <img src="${reviewAvatarUrl}" alt="reviewer avatar" class="rounded-circle" style="width: 5rem; height: auto;">
+                <img src="${reviewAvatarUrl}" alt="reviewer avatar" class="rounded-circle img-fluid h-100" >
               </div>
               <div>
-                <div class="fw-bold">${review.owner}</div>
+                <div class="fw-bold">${review.owner.name}</div>
                 <div class="text-muted fs-6">
                   ${review.rating}
                   <span style="color:${color}" class="me-1">
                     ${RatingStars(review.rating)}
                   </span>
-                  ${review.createdAt}
+                  &#x2022
+                  ${new Date(review.createdAt).toLocaleDateString()}
                 </div>
               </div>
             </div>
-            <div class="mt-3">
-              ${review.review}
+            <div class="h-75 py-2">
+              <div class="overflow-auto h-100">
+                ${review.review}
+              </div>
             </div>
           </div>
         </div>
       </div>
     `
   }).join('');
-
+  
 }
 
 $(document).ready(function () {

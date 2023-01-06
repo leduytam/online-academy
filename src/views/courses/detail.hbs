@@ -1,4 +1,4 @@
-<div class="mb-5" id="course-page" style="display: none;">
+<div class="mb-5" id="course-page">
   {{! Header }}
   <div class='w-100 bg-dark py-4'>
     <div class='container position-relative'>
@@ -98,8 +98,13 @@
 
       {{!-- Reviews --}}
       <div class="mt-4">
-        <div id="course-reviews-title" class="fs-3 fw-bold"></div>
-        <div id="course-reviews" class="row">
+        <div id="course-reviews-header" class="fs-3 fw-bold d-flex flex-row">
+          
+        </div>
+        <div id="course-reviews" class="row mt-3 overflow-auto reviews-scroll-hide">
+          
+        </div>
+        <div id="course-reviews-button-showMore" class="row mt-3">
           
         </div>
     </div>
@@ -107,7 +112,7 @@
 
 </div>
 
-<div id="course-page-spinner" class="w-100 align-items-center justify-content-center m-5" style="height:100vh;display:flex">
+<div id="course-page-spinner" class="w-100 ">
   <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
     <span class="visually-hidden">Loading...</span>
   </div>
