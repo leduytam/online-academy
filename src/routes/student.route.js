@@ -29,4 +29,6 @@ router.post(
   studentController.uploadProfileImage
 );
 
+router.post('/add-wish-list', studentController.addWishList);
+
 export default router;

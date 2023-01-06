@@ -11,6 +11,7 @@ import User from '../models/user.model.js';
 import Course from '../models/course.model.js';
 import Enrollment from '../models/enrollment.model.js';
 import gcsService from '../services/gcs.service.js';
+import WishList from '../models/wishList.model.js';
 import '../models/media.model.js';
 
 const getHomeView = async (req, res, next) => {
@@ -121,10 +122,67 @@ const getMyCoursesView = async (req, res, next) => {
 };
 
 const getWishlistView = async (req, res, next) => {
-  // const { _id } = req.session.user
+  const { _id } = req.session.user
+  const wishList = await WishList
+    .find({
+      student: _id,
+    })
+    .populate('course')
+    .lean();
+  const courses = wishList.map((item) => item.course);
   res.render('students/wishList', {
     title: 'Wish list',
+    courses: courses.map((course) => {
+      return {
+        ...course,
+        coverPhoto: gcsService.getPublicImageUrl(course.coverPhoto.filename),
+      }
+    })
   });
+};
+
+const addWishList = async (req, res, next) => {
+  try {
+    const { courseId } = req.body;
+    const { _id } = req.session.user;
+    const wishList = await WishList.create({
+      student: _id,
+      course: courseId,
+    });
+    res.send({
+      status: true,
+      code: 200,
+      data: wishList,
+    });
+  } catch (error) {
+    res.send({
+      status: false,
+      code: 500,
+      message: error.message,
+    });
+  }
+};
+
+const removeWishList = async (req, res, next) => {
+  try {
+    const { courseId } = req.body;
+    const { _id } = req.session.user;
+    const wishList = await WishList.findOneAndDelete({
+      student: _id,
+      course: courseId,
+    });
+    res.send({
+      status: true,
+      code: 200,
+      data: wishList,
+    });
+  } catch (error) {
+    res.send({
+      status: false,
+      code: 500,
+      message: error.message,
+    });
+  }
 };
 
 export default {
@@ -136,4 +194,6 @@ export default {
   getLessonView,
   getMyCoursesView,
   getWishlistView,
+  addWishList,
+  removeWishList,
 };

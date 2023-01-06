@@ -6,10 +6,9 @@
         <div class="col-lg-3 col-md-6 mt-4 course-card" data-slug={{this.slug}}>
             <div class="card position-relative">
                <div class="position-absolute">
-                  <button type="button" class="btn" style="top:10px; right:10px;">
+                  <button type="button" class="btn remove-wish-list" style="top:10px; right:10px;">
                      <span class="fa fa-heart" style="color: red;"></span>
                   </button>
-
                </div>
                 <img src={{this.coverPhoto}} class="card-img-top" alt="Cover photo">
                 <div class="card-body">
@@ -26,15 +25,7 @@
                         <span class = "fa fa-star unchecked">&nbsp</span>
                         <span class = "card-text fs-6 text-black-50">(123)</span>
                     </div>
-                  <span class="badge bg-warning text-dark">Best seller</span>
-                <span class="badge bg-warning text-dark">Best seller</span>
-                    {{!-- TODO: handle progress later --}}
-                    {{!-- <div class="progress" style="height: 5px;">
-                        <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25"
-                            aria-valuemin="0" aria-valuemax="100"></div>
-                    </div> --}}
-                    {{!-- TODO: Add complete percentage
-                    <p>% complete</p> --}}
+                    <span class="badge bg-warning text-dark">Best seller</span>
                 </div>
             </div>
         </div>
@@ -44,11 +35,34 @@
 
 <script>
     const cards = document.getElementsByClassName('course-card');
+    const button = document.getElementsByClassName('remove-wish-list');
+    // call api to remove course from wish list
+    for (let i = 0; i < button.length; i++) {
+        button[i].addEventListener('click', () => {
+            const slug = cards[i].getAttribute('data-slug');
+            const url = `/api/v1/courses/${slug}/wish-list`;
+            const options = {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            };
+            fetch(url, options)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        cards[i].remove();
+                    }
+                })
+                .catch(err => console.log(err));
+        });
+    }
     for (let i = 0; i < cards.length; i++) {
         cards[i].addEventListener('click', () => {
             const slug = cards[i].getAttribute('data-slug');
-            window.location.href = `/courses/${slug}`;
+            window.location.href = `/course/${slug}`;
         });
     }
+
 
 </script>
