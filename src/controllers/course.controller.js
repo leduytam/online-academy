@@ -81,11 +81,8 @@ const getRelatedCourses = async (req, res, next) => {
   try {
     const { slug } = req.params;
     const course = await Course.findOne({ slug });
-    // populate the subcategory
     const subcategory = await Subcategory.findById(course.category);
-    // get all courses in the subcategory
     const courses = await Course.find({ category: subcategory._id });
-    // populate with media
     const relatedCourses = await Promise.all(
       courses.map(async (c) => {
         const media = c.coverPhoto ? await Media.findById(c.coverPhoto) : null;
@@ -111,10 +108,11 @@ const getRelatedCourses = async (req, res, next) => {
       })
     );
 
-    // filter out the current course
-    const data = relatedCourses.filter(
-      (c) => c._id.toString() !== course._id.toString()
-    );
+    const data = relatedCourses
+      .filter((c) => c.slug !== slug)
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 5);
+
     res.status(200).send(data);
   } catch (error) {
     res.status(500);
