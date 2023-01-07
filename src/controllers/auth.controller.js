@@ -157,15 +157,21 @@ const sendResetPasswordOtp = async (req, res, next) => {
 };
 
 const getLogInView = async (req, res, next) => {
-  res.render('login');
+  res.render('login', {
+    title: 'Login',
+  });
 };
 
 const getRegisterView = async (req, res, next) => {
-  res.render('register');
+  res.render('register', {
+    title: 'Register',
+  });
 };
 
 const getForgotPasswordView = async (req, res, next) => {
-  res.render('forgotPassword');
+  res.render('forgotPassword', {
+    title: 'Forgot Password',
+  });
 };
 
 export default {

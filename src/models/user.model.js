@@ -29,7 +29,8 @@ const userSchema = new Schema({
     default: ERole.STUDENT,
   },
   avatar: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: 'Media',
   },
   isDeleted: {
     type: Boolean,
