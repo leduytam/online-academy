@@ -65,7 +65,7 @@
     <div class='container-fluid p-0'>
       <div class='row g-0'>
         <div class='col'>
-          <video class='w-100' controls playsinline id='player' style='max-height: 50rem'>
+          <video class='w-100' controls playsinline id='player' data-slug="{{activeLesson.slug}}" style='max-height: 50rem'>
             {{#if video}}
               <source src='{{video}}' type='video/mp4' />
             {{/if}}

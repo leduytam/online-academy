@@ -14,6 +14,7 @@
 
   // Custom plyr video player
   let player = new Plyr('#player', {});
+  const lessonSlug = $('#player').dataset.slug;
 
   player.on('ready', (e) => {
     if (!player.source) {
@@ -23,6 +24,19 @@
         fullscreen: { enabled: false },
       });
     }
+  });
+
+  player.once('canplay', (e) => {
+    if (localStorage.getItem(lessonSlug)) {
+      const currentTime = +localStorage.getItem(lessonSlug);
+      const duration = player.duration;
+
+      player.currentTime = Math.min(currentTime, duration);
+    }
+  });
+
+  player.on('timeupdate', (e) => {
+    localStorage.setItem(lessonSlug, player.currentTime);
   });
 
   // Review
