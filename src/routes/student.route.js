@@ -6,8 +6,6 @@ const router = Router();
 
 router.get('/', studentController.getHomeView);
 
-router.get('/lesson', studentController.getLessonView);
-
-router.get('/profile', studentController.getProfile);
+router.get('/profile', studentController.getProfileView);
 
 export default router;

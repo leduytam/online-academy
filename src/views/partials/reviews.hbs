@@ -1,0 +1,38 @@
+<div class="row g-0">
+  <div class="col-8 offset-2">
+    <h4>Student feedback</h4>
+
+    <div class='d-flex justify-content-sm-between'>
+      <div class='px-sm-2 px-md-4 text-warning d-flex flex-column justify-content-center align-items-center gap-1'>
+        <h1 class='mb-0'>{{roundWithPrecision reviewStats.avg 1}}</h1>
+        <div class='d-flex mb-1'>
+          {{> stars rating=(roundWithPrecision reviewStats.avg 1)}}
+        </div>
+        <h6 class='mb-0 text-nowrap'>Course Rating</h6>
+      </div>
+
+      <div class='w-100'>
+        {{#each reviewStats.ratings as |rating|}}
+        <div class='d-flex align-items-center'>
+          <div class='progress flex-grow-1 me-2'>
+            <div class='progress-bar bg-secondary' role='progressbar' style='width: {{round rating.percentage}}%' aria-valuenow='{{round rating.percentage}}' aria-valuemin='0' aria-valuemax='100'></div>
+          </div>
+
+          {{> stars rating=rating.rating}}
+
+          <div class='ms-2 text-decoration-underline text-primary' style='width: 2.5rem'>{{round rating.percentage}}%</div>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+
+    <h4 class='mb-n2 mt-4'>Reviews</h4>
+    <div id="reviews" data-slug="{{course.slug}}">
+      {{> reviewItems reviews=reviews}}
+    </div>
+
+    <button id="btn-load-more" class="btn btn-outline-primary mt-3">Load more reviews</button>
+  </div>
+</div>
+
+<script src="/js/reviews.js"></script>
