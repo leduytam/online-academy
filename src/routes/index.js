@@ -3,6 +3,7 @@ import express from 'express';
 import adminApi from '../api/admin.api.js';
 import courseApi from '../api/course.api.js';
 import configs from '../configs/index.js';
+import courseController from '../controllers/course.controller.js';
 import adminRoute from './admin.route.js';
 import authRoute from './auth.route.js';
 import courseRoute from './course.route.js';
@@ -23,5 +24,12 @@ router.use('/instructor', instructorRoute);
 // api
 router.use(`${configs.apiUrl}/admin`, adminApi);
 router.use(`${configs.apiUrl}/courses`, courseApi);
+
+// course category
+router.get('/categories/:categorySlug', courseController.getCourseCategoryView);
+router.get(
+  '/categories/:categorySlug/:subcategorySlug',
+  courseController.getCourseSubcategoryView
+);
 
 export default router;

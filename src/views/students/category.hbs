@@ -1,0 +1,93 @@
+<div class='container'>
+  <h2 class='text-capitalize mt-5 mb-3'>"{{title}}" courses</h2>
+
+  <form action='{{url}}' method='get' class='d-flex align-items-center mb-0'>
+    <div class='form-floating'>
+      <select
+        name='sortBy'
+        class='form-select'
+        id='sort-by'
+        aria-label='Sort by'
+      >
+        <option value='most-popular' {{#if (or (eq sortBy 'most-popular') sortBy)}}selected{{/if}}>Most Popular</option>
+        <option value='highest-rated' {{#if (eq sortBy 'highest-rated')}}selected{{/if}}>Highest Rated</option>
+        <option value='newest' {{#if (eq sortBy 'newest')}}selected{{/if}}>Newest</option>
+      </select>
+      <label for='sort-by'>Sort by</label>
+    </div>
+
+    <button
+      class='btn btn-primary ms-2 px-4 align-self-stretch'
+      type='submit'
+    >Sort</button>
+
+    <p class='ms-auto text-muted fw-bold mb-0'>
+      {{totalCourses}} results
+    </p>
+  </form>
+
+  <div class='mt-3 g-0'>
+    {{#each courses as |course|}}
+      <a href='/courses/{{course.slug}}' class='text-decoration-none text-dark'>
+        <div class='row'>
+          <div class='col-lg-3 col-md-4'>
+            <img
+              src='{{gcsPublicUrl course.coverPhoto.filename}}'
+              alt='{{course.name}}'
+              class='img-fluid'
+            />
+          </div>
+
+          <div class='col-lg-6 col-md-7'>
+            <h6 class='my-1'>{{course.name}}</h6>
+            <p class='mb-1 fs-7'>{{course.briefDescription}}</p>
+            <p class="fs-8 text-muted mb-1">{{course.instructor.name}}</p>
+            <div class="d-flex align-items-center fs-8 gap-1">
+              <p class="mb-0 text-warning fw-bold">{{roundWithPrecision course.avgRating 1}}</p>
+              {{> stars rating=course.avgRating}}
+              <p class="mb-0 text-muted">({{course.totalRatings}})</p>
+            </div>
+          </div>
+
+          <div class='col-lg-3 col-md-1'>
+            <p class='text-end fw-bold mb-1'>{{currency course.price}}</p>
+          </div>
+        </div>
+      </a>
+
+      {{#unless @last}}
+        <hr class='my-3' />
+      {{/unless}}
+    {{/each}}
+
+    {{#if (eq totalCourses 0)}}
+      <p class='text-center fs-5'>No courses</p>
+    {{/if}}
+
+    {{#unless (lte totalPages 1)}}
+      <div class="d-flex mt-3 justify-content-center align-items-center">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item {{#if (eq currentPage 1)}}disabled{{/if}}">
+              <a class="page-link" href="{{url}}?page=1{{#if sortBy}}&sortBy={{sortBy}}{{/if}}" aria-label="First">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            
+            {{#range 1 totalPages 1}}
+              <li class="page-item {{#if (eq ../currentPage this)}}active{{/if}}">
+                <a class="page-link" href="{{url}}?page={{this}}{{#if ../sortBy}}&sortBy={{../sortBy}}{{/if}}">{{this}}</a>
+              </li>
+            {{/range}}
+
+            <li class="page-item {{#if (eq currentPage totalPages)}}disabled{{/if}}">
+              <a class="page-link" href="{{url}}?page={{totalPages}}{{#if sortBy}}&sortBy={{sortBy}}{{/if}}" aria-label="Last">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    {{/unless}}
+  </div>
+</div>"
