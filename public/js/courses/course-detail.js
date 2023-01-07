@@ -336,7 +336,8 @@ $(document).ready(async function () {
     sections,
     price,
     thumbnail,
-    detailDescription
+    detailDescription,
+    isEnrolled,
   } = data;
 
   // header
@@ -358,8 +359,23 @@ $(document).ready(async function () {
 
   const buyButton = document.getElementById('course-header-buy-button');
 
+  if (isEnrolled) {
+    buyButton.innerHTML = `
+    <i class="bi bi-box-arrow-right"></i>
+    Go to course`;
+  }
+  else {
+    buyButton.innerHTML = `
+    <i class="bi bi-bag"></i>
+    Buy now
+      `;
+  }
   buyButton.addEventListener('click', async (e) => {
     // go to courses/:slug/checkout
+    if (isEnrolled){
+      window.location.href = `/courses/${slug}/lessons`;
+      return;
+    }
     window.location.href = `/courses/${slug}/checkout`;
   })
 });

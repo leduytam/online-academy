@@ -8,5 +8,6 @@ const router = express.Router();
 
 router.get('/:slug', courseController.getCourseDetail);
 router.get('/:slug/related', courseController.getRelatedCourses);
+router.post('/:slug/enroll', courseController.enrollCourse);
 
 export default router;

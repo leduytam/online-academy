@@ -24,7 +24,7 @@ export const errorHandler = (err, req, res, next) => {
   const error = {
     statusCode: err.statusCode,
     message: err.message,
-    stack: err.stack.replaceAll('\n', '<br />'),
+    stack: err.stack,
   };
 
   if (configs.env === 'production') {

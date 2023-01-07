@@ -17,10 +17,10 @@
           <li class='list-group-item py-0'>
             <div class='d-flex flex-row border bg-gray p-3 align-items-baseline justify-content-between'>
               <div class='d-flex flex-row align-items-baseline'>
-                <input class='form-check-input me-2' type='radio' name='listGroupRadio' value='' id='firstRadio'
+                <input class='form-check-input me-2' type='radio' name='listGroupRadio' value='' id='paymentCourse-card'
                   data-bs-toggle='collapse' data-bs-target='#paymentCollapse__1' aria-expanded='false'
                   aria-controls='paymentCollapse__1' />
-                <label class='form-check-label d-flex flex-row align-items-center' for='firstRadio'>
+                <label class='form-check-label d-flex flex-row align-items-center' for='paymentCourse-card'>
                   <div class='d-flex flex-row align-items-center'>
                     <i class='bi bi-credit-card fs-4'></i>
                     <p class='fs-6 fw-bold ms-2 mb-0'>Credit/Debit Card</p>
@@ -33,27 +33,36 @@
             <div class='collapse' id='paymentCollapse__1'>
               <div class='card card-body'>
                 {{!-- form --}}
-                <form>
+                <form id="course-checkout-form">
                   <div class='mb-3'>
                     <label for='cardName' class='form-label fw-bold'>Name on card</label>
                     <input type='text' class='form-control border border-dark card-info-item' id='cardName'
-                      placeholder='Name on card' />
+                      placeholder='Name on card'
+                      name="cardName"
+                      />
                   </div>
                   <div class='mb-3'>
                     <label for='cardNumber' class='form-label fw-bold'>Card number</label>
                     <input type='text' class='form-control border border-dark card-info-item' id='cardNumber'
-                      placeholder='Card number' />
+                      placeholder='Card number' 
+                      required="required"
+                      name="cardNumber"
+                      />
                   </div>
                   <div class='row'>
                     <div class='col-6'>
                       <label for='cardExpiry' class='form-label fw-bold'>Expiry</label>
                       <input type='text' class='form-control border border-dark card-info-item' id='cardExpiry'
-                        placeholder='MM/YY' />
+                        placeholder='MM/YY' 
+                        name="cardExpiry"
+                        />
                     </div>
                     <div class='col-6'>
                       <label for='cardCvv' class='form-label fw-bold'>CVV</label>
                       <input type='text' class='form-control border border-dark card-info-item' id='cardCvv'
-                        placeholder='123' />
+                        placeholder='123' 
+                        name="cardCvv"
+                        />
                     </div>
                   </div>
               </div>
@@ -61,10 +70,10 @@
           </li>
           <li class='list-group-item py-0'>
             <div class='d-flex flex-row border bg-gray p-3 align-items-baseline'>
-              <input class='form-check-input me-2' type='radio' name='listGroupRadio' value='' id='secondRadio'
+              <input class='form-check-input me-2' type='radio' name='listGroupRadio' value='' id='paymentCourse-paypal'
                 data-bs-toggle='collapse' data-bs-target='#paymentCollapse__2' aria-expanded='false'
                 aria-controls='paymentCollapse__2' />
-              <label class='form-check-label d-flex flex-row align-items-center' for='secondRadio'>
+              <label class='form-check-label d-flex flex-row align-items-center' for='paymentCourse-paypal'>
                 <div class='d-flex flex-row align-items-center'>
                   <img src='/assets/checkout/paypal.png' class='img-fluid' style='width: 3.5rem; height: auto' />
                   <p class='fs-6 fw-bold ms-2 mb-0'>Paypal</p>
@@ -117,7 +126,10 @@
       </div>
 
       <div class="my-5">
-        <button class='btn btn-primary w-100 py-4 fw-bold'>Complete Checkout</button>
+        <button class='btn btn-primary w-100 py-4 fw-bold' id="course-checkout-button">Complete Checkout</button>
+        <div class="alert alert-danger d-none my-3" role="alert" id ="course-checkout-error">
+          
+        </div>
       </div>
     </div>
 
