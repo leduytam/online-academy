@@ -1,6 +1,6 @@
 import httpStatus from 'http-status';
 
-import configs from '../configs/index.js';
+// import configs from '../configs/index.js';
 import AppError from '../utils/AppError.js';
 import logger from '../utils/logger.js';
 
@@ -27,10 +27,10 @@ export const errorHandler = (err, req, res, next) => {
     stack: err.stack,
   };
 
-  if (configs.env === 'production') {
-    res.redirect('/500');
-    return;
-  }
+  // if (configs.env === 'production') {
+  //   res.redirect('/500');
+  //   return;
+  // }
 
   logger.error(err);
   res.render('errors/error', { error, layout: 'empty', title: 'Error' });
