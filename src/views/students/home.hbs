@@ -48,6 +48,55 @@
             </a>
         </div>
     </div>		
+    <h2>Top Remarkable Courses</h2>
+    <div class="row">
+        <div id="recipeCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner" role="listbox">
+                {{#each topCourses}}
+                <div class="carousel-item {{#if @first}}active{{/if}}">
+                    <div class="col-md-3 course-card" data-id={{this._id}}>
+                        <div class="card position-relative">
+                            <img src={{this.coverPhoto}} class="card-img-top" alt="Cover photo">
+                            <div class="card-body">
+                                <div style="height: 4em;">
+                                    <p class="fw-bold fs-5 course-header">{{this.name}}</p>
+                                </div>
+                                <p class="card-text fs-6 fw-light mb-0 text-truncate">{{this.instructor.name}}</p>
+                                <div class="d-flex align-items-center">
+                                    <span class = "card-text fs-6" style="color: orange;">4 &nbsp</span>
+                                    <span class = "fa fa-star checked"></span>
+                                    <span class = "fa fa-star checked"></span>
+                                    <span class = "fa fa-star checked"></span>
+                                    <span class = "fa fa-star checked"></span>
+                                    <span class = "fa fa-star unchecked">&nbsp</span>
+                                    <span class = "card-text fs-6 text-black-50">(123)</span>
+                                </div>
+                            <span class="badge bg-warning text-dark">Best seller</span>
+                                {{!-- TODO: handle progress later --}}
+                                {{!-- <div class="progress" style="height: 5px;">
+                                    <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25"
+                                        aria-valuemin="0" aria-valuemax="100"></div>
+                                </div> --}}
+                                {{!-- TODO: Add complete percentage
+                                <p>% complete</p> --}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+            <a class="carousel-control-prev bg-transparent w-aut" href="#recipeCarousel" role="button" data-bs-slide="prev" style="width:45px">
+                <div class="bg-dark btn-wrapper">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                </div>
+            </a>
+            <a class="carousel-control-next bg-transparent w-aut" href="#recipeCarousel" role="button" data-bs-slide="next" style="width:45px">
+                <div class="bg-dark btn-wrapper">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                </div>
+            </a>
+        </div>
+    </div>	
 </div>
 
 <script>
