@@ -2,7 +2,6 @@ import { Router } from 'express';
 import multer from 'multer';
 
 import studentController from '../controllers/student.controller.js';
-import gcsService from '../services/gcs.service.js';
 
 const router = Router();
 
@@ -19,8 +18,10 @@ router.get('/profile', studentController.getProfileView);
 
 router.route('/edit-profile').post(studentController.updateInformation);
 
-router.post('/upload-image', upload.single('image'), async (req, res, next) => {
-  studentController.uploadImage(req, res, next, gcsService);
-});
+router.post(
+  '/upload-image',
+  upload.single('image'),
+  studentController.uploadImage
+);
 
 export default router;

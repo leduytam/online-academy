@@ -1,7 +1,9 @@
 <div class='container'>
-  <h2 class='text-capitalize mt-5 mb-3'>"{{title}}" courses</h2>
+  <h2 class='text-capitalize mt-5 mb-3'>{{title}}</h2>
 
   <form action='{{url}}' method='get' class='d-flex align-items-center mb-0'>
+    <input type="hidden" name="q" value="{{q}}">
+
     <div class='form-floating'>
       <select
         name='sortBy'
@@ -9,7 +11,8 @@
         id='sort-by'
         aria-label='Sort by'
       >
-        <option value='most-popular' {{#if (or (eq sortBy 'most-popular') sortBy)}}selected{{/if}}>Most Popular</option>
+        <option value='relevance' {{#if (or (eq sortBy 'relevance') sortBy)}}selected{{/if}}>Relevance</option>
+        <option value='most-popular' {{#if (eq sortBy 'most-popular')}}selected{{/if}}>Most Popular</option>
         <option value='highest-rated' {{#if (eq sortBy 'highest-rated')}}selected{{/if}}>Highest Rated</option>
         <option value='newest' {{#if (eq sortBy 'newest')}}selected{{/if}}>Newest</option>
       </select>
@@ -69,19 +72,19 @@
         <nav aria-label="Page navigation example">
           <ul class="pagination">
             <li class="page-item {{#if (eq currentPage 1)}}disabled{{/if}}">
-              <a class="page-link" href="{{url}}?page=1{{#if sortBy}}&sortBy={{sortBy}}{{/if}}" aria-label="First">
+              <a class="page-link" href="{{url}}&page=1{{#if sortBy}}&sortBy={{sortBy}}{{/if}}" aria-label="First">
                 <span aria-hidden="true">&laquo;</span>
               </a>
             </li>
             
             {{#range 1 totalPages 1}}
               <li class="page-item {{#if (eq ../currentPage this)}}active{{/if}}">
-                <a class="page-link" href="{{url}}?page={{this}}{{#if ../sortBy}}&sortBy={{../sortBy}}{{/if}}">{{this}}</a>
+                <a class="page-link" href="{{../url}}&page={{this}}{{#if ../sortBy}}&sortBy={{../sortBy}}{{/if}}">{{this}}</a>
               </li>
             {{/range}}
 
             <li class="page-item {{#if (eq currentPage totalPages)}}disabled{{/if}}">
-              <a class="page-link" href="{{url}}?page={{totalPages}}{{#if sortBy}}&sortBy={{sortBy}}{{/if}}" aria-label="Last">
+              <a class="page-link" href="{{url}}&page={{totalPages}}{{#if sortBy}}&sortBy={{sortBy}}{{/if}}" aria-label="Last">
                 <span aria-hidden="true">&raquo;</span>
               </a>
             </li>
@@ -90,4 +93,4 @@
       </div>
     {{/unless}}
   </div>
-</div>"
+</div>

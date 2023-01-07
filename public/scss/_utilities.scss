@@ -9,7 +9,7 @@
 @each $breakpoint, $value in $grid-breakpoints {
   .hide-on-#{$breakpoint} {
     @include media-breakpoint-down($breakpoint) {
-      display: none;
+      display: none !important;
     }
   }
 }

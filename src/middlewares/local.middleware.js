@@ -1,4 +1,5 @@
 import ERole from '../constant/role.js';
+import User from '../models/user.model.js';
 import categoryService from '../services/category.service.js';
 
 const message = (req, res, next) => {
@@ -19,8 +20,13 @@ const message = (req, res, next) => {
   next();
 };
 
-const user = (req, res, next) => {
-  res.locals.user = req.session.user;
+const user = async (req, res, next) => {
+  if (req.session.user) {
+    res.locals.user = await User.findById(req.session.user._id)
+      .populate('avatar')
+      .lean();
+  }
+
   next();
 };
 

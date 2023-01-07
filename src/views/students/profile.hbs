@@ -192,7 +192,8 @@
                       <div class='ud-image-upload-preview-wrapper'>
                         <div class='image-upload-preview-with-crop'>
                           <img
-                            src='https://storage.googleapis.com/oa-public-bucket/{{user.avatar}}'
+                            id='avatar-preview'
+                            src='{{#if user.avatar}}{{gcsPublicUrl user.avatar.filename}}{{else}}/assets/app/avatar-placeholder.png{{/if}}'
                             alt='avatar'
                             class='img-fluid'
                           />
@@ -202,9 +203,10 @@
                         <input
                           class='form-control'
                           type='file'
-                          id='formFile'
+                          id='avatar-input'
                           name='image'
                           accept='image/*'
+                          required="required"
                         />
                       </div>
                     </div>
@@ -295,3 +297,17 @@
     </div>
   </div>
 </div>
+
+<script>
+  const avatarInput = document.getElementById('avatar-input');
+  const avatarPreview = document.getElementById('avatar-preview');
+
+  avatarInput.onchange = function (e) {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      avatarPreview.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+</script>

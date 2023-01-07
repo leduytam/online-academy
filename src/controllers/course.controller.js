@@ -495,6 +495,64 @@ const getCourseSubcategoryView = async (req, res, next) => {
   });
 };
 
+const getSearchCourseView = async (req, res, next) => {
+  const { q, sortBy, page, limit } = req.query;
+
+  if (q === undefined) {
+    res.redirect('/search?q=');
+    return;
+  }
+
+  let courses = await Course.find({
+    $text: { $search: q, $caseSensitive: false },
+  })
+    .populate(['instructor', 'coverPhoto'])
+    .lean();
+
+  const totalCourses = courses.length;
+  const limitPerPage = +limit || 6;
+  const totalPages = Math.ceil(totalCourses / limitPerPage);
+  const currentPage = +page || 1;
+  const skip = (currentPage - 1) * limitPerPage;
+
+  const getSortBy = (sort) => {
+    if (sort === 'highest-rated') return (a, b) => b.avgRating - a.avgRating;
+    if (sort === 'newest') return (a, b) => b.createdAt - a.createdAt;
+    if (sort === 'most-popular') return (a, b) => b.views - a.views;
+
+    // eslint-disable-next-line no-unused-vars
+    return (a, b) => 0;
+  };
+
+  courses = await Promise.all(
+    courses.map(async (course) => {
+      const { _id } = course;
+      const { avg, total } = await courseService.getReviewStats(_id);
+
+      return {
+        ...course,
+        avgRating: avg,
+        totalRatings: total,
+      };
+    })
+  );
+
+  courses = courses.sort(getSortBy(sortBy)).slice(skip, skip + limitPerPage);
+
+  const originalUrl = req.originalUrl.split('?').shift();
+
+  res.render('students/search', {
+    title: `Search results for "${q}"`,
+    url: `${originalUrl}?q=${encodeURIComponent(q)}`,
+    courses,
+    sortBy,
+    currentPage,
+    totalCourses,
+    totalPages,
+    q,
+  });
+};
+
 export default {
   getCourseDetailView,
   getCourseDetail,
@@ -506,4 +564,5 @@ export default {
   enrollCourse,
   getCourseCategoryView,
   getCourseSubcategoryView,
+  getSearchCourseView,
 };

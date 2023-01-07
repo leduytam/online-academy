@@ -1,6 +1,8 @@
 import path from 'path';
 import uniqueSlug from 'unique-slug';
 
+import EMedia from '../constant/media.js';
+import Media from '../models/media.model.js';
 import User from '../models/user.model.js';
 import gcsService from '../services/gcs.service.js';
 import logger from '../utils/logger.js';
@@ -13,7 +15,9 @@ const get = async (req, res, next) => {
 
 const getInfo = async (req, res, next) => {
   const { user } = req.session;
-  const userDisplay = await User.findById(user._id ?? '').lean();
+  const userDisplay = await User.findById(user._id ?? '')
+    .populate('avatar')
+    .lean();
   res.render('instructor/profile', {
     title: 'Profile',
     user: userDisplay,
@@ -59,13 +63,18 @@ const uploadImage = async (req, res, next) => {
 
   const extname = path.extname(file.originalname);
 
-  const slug = `${uniqueSlug()}${Date.now()}${extname}`;
+  const filename = `${uniqueSlug()}${Date.now()}${extname}`;
 
   try {
-    userUpdate.avatar = slug;
+    const media = await Media.create({
+      type: EMedia.Image,
+      filename,
+    });
+
+    userUpdate.avatar = media._id;
     await userUpdate.save();
     req.session.user = userUpdate;
-    await gcsService.uploadImage(file, slug);
+    await gcsService.uploadImage(file, filename);
   } catch (error) {
     req.session.error = error.message;
   }

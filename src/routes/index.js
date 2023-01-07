@@ -32,4 +32,7 @@ router.get(
   courseController.getCourseSubcategoryView
 );
 
+// search course
+router.get('/search', courseController.getSearchCourseView);
+
 export default router;
