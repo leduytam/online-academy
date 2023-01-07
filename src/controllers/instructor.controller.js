@@ -3,6 +3,7 @@ import uniqueSlug from 'unique-slug';
 
 import EMedia from '../constant/media.js';
 import Media from '../models/media.model.js';
+import Subcategory from '../models/subcategory.model.js';
 import User from '../models/user.model.js';
 import gcsService from '../services/gcs.service.js';
 import logger from '../utils/logger.js';
@@ -48,7 +49,7 @@ const updateInformation = async (req, res, next) => {
   }
 };
 
-const uploadImage = async (req, res, next) => {
+const uploadProfileImage = async (req, res, next) => {
   const { file } = req;
   const { user } = req.session;
   const userUpdate = await User.findById(user._id ?? '');
@@ -84,9 +85,56 @@ const uploadImage = async (req, res, next) => {
   });
 };
 
+const createCourse = async (req, res, next) => {
+  try {
+    const { file } = req;
+    const { user } = req.session;
+    if (!file) {
+      req.session.error = 'Please upload an image';
+      req.session.save((err) => {
+        res.redirect('/instructor/courses');
+      });
+      return;
+    }
+    if (!user) {
+      req.session.error = 'Please login to create a course';
+      res.redirect('/login');
+      return;
+    }
+    const extname = path.extname(file.originalname);
+    const filename = `${uniqueSlug()}${Date.now()}${extname}`;
+    await gcsService.uploadImage(file, filename);
+    const media = await Media.create({
+      filename,
+      type: 'image',
+    });
+
+    const { name, briefDescription, detailDescription, category, price } =
+      req.body;
+    const subcategory = await Subcategory.findById(category);
+
+    await Course.create({
+      name,
+      briefDescription,
+      detailDescription,
+      category: subcategory._id,
+      price,
+      coverPhoto: media._id,
+      instructor: user._id,
+    });
+    req.session.success = 'Course created successfully';
+    res.redirect('/instructor');
+  } catch (e) {
+    logger.error(e);
+    req.session.error = 'Something went wrong';
+    res.redirect('/instructor');
+  }
+};
+
 export default {
   get,
   getInfo,
   updateInformation,
-  uploadImage,
+  uploadProfileImage,
+  createCourse,
 };
