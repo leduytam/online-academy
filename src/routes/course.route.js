@@ -6,7 +6,6 @@ import auth from '../middlewares/auth.middleware.js';
 const router = Router();
 
 router.get('/:slug', courseController.getCourseDetailView);
-router.get('/:slug', courseController.getCourseDetailView);
 router.get('/:slug/checkout', auth.protect, courseController.getCheckoutPage);
 
 router.get(
