@@ -293,9 +293,30 @@ const cudReview = async (req, res, next) => {
 const getCheckoutPage = async (req, res, next) => {
   const { slug } = req.params;
   const course = await Course.findOne({ slug });
+  const media = course.coverPhoto
+    ? await Media.findById(course.coverPhoto)
+    : null;
+  let thumbnail = null;
+  if (media) {
+    if (media.type === 'image') {
+      thumbnail = {
+        type: 'image',
+        url: GCSService.getPublicImageUrl(media.filename),
+      };
+    }
+    if (media.type === 'video') {
+      thumbnail = {
+        type: 'video',
+        url: await GCSService.getVideoSignedUrl(media.filename),
+      };
+    }
+  }
   res.render('courses/checkout', {
     title: `Check out | ${course.name}`,
-    data: course,
+    data: {
+      ...course.toObject(),
+      thumbnail,
+    },
   });
 };
 

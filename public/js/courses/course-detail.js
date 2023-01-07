@@ -339,8 +339,6 @@ $(document).ready(async function () {
     detailDescription
   } = data;
 
-  console.log(data);
-
   // header
   createBreadcrumb(category, subcategory, name);
   createTitle(name);
