@@ -7,7 +7,7 @@ const router = Router();
 
 router.get('/:slug', courseController.getCourseDetailView);
 router.get('/:slug', CourseController.getCourseDetailView);
-router.get('/:slug/checkout', CourseController.getCheckoutPage);
+router.get('/:slug/checkout', auth.protect, CourseController.getCheckoutPage);
 
 router.get(
   '/:courseSlug/lessons',
