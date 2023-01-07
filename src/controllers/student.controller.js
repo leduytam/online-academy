@@ -6,7 +6,7 @@ const getHomeView = async (req, res, next) => {
   });
 };
 
-const getProfile = async (req, res, next) => {
+const getProfileView = async (req, res, next) => {
   const { user } = req.session;
   const userDisplay = await User.findById(user._id).lean();
   res.render('students/profile', {
@@ -17,5 +17,5 @@ const getProfile = async (req, res, next) => {
 
 export default {
   getHomeView,
-  getProfile,
+  getProfileView,
 };

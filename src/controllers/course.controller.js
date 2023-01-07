@@ -1,3 +1,4 @@
+import hbs from '../configs/hbs.js';
 import Category from '../models/category.model.js';
 import Course from '../models/course.model.js';
 import Enrollment from '../models/enrollment.model.js';
@@ -6,8 +7,6 @@ import Media from '../models/media.model.js';
 import Review from '../models/review.model.js';
 import Section from '../models/section.model.js';
 import Subcategory from '../models/subcategory.model.js';
-import hbs from '../configs/hbs.js';
-import Review from '../models/review.model.js';
 import courseService from '../services/course.service.js';
 import gcsService from '../services/gcs.service.js';
 

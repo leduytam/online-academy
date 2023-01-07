@@ -5,7 +5,7 @@ import auth from '../middlewares/auth.middleware.js';
 
 const router = Router();
 
-router.get('/:slug', CourseController.getCourseDetailView);
+router.get('/:slug', courseController.getCourseDetailView);
 
 router.get(
   '/:courseSlug/lessons',
@@ -24,4 +24,3 @@ router.get('/:courseSlug/reviews', courseController.getReviews);
 router.post('/:courseSlug/reviews', auth.protect, courseController.cudReview);
 
 export default router;
-
