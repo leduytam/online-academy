@@ -38,7 +38,7 @@
                     <label for='cardName' class='form-label fw-bold'>Name on card</label>
                     <input type='text' class='form-control border border-dark card-info-item' id='cardName'
                       placeholder='Name on card'
-                      name="cardName"
+                      required="required"
                       />
                   </div>
                   <div class='mb-3'>
@@ -46,7 +46,6 @@
                     <input type='text' class='form-control border border-dark card-info-item' id='cardNumber'
                       placeholder='Card number' 
                       required="required"
-                      name="cardNumber"
                       />
                   </div>
                   <div class='row'>
@@ -54,14 +53,16 @@
                       <label for='cardExpiry' class='form-label fw-bold'>Expiry</label>
                       <input type='text' class='form-control border border-dark card-info-item' id='cardExpiry'
                         placeholder='MM/YY' 
-                        name="cardExpiry"
+                      required="required"
+
                         />
                     </div>
                     <div class='col-6'>
                       <label for='cardCvv' class='form-label fw-bold'>CVV</label>
                       <input type='text' class='form-control border border-dark card-info-item' id='cardCvv'
-                        placeholder='123' 
-                        name="cardCvv"
+                        placeholder='CVV'
+                      required="required"
+
                         />
                     </div>
                   </div>

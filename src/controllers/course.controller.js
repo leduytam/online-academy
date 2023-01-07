@@ -362,6 +362,13 @@ const enrollCourse = async (req, res, next) => {
       res.redirect('/login');
     }
 
+    const isEnrolled = await courseService.isEnrolled(course._id, user._id);
+
+    if (isEnrolled) {
+      res.redirect(`/courses/${course.slug}/lessons`);
+      return;
+    }
+
     const enrollment = await Enrollment.create({
       course: course._id,
       student: user._id,
@@ -371,6 +378,7 @@ const enrollCourse = async (req, res, next) => {
 
     res.redirect(`/courses/${course.slug}/lessons`);
   } catch (error) {
+    console.log(error);
     res.redirect('/500');
   }
 };

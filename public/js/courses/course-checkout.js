@@ -17,12 +17,10 @@ const slug = window.location.pathname.split('/')[2];
 const enrollButton = document.getElementById('course-checkout-button');
 
 enrollButton.addEventListener('click', async () => {
-  const form = document.getElementById('course-checkout-form');
-  const formData = new FormData(form);
-  const cardName = formData.get('cardName');
-  const cardNumber = formData.get('cardNumber');
-  const cardCvv = formData.get('cardCvv');
-  const cardExpiry = formData.get('cardExpiry');
+  const cardName = document.getElementById('cardName').value;
+  const cardNumber = document.getElementById('cardNumber').value;
+  const cardCvv = document.getElementById('cardCvv').value;
+  const cardExpiry = document.getElementById('cardExpiry').value;
 
   const checkoutError = document.getElementById('course-checkout-error');
   
