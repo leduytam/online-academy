@@ -19,8 +19,12 @@ router.get('/profile', InstructorController.getInfo);
 
 router.route('/edit-profile').post(InstructorController.updateInformation);
 
-router.post('/upload-image', upload.single('image'), async (req, res, next) => {
-  InstructorController.uploadImage(req, res, next, gcsService);
-});
+router.post(
+  '/upload-profile-image',
+  upload.single('image'),
+  async (req, res, next) => {
+    InstructorController.uploadProfileImage(req, res, next, gcsService);
+  }
+);
 
 export default router;
