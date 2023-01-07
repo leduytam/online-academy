@@ -4,11 +4,18 @@ import en from 'javascript-time-ago/locale/en';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import gcsService from '../services/gcs.service.js';
+
 const __dirname = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 TimeAgo.addDefaultLocale(en);
 
 const timeAgo = new TimeAgo('en-US');
+
+const currencyFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+});
 
 const helpers = {
   lte: (a, b) => +a <= +b,
@@ -19,6 +26,8 @@ const helpers = {
   ne: (a, b) => a !== b,
   in: (a, b) => b.includes(a),
   nin: (a, b) => !b.includes(a),
+  or: (a, b) => a || b,
+  and: (a, b) => a && b,
   round: (a) => Math.round(a),
   roundWithPrecision: (a, precision) => {
     const factor = 10 ** precision;
@@ -62,6 +71,8 @@ const helpers = {
   timeAgo: (date) => {
     return timeAgo.format(new Date(date));
   },
+  gcsPublicUrl: (filename) => gcsService.getPublicImageUrl(filename),
+  currency: (number) => currencyFormatter.format(number),
 };
 
 const hbs = exphbs.create({

@@ -383,6 +383,118 @@ const enrollCourse = async (req, res, next) => {
   }
 };
 
+const getCourseCategoryView = async (req, res, next) => {
+  const { categorySlug } = req.params;
+  const { sortBy, page, limit } = req.query;
+
+  const getSortBy = (sort) => {
+    if (sort === 'highest-rated') return (a, b) => b.avgRating - a.avgRating;
+    if (sort === 'newest') return (a, b) => b.createdAt - a.createdAt;
+    return (a, b) => b.views - a.views;
+  };
+
+  const category = await Category.findOne({ slug: categorySlug }).populate(
+    'subcategories'
+  );
+
+  const { subcategories } = category;
+
+  const totalCourses = await Course.countDocuments({
+    category: { $in: subcategories },
+  });
+  const limitPerPage = +limit || 6;
+  const totalPages = Math.ceil(totalCourses / limitPerPage);
+  const currentPage = +page || 1;
+  const skip = (currentPage - 1) * limitPerPage;
+
+  let courses = await Course.find({
+    category: { $in: subcategories },
+  })
+    .populate('category')
+    .populate('instructor')
+    .populate('coverPhoto')
+    .lean();
+
+  courses = await Promise.all(
+    courses.map(async (course) => {
+      const { _id } = course;
+      const { avg, total } = await courseService.getReviewStats(_id);
+
+      return {
+        ...course,
+        avgRating: avg,
+        totalRatings: total,
+      };
+    })
+  );
+
+  courses = courses.sort(getSortBy(sortBy)).slice(skip, skip + limitPerPage);
+
+  res.render('students/category', {
+    title: category.name,
+    url: req.originalUrl.split('?').shift(),
+    courses,
+    sortBy,
+    currentPage,
+    totalCourses,
+    totalPages,
+  });
+};
+
+const getCourseSubcategoryView = async (req, res, next) => {
+  const { subcategorySlug } = req.params;
+  const { sortBy, page, limit } = req.query;
+
+  const getSortBy = (sort) => {
+    if (sort === 'highest-rated') return (a, b) => b.avgRating - a.avgRating;
+    if (sort === 'newest') return (a, b) => b.createdAt - a.createdAt;
+    return (a, b) => b.views - a.views;
+  };
+
+  const subcategory = await Subcategory.findOne({ slug: subcategorySlug });
+
+  const totalCourses = await Course.countDocuments({
+    category: subcategory,
+  });
+  const limitPerPage = +limit || 6;
+  const totalPages = Math.ceil(totalCourses / limitPerPage);
+  const currentPage = +page || 1;
+  const skip = (currentPage - 1) * limitPerPage;
+
+  let courses = await Course.find({
+    category: subcategory,
+  })
+    .populate('category')
+    .populate('instructor')
+    .populate('coverPhoto')
+    .lean();
+
+  courses = await Promise.all(
+    courses.map(async (course) => {
+      const { _id } = course;
+      const { avg, total } = await courseService.getReviewStats(_id);
+
+      return {
+        ...course,
+        avgRating: avg,
+        totalRatings: total,
+      };
+    })
+  );
+
+  courses = courses.sort(getSortBy(sortBy)).slice(skip, skip + limitPerPage);
+
+  res.render('students/category', {
+    title: subcategory.name,
+    url: req.originalUrl.split('?').shift(),
+    courses,
+    sortBy,
+    currentPage,
+    totalCourses,
+    totalPages,
+  });
+};
+
 export default {
   getCourseDetailView,
   getCourseDetail,
@@ -392,4 +504,6 @@ export default {
   cudReview,
   getCheckoutPage,
   enrollCourse,
+  getCourseCategoryView,
+  getCourseSubcategoryView,
 };
