@@ -33,11 +33,12 @@
             <div class='collapse' id='paymentCollapse__1'>
               <div class='card card-body'>
                 {{!-- form --}}
-                <form id="course-checkout-form">
+                <form id="course-checkout-form" method="post" action="/api/v1/courses/{{this.data.slug}}/enroll">
                   <div class='mb-3'>
                     <label for='cardName' class='form-label fw-bold'>Name on card</label>
                     <input type='text' class='form-control border border-dark card-info-item' id='cardName'
                       placeholder='Name on card'
+                      name="cardName"
                       required="required"
                       />
                   </div>
@@ -46,6 +47,8 @@
                     <input type='text' class='form-control border border-dark card-info-item' id='cardNumber'
                       placeholder='Card number' 
                       required="required"
+                      name="cardNumber"
+                      pattern="[0-9]{16}"
                       />
                   </div>
                   <div class='row'>
@@ -53,16 +56,16 @@
                       <label for='cardExpiry' class='form-label fw-bold'>Expiry</label>
                       <input type='text' class='form-control border border-dark card-info-item' id='cardExpiry'
                         placeholder='MM/YY' 
-                      required="required"
-
+                        name="cardExpiry"
+                        pattern="[0-9]{2}/[0-9]{2}"
                         />
                     </div>
                     <div class='col-6'>
                       <label for='cardCvv' class='form-label fw-bold'>CVV</label>
                       <input type='text' class='form-control border border-dark card-info-item' id='cardCvv'
-                        placeholder='CVV'
-                      required="required"
-
+                        placeholder='123' 
+                        name="cardCvv"
+                        pattern="[0-9]{3}"
                         />
                     </div>
                   </div>

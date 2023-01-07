@@ -17,10 +17,12 @@ const slug = window.location.pathname.split('/')[2];
 const enrollButton = document.getElementById('course-checkout-button');
 
 enrollButton.addEventListener('click', async () => {
-  const cardName = document.getElementById('cardName').value;
-  const cardNumber = document.getElementById('cardNumber').value;
-  const cardCvv = document.getElementById('cardCvv').value;
-  const cardExpiry = document.getElementById('cardExpiry').value;
+  const form = document.getElementById('course-checkout-form');
+  const formData = new FormData(form);
+  const cardName = formData.get('cardName');
+  const cardNumber = formData.get('cardNumber');
+  const cardCvv = formData.get('cardCvv');
+  const cardExpiry = formData.get('cardExpiry');
 
   const checkoutError = document.getElementById('course-checkout-error');
   
@@ -46,5 +48,5 @@ enrollButton.addEventListener('click', async () => {
     checkoutError.innerText = '';
   }
 
-  await axios.post(`/api/v1/courses/${slug}/enroll`)
+  form.submit();
 })
