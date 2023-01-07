@@ -1,4 +1,5 @@
 import path from 'path';
+import uniqueSlug from 'unique-slug';
 
 import User from '../models/user.model.js';
 import gcsService from '../services/gcs.service.js';
@@ -12,7 +13,7 @@ const get = async (req, res, next) => {
 
 const getInfo = async (req, res, next) => {
   const { user } = req.session;
-  const userDisplay = await User.findById(user._id).lean();
+  const userDisplay = await User.findById(user._id ?? '').lean();
   res.render('instructor/profile', {
     title: 'Profile',
     user: userDisplay,
@@ -22,7 +23,7 @@ const getInfo = async (req, res, next) => {
 const updateInformation = async (req, res, next) => {
   try {
     const { user } = req.session;
-    const userUpdate = await User.findById(user._id);
+    const userUpdate = await User.findById(user._id ?? '');
     const { name, facebook, website, twitter, linkedin, bio, youtube } =
       req.body;
     userUpdate.name = name;
@@ -46,7 +47,7 @@ const updateInformation = async (req, res, next) => {
 const uploadImage = async (req, res, next) => {
   const { file } = req;
   const { user } = req.session;
-  const userUpdate = await User.findById(user._id);
+  const userUpdate = await User.findById(user._id ?? '');
 
   if (!file) {
     req.session.error = 'Please upload an image';
@@ -58,14 +59,13 @@ const uploadImage = async (req, res, next) => {
 
   const extname = path.extname(file.originalname);
 
-  const slug = `${Date.now()}${extname}`;
+  const slug = `${uniqueSlug()}${Date.now()}${extname}`;
 
   try {
     userUpdate.avatar = slug;
     await userUpdate.save();
     req.session.user = userUpdate;
     await gcsService.uploadImage(file, slug);
-    req.session.success = await gcsService.getPublicImageUrl(slug);
   } catch (error) {
     req.session.error = error.message;
   }
