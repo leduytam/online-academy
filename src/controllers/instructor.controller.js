@@ -8,6 +8,7 @@ import Media from '../models/media.model.js';
 import Section from '../models/section.model.js';
 import Subcategory from '../models/subcategory.model.js';
 import User from '../models/user.model.js';
+import categoryService from '../services/category.service.js';
 import gcsService from '../services/gcs.service.js';
 import logger from '../utils/logger.js';
 
