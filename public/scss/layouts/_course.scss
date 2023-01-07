@@ -1,0 +1,70 @@
+#course-checkout-page {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  position: relative;
+  #course-checkout-page__left {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    @media screen and (max-width: 1199px) {
+      width: 100%;
+    }
+  }
+
+  #course-checkout-page__right {
+    width: 40%;
+    background-color: #f7f9fa;
+    @media screen and (max-width: 1199px) {
+      width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 1199px) {
+    flex-direction: column;
+  }
+  .course-checkout-page__leftContent {
+    width: 50%;
+    height: 100%;
+    padding: 0 3rem 0 1.5rem;
+  }
+  .course-checkout-page__rightContent {
+    margin: 7.2rem 0 ;
+    padding: 0rem 3rem;
+    width: 40%;
+  }
+
+  .d-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .line-divider {
+    width: 100%;
+    height: 1px;
+    background-color: #d1d7dc;
+    margin: 1.2rem 0;
+  }
+
+  #course-checkout-closeButton {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    color: #000;
+    cursor: pointer;
+  }
+}
+
+.bg-gray {
+  background-color: #f7f9fa;
+}
+
+.card-info-item {
+  height: 3rem;
+  padding: 1rem 1rem;
+}

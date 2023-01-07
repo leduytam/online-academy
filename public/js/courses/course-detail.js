@@ -336,10 +336,9 @@ $(document).ready(async function () {
     sections,
     price,
     thumbnail,
-    detailDescription
+    detailDescription,
+    isEnrolled,
   } = data;
-
-  console.log(data);
 
   // header
   createBreadcrumb(category, subcategory, name);
@@ -357,4 +356,27 @@ $(document).ready(async function () {
   createInstructor(instructor);
   createReviews(reviews);
   await createRelatedCourses(slug);
+
+  const buyButton = document.getElementById('course-header-buy-button');
+
+  if (isEnrolled) {
+    buyButton.innerHTML = `
+    <i class="bi bi-box-arrow-right"></i>
+    Go to course`;
+  }
+  else {
+    buyButton.innerHTML = `
+    <i class="bi bi-bag"></i>
+    Buy now
+      `;
+  }
+  buyButton.addEventListener('click', async (e) => {
+    // go to courses/:slug/checkout
+    if (isEnrolled){
+      window.location.href = `/courses/${slug}/lessons`;
+      return;
+    }
+    window.location.href = `/courses/${slug}/checkout`;
+  })
 });
+

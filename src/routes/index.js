@@ -12,6 +12,7 @@ import studentRoute from './student.route.js';
 
 const router = express.Router();
 
+// web
 router.use(studentRoute);
 router.use(authRoute);
 router.use(errorRoute);

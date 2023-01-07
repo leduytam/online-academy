@@ -22,6 +22,7 @@ const getCourseDetailView = async (req, res, next) => {
 const getCourseDetail = async (req, res, next) => {
   try {
     const { slug } = req.params;
+    const { user } = req.session;
     const course = await Course.findOne({ slug })
       .populate('instructor')
       .populate('category');
@@ -64,6 +65,9 @@ const getCourseDetail = async (req, res, next) => {
       }
     }
 
+    const isEnrolled =
+      user && (await courseService.isEnrolled(course._id, user._id));
+
     const result = {
       ...course.toObject(),
       category,
@@ -72,6 +76,7 @@ const getCourseDetail = async (req, res, next) => {
       enrollments,
       sections,
       thumbnail,
+      isEnrolled,
     };
     res.status(200).send(result);
   } catch (error) {
@@ -290,6 +295,94 @@ const cudReview = async (req, res, next) => {
   res.redirect(req.headers.referer || `/courses/${courseSlug}/lessons`);
 };
 
+const getCheckoutPage = async (req, res, next) => {
+  const { slug } = req.params;
+  const { user } = req.session;
+  if (!user) {
+    res.redirect('/login');
+    return;
+  }
+  const course = await Course.findOne({ slug });
+
+  if (!course) {
+    res.redirect('/404');
+    return;
+  }
+
+  const isEnrolled = await courseService.isEnrolled(course._id, user._id);
+
+  if (isEnrolled) {
+    res.redirect(`/courses/${course.slug}/lessons`);
+    return;
+  }
+
+  const media = course.coverPhoto
+    ? await Media.findById(course.coverPhoto)
+    : null;
+  let thumbnail = null;
+  if (media) {
+    if (media.type === 'image') {
+      thumbnail = {
+        type: 'image',
+        url: gcsService.getPublicImageUrl(media.filename),
+      };
+    }
+    if (media.type === 'video') {
+      thumbnail = {
+        type: 'video',
+        url: await gcsService.getVideoSignedUrl(media.filename),
+      };
+    }
+  }
+  res.render('courses/checkout', {
+    title: `Check out | ${course.name}`,
+    data: {
+      ...course.toObject(),
+      thumbnail,
+    },
+  });
+};
+
+const enrollCourse = async (req, res, next) => {
+  try {
+    const { slug } = req.params;
+    const { user } = req.session;
+    if (!user) {
+      res.redirect('/login');
+      return;
+    }
+    const course = await Course.findOne({ slug });
+
+    if (!course) {
+      res.redirect('/404');
+      return;
+    }
+
+    if (!user) {
+      res.redirect('/login');
+    }
+
+    const isEnrolled = await courseService.isEnrolled(course._id, user._id);
+
+    if (isEnrolled) {
+      res.redirect(`/courses/${course.slug}/lessons`);
+      return;
+    }
+
+    const enrollment = await Enrollment.create({
+      course: course._id,
+      student: user._id,
+    });
+
+    enrollment.save();
+
+    res.redirect(`/courses/${course.slug}/lessons`);
+  } catch (error) {
+    console.log(error);
+    res.redirect('/500');
+  }
+};
+
 export default {
   getCourseDetailView,
   getCourseDetail,
@@ -297,4 +390,6 @@ export default {
   getLessonView,
   getReviews,
   cudReview,
+  getCheckoutPage,
+  enrollCourse,
 };
