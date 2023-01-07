@@ -13,7 +13,8 @@
     {{! CATEGORIES }}
     <div class='dropdown mx-3 py-2'>
       <a
-        class='nav-link'›
+        class='nav-link'
+        ›
         href='#'
         data-bs-toggle='dropdown'
         aria-expanded='false'
@@ -54,7 +55,7 @@
     </div>
 
     {{! SEARCH BAR }}
-    <form class='mb-0 flex-grow-1'>
+    <form action='/search' method='get' class='mb-0 flex-grow-1'>
       <div class='row height d-flex justify-content-center align-items-center'>
         <div
           class='search-header d-flex justify-content-center align-items-center relative position-relative'
@@ -63,9 +64,10 @@
             <i class='fa fa-search'></i>
           </button>
           <input
+            name='q'
             type='text'
             class='form-control rounded-pill'
-            placeholder='Search for anything'
+            placeholder='Search for courses...'
           />
         </div>
       </div>
