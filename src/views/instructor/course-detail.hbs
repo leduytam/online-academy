@@ -1,6 +1,41 @@
 <div class='container instructor-container'>
   <div class='instructor-responsive-container'>
     <form action='/instructor/create-course' method='POST'>
+      <div class='course-container'>
+        <div class='d-flex flex-row justify-content-around text-hover mt-1'>
+          <h2 class='text-center'>{{course.name}}</h2>
+          <button
+            id='btn-login'
+            class='btn btn-primary w-20 add-lesson-button fs-6'
+          >
+            <i class='fa-solid fa-square-plus'></i>
+            Add section
+          </button>
+        </div>
+        <div class='section-container d-flex flex-column'>
+          {{#each course.sections}}
+            <div
+              class='d-flex flex-row justify-content-between align-items-center text-hover'
+            >
+              <h5 class='p-1 fs-6'>{{this.name}}</h5>
+              <button
+                id='btn-login'
+                class='btn btn-primary w-20 add-lesson-button fs-6'
+              >
+                <i class='fa-solid fa-square-plus'></i>
+                Add lesson
+              </button>
+            </div>
+            <div class='lesson-container'>
+              {{#each this.lessons}}
+                <ul class='list-group px-3'>
+                  <li class='list-group-item bg-secondary'>{{this.name}}</li>
+                </ul>
+              {{/each}}
+            </div>
+          {{/each}}
+        </div>
+      </div>
       <div class='d-flex form-container'>
         <div class='form-content'>
           <div class='oa-form-group'>
@@ -9,7 +44,7 @@
               type='text'
               name='name'
               id='name'
-              placeholder="What's the name of your course?"
+              value='{{course.name}}'
               class='oa-text-input-large'
             />
           </div>
@@ -22,7 +57,7 @@
                   <img alt='cover' class='img-fluid' />
                 </div>
               </div>
-              <div class='mb-3'>
+              <div class='mb-5 pb-3'>
                 <input
                   class='form-control'
                   type='file'
@@ -45,6 +80,7 @@
               id='price'
               class='oa-text-input-large'
               placeholder="What's the price of your course?"
+              value='{{course.price}}'
             />
           </div>
           <div class='oa-form-group'>
@@ -72,6 +108,7 @@
               id='brief'
               placeholder='Brief description of your course'
               class='oa-text-input-large'
+              value='{{course.briefDescription}}'
             />
           </div>
           <div class='oa-form-group'>
@@ -82,13 +119,15 @@
               id='detail'
               placeholder='Detail description of your course'
               class='oa-text-input-large'
+              value='{{course.detailDescription}}'
             />
           </div>
         </div>
       </div>
+
       <div class='oa-footer-btns mt-5 d-flex justify-content-end'>
         <button type='submit' class='save-button btn btn-primary'>
-          <span>Add</span>
+          <span>Save</span>
         </button>
       </div>
     </form>

@@ -182,3 +182,23 @@
     }
   }
 }
+
+.add-lesson-button {
+  height: 2.15rem;
+  display: none;
+}
+
+.section-container {
+  gap: 0.5rem;
+  padding: 1.5rem 2rem;
+}
+
+.text-hover:hover {
+  .add-lesson-button {
+    display: block;
+  }
+}
+
+.course-container {
+  background-color: #f2f2f2;
+}

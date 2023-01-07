@@ -18,6 +18,7 @@
 .form-container {
   flex: 1;
   gap: 2rem;
+  margin-bottom: 10%;
 
   .form-content {
     flex: 1;
@@ -251,4 +252,8 @@
     font-size: 1rem;
     font-weight: 700;
   }
+}
+
+.edit-icon {
+  color: $primary;
 }

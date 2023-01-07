@@ -40,6 +40,17 @@
               aria-selected='false'
             >Change password</a>
           </li>
+          <li class='nav-item' role='presentation'>
+            <a
+              class='nav-link'
+              id='yourCourses-tab'
+              data-bs-toggle='tab'
+              href='#yourCourses'
+              role='tab'
+              aria-controls='yourCourses'
+              aria-selected='false'
+            >Your Courses</a>
+          </li>
         </ul>
         <div class='tab-content' id='myTabContent'>
           <div
@@ -220,7 +231,7 @@
                         />
                       </div>
                     </div>
-                    <div class='oa-footer-btns mt-5'>
+                    <div class='oa-footer-btns mt-3 mb-3 pb-3'>
                       <button type='submit' class='save-button btn btn-primary'>
                         <span>Save</span>
                       </button>
@@ -357,6 +368,40 @@
                 </button>
               </div>
             </form>
+          </div>
+          <div
+            class='tab-pane fade'
+            id='yourCourses'
+            role='tabpanel'
+            aria-labelledby='yourCourses-tab'
+          >
+            <table
+              id='users-list'
+              class='table table-striped'
+              style='width:100%'
+            >
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th class='text-center'>Price</th>
+                  <th class='text-center'>Views</th>
+                  <th class='text-center'>Edit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each courses}}
+                  <tr>
+                    <td>{{this.name}}</td>
+                    <td class='text-center'>{{this.price}}</td>
+                    <td class='text-center'>{{this.views}}</td>
+                    <td class='text-center'>
+                      <a href='/instructor/{{this.slug}}'><i
+                          class='fa-solid fa-pen-to-square edit-icon'
+                        ></i></a></td>
+                  </tr>
+                {{/each}}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

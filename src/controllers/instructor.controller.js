@@ -9,11 +9,12 @@ import Section from '../models/section.model.js';
 import Subcategory from '../models/subcategory.model.js';
 import User from '../models/user.model.js';
 import categoryService from '../services/category.service.js';
+import courseService from '../services/course.service.js';
 import gcsService from '../services/gcs.service.js';
 import logger from '../utils/logger.js';
 
 const get = async (req, res, next) => {
-  res.render('instructor/courses', {
+  res.render('instructor/dashboard', {
     title: 'Courses',
   });
 };
@@ -23,9 +24,11 @@ const getInfo = async (req, res, next) => {
   const userDisplay = await User.findById(user._id ?? '')
     .populate('avatar')
     .lean();
+  const courses = await courseService.getAllByInstructor(user._id ?? '');
   res.render('instructor/profile', {
     title: 'Profile',
     user: userDisplay,
+    courses,
   });
 };
 
