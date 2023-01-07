@@ -52,7 +52,7 @@ const uploadImage = async (req, res, next) => {
   if (!file) {
     req.session.error = 'Please upload an image';
     req.session.save((err) => {
-      res.redirect('/instructor/profile');
+      res.redirect('/profile');
     });
     return;
   }
@@ -77,8 +77,7 @@ const uploadImage = async (req, res, next) => {
 
 export default {
   getHomeView,
-  getLessonView,
-  getProfile,
+  getProfileView,
   updateInformation,
   uploadImage,
 };
