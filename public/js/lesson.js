@@ -13,7 +13,17 @@
   });
 
   // Custom plyr video player
-  const player = new Plyr('#player', {});
+  let player = new Plyr('#player', {});
+
+  player.on('ready', (e) => {
+    if (!player.source) {
+      player.destroy();
+      player = new Plyr('#player', {
+        controls: [],
+        fullscreen: { enabled: false },
+      });
+    }
+  });
 
   // Review
   const frmReview = $('#frm-review');

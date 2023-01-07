@@ -53,9 +53,9 @@
 
         <div class='d-none'>
           <div id='popover-progress-content'>
-            <p class='mb-1'>142 of 543 complete.</p>
+            <p class='mb-1'>{{progress.completed}} of {{progress.total}} complete.</p>
             <div class='progress'>
-              <div class='progress-bar progress-bar-striped progress-bar-animated' role='progressbar' aria-label='Animated striped example' aria-valuenow='26' aria-valuemin='0' aria-valuemax='100' style='width: 26%'></div>
+              <div class='progress-bar progress-bar-striped progress-bar-animated' role='progressbar' aria-label='Animated striped example' aria-valuenow='{{round progress.percentage}}' aria-valuemin='0' aria-valuemax='100' style='width: {{round progress.percentage}}%'></div>
             </div>
           </div>
         </div>
@@ -66,7 +66,9 @@
       <div class='row g-0'>
         <div class='col'>
           <video class='w-100' controls playsinline id='player' style='max-height: 50rem'>
-            <source src='{{video}}' type='video/mp4' />
+            {{#if video}}
+              <source src='{{video}}' type='video/mp4' />
+            {{/if}}
           </video>
         </div>
       </div>
@@ -104,7 +106,9 @@
                         <div>
                           <h6 class='mb-0 fw-bold'>Section
                             {{math @index '+' 1}}:
-                            {{section.name}}</h6>
+                            {{section.name}}
+                          </h6>
+                          <small class='d-block text-muted text-small mt-1'>{{section.completedLessonsCount}} / {{section.lessons.length}} | {{secondToMinute section.totalDuration}}min</small>
                         </div>
                       </button>
                     </h2>
@@ -115,11 +119,11 @@
                           {{#each section.lessons as |lesson|}}
                           <a href='/courses/{{../../course.slug}}/lessons/{{lesson.slug}}' class='list-group-item list-group-item-action {{#if (eq lesson._id ../../activeLesson._id)}}active{{/if}}'>
                             <div class='d-flex'>
-                              <input type='checkbox' class='form-check-input' checked='checked' />
+                              <input type='checkbox' class='form-check-input opacity-100' {{#if lesson.completed}}checked='checked'{{/if}} disabled="disabled" />
 
                               <div class='ms-3'>
                                 <p class='mb-1'>
-                                  {{math @index '+' 1}}.
+                                  {{lesson.order}}.
                                   {{lesson.name}}
                                 </p>
                                 <p class='m-0 text-muted text-small'>

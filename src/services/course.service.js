@@ -147,6 +147,45 @@ const getCourseReviewOfUser = async (courseId, userId) => {
   return review;
 };
 
+const getCompletedLessons = async (courseId, userId) => {
+  const enrollment = await Enrollment.findOne({
+    course: courseId,
+    student: userId,
+  }).lean();
+
+  if (!enrollment) {
+    return [];
+  }
+
+  return enrollment.completedLessons;
+};
+
+const completeLesson = async (courseId, userId, lessonId) => {
+  await Enrollment.updateOne(
+    {
+      course: courseId,
+      student: userId,
+    },
+    {
+      $addToSet: {
+        completedLessons: lessonId,
+      },
+    }
+  );
+};
+
+const completeCourse = async (courseId, userId) => {
+  await Enrollment.updateOne(
+    {
+      course: courseId,
+      student: userId,
+    },
+    {
+      done: true,
+    }
+  );
+};
+
 export default {
   getCourseDetail,
   isEnrolled,
@@ -154,4 +193,7 @@ export default {
   getReviews,
   getReviewStats,
   getCourseReviewOfUser,
+  getCompletedLessons,
+  completeLesson,
+  completeCourse,
 };

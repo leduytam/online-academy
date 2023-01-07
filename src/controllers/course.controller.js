@@ -138,16 +138,57 @@ const getLessonView = async (req, res, next) => {
     return;
   }
 
-  const activeSection = course.sections.find((section) => {
-    return section.lessons.some((ls) => ls.slug === lessonSlug);
-  });
+  const completedLessons = await courseService.getCompletedLessons(
+    course._id,
+    user._id
+  );
 
-  // TODO: get first valid lesson
+  let firstLesson = null;
+  let activeSection = null;
+
+  let count = 0;
+  for (let i = 0; i < course.sections.length; i += 1) {
+    let completedLessonsCount = 0;
+    let totalDuration = 0;
+
+    // eslint-disable-next-line no-loop-func
+    course.sections[i].lessons = course.sections[i].lessons.map((ls) => {
+      count += 1;
+      const completed = completedLessons.some((cl) => cl.equals(ls._id));
+
+      if (!firstLesson) {
+        firstLesson = ls;
+      }
+
+      if (!activeSection && ls.slug === lessonSlug) {
+        activeSection = course.sections[i];
+      }
+
+      if (completed) {
+        completedLessonsCount += 1;
+      }
+
+      if (ls.video) {
+        totalDuration += ls.video.duration;
+      }
+
+      return {
+        ...ls,
+        order: count,
+        completed,
+      };
+    });
+
+    course.sections[i].completedLessonsCount = completedLessonsCount;
+    course.sections[i].totalDuration = totalDuration;
+  }
+
   if (!activeSection) {
     res.redirect(
-      `/courses/${courseSlug}/lessons/${course.sections[0].lessons[0].slug}`
+      firstLesson
+        ? `/courses/${course.slug}/lessons/${firstLesson.slug}`
+        : '/404'
     );
-
     return;
   }
 
@@ -155,13 +196,26 @@ const getLessonView = async (req, res, next) => {
     (ls) => ls.slug === lessonSlug
   );
 
+  if (!activeLesson.completed) {
+    await courseService.completeLesson(course._id, user._id, activeLesson._id);
+    activeLesson.completed = true;
+    activeSection.completedLessonsCount += 1;
+    completedLessons.push(activeLesson._id);
+  }
+
+  if (count === completedLessons.length) {
+    courseService.completeCourse(course._id, user._id);
+  }
+
   const reviews = await courseService.getReviews(courseSlug);
   const reviewStats = await courseService.getReviewStats(course._id);
-  const video = await gcsService.getVideoSignedUrl(activeLesson.video.filename);
   const myReview = await courseService.getCourseReviewOfUser(
     course._id,
     user._id
   );
+  const video = activeLesson.video
+    ? await gcsService.getVideoSignedUrl(activeLesson.video.filename)
+    : null;
 
   res.render('students/lesson', {
     title: course.name,
@@ -173,6 +227,11 @@ const getLessonView = async (req, res, next) => {
     reviews,
     reviewStats,
     myReview,
+    progress: {
+      total: count,
+      completed: completedLessons.length,
+      percentage: (completedLessons.length / count) * 100,
+    },
   });
 };
 
