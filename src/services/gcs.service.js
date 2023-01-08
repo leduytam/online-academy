@@ -2,7 +2,9 @@ import * as gcs from '@google-cloud/storage';
 
 import configs from '../configs/index.js';
 
-const storage = new gcs.Storage(configs.gcs.storage);
+const storage = new gcs.Storage({
+  credentials: configs.gcs.credentials,
+});
 
 const publicBucket = storage.bucket(configs.gcs.publicBucket);
 const privateBucket = storage.bucket(configs.gcs.privateBucket);
@@ -60,8 +62,6 @@ const getPublicImageUrl = (filename) => {
 };
 
 const getVideoSignedUrl = async (filename) => {
-  console.log(configs.gcs.storage);
-
   const options = {
     version: 'v4',
     action: 'read',

@@ -21,11 +21,10 @@ export default Joi.object()
 
     OTP_MAX_AGE: Joi.string().default('30m'),
 
-    GCS_PROJECT_ID: Joi.string().required(),
-    GCS_KEY_FILE: Joi.string().required(),
     GCS_PUBLIC_BUCKET: Joi.string().required(),
     GCS_PRIVATE_BUCKET: Joi.string().required(),
     GCS_SIGNED_URL_EXPIRES_IN: Joi.string().default('1h'),
+    GCS_CREDENTIALS_ENCODED: Joi.string().required(),
 
     API_URL: Joi.string().required(),
   })
