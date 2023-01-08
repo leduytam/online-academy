@@ -55,13 +55,12 @@ const configs = {
     maxAge: ms(env.OTP_MAX_AGE),
   },
   gcs: {
-    storage: {
-      projectId: env.GCS_PROJECT_ID,
-      keyFilename: env.GCS_KEY_FILE,
-    },
     publicBucket: env.GCS_PUBLIC_BUCKET,
     privateBucket: env.GCS_PRIVATE_BUCKET,
     signedUrlExpiresIn: ms(env.GCS_SIGNED_URL_EXPIRES_IN),
+    credentials: JSON.parse(
+      Buffer.from(env.GCS_CREDENTIALS_ENCODED, 'base64').toString('utf8')
+    ),
   },
   apiUrl: env.API_URL,
 };
