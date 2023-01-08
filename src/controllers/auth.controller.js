@@ -9,7 +9,9 @@ import otpService from '../services/otp.service.js';
 const login = async (req, res, next) => {
   const { email, password, rememberMe } = req.body;
 
-  const user = await User.findOne({ email }).select('+password');
+  const user = await User.findOne({ email, isDeleted: false }).select(
+    '+password'
+  );
 
   if (!user || !(await user.verifyPassword(password))) {
     req.session.error = 'Invalid email or password';

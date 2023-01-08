@@ -10,8 +10,8 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import xss from 'xss-clean';
 
+// import xss from 'xss-clean';
 import hbs from './configs/hbs.js';
 import configs from './configs/index.js';
 import './configs/mongoose.js';
@@ -63,7 +63,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(session({ ...configs.session }));
 
-app.use(xss());
+// app.use(xss());
 app.use(mongoSanitize());
 
 app.use(compression());

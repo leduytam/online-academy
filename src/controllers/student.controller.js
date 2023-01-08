@@ -31,6 +31,7 @@ const updateInformation = async (req, res, next) => {
     const userUpdate = await User.findById(user._id ?? '');
     const { name, facebook, website, twitter, linkedin, bio, youtube } =
       req.body;
+
     userUpdate.name = name;
     userUpdate.facebookLink = facebook;
     userUpdate.websiteLink = website;

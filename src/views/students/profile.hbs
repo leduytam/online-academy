@@ -35,7 +35,19 @@
                     <div class='udlite-in-udheavy rt-editor-container'>
                       <div class='rt-editor ud-text-md'>
                         <div class='ProseMirror'>
-                          <input type='text' class='biography-input' name='bio' value='{{user.bio}}' />
+                          <textarea id="bio" class='biography-input' name='bio'></textarea>
+                          <script>
+                            tinymce.init({
+                              selector: 'textarea#bio',
+                              menubar: false,
+                              statusbar: false,
+                              setup: function (editor) {
+                                editor.on('init', function (e) {
+                                  editor.setContent(`{{{user.bio}}}`);
+                                });
+                              }
+                            });
+                          </script>
                         </div>
                       </div>
 
