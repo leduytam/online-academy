@@ -14,4 +14,7 @@ router.get('/edit-user/:id', AdminController.getEditUserView);
 // COURSE
 router.get('/courses', AdminController.getCoursesView);
 
+// CATEGORY
+router.get('/categories', AdminController.getCategoriesView);
+
 export default router;

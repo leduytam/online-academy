@@ -1,0 +1,88 @@
+<div class='mx-2'>
+  <div>
+    <div class='accordion mt-4' id='category-accordion'>
+      {{#each this.categories as |category|}}
+        <div class='accordion-item my-4'>
+          <h2 class='accordion-header' id='category-header-{{category._id}}'>
+            <button
+              class='accordion-button border border-dark'
+              type='button'
+              data-bs-toggle='collapse'
+              data-bs-target='#category-{{category._id}}'
+              aria-expanded='false'
+              aria-controls='category-{{category._id}}'
+            >
+              <div class='d-flex justify-content-between w-100'>
+                <div class='fw-bold fs-5'>{{category.name}}</div>
+                <div class='fw-bold me-2'>{{category.subcategories.length}}
+                  subcategories</div>
+              </div>
+            </button>
+          </h2>
+
+          <div
+            id='category-{{category._id}}'
+            class='accordion-collapse collapse'
+            aria-labelledby='category-header-{{category._id}}'
+            data-bs-parent='#category-accordion'
+          >
+            <div class='accordion-body py-3' style='background-color: #c8c1b8;'>
+
+              <div class='d-flex flex-row align-items-center'>
+                <p class="fs-6">Name: </p>
+                <p class="fs-6 fw-bold ms-2">{{category.name}}</p>
+              </div>
+
+              <div class='d-flex flex-row align-items-center'>
+                <p class="fs-6">Slug: </p>
+                <p class="fs-6 fw-bold ms-2">{{category.slug}}</p>
+              </div>
+
+
+              <div class='d-flex justify-content-between'>
+                <div class='fs-6'>Subcategories</div>
+                <div>
+                  <button
+                    class='btn btn-dark btn-sm'
+                    data-bs-toggle='modal'
+                    data-bs-target='#add-subcategory-modal'
+                    data-bs-category-id='{{this._id}}'
+                  >
+                    <i class='bi bi-plus-circle-fill'></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class='accordion mt-4' id='subcategory-accordion'>
+                {{#each category.subcategories as |subcategory|}}
+                  <div class='accordion-item'>
+                    <h2
+                      class='accordion-header'
+                      id='subcategory-header-{{subcategory._id}}'
+                    >
+                      <button
+                        class='accordion-button'
+                        type='button'
+                        data-bs-toggle='collapse'
+                        data-bs-target='#subcategory-{{subcategory._id}}'
+                        aria-expanded='false'
+                        aria-controls='subcategory-{{subcategory._id}}'
+                      >
+                        <div class='d-flex justify-content-between w-100'>
+                          <div class='fw-bold'>{{subcategory.name}}</div>
+                          <div class='fw-bold me-2'>{{subcategory.countCourses}}
+                            courses</div>
+                        </div>
+                      </button>
+                    </h2>
+                  </div>
+                {{/each}}
+              </div>
+            </div>
+          </div>
+
+        </div>
+      {{/each}}
+    </div>
+  </div>
+</div>

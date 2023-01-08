@@ -2,6 +2,7 @@ import Course from '../models/course.model.js';
 import SubCategory from '../models/subcategory.model.js';
 import User from '../models/user.model.js';
 import logger from '../utils/logger.js';
+import Category from '../models/category.model.js';
 
 // View
 const getUsersView = async (req, res, next) => {
@@ -236,6 +237,31 @@ const deleteCourse = async (req, res, next) => {
   }
 };
 
+const getCategoriesView = async (req, res, next) => {
+  try {
+    const categories = await Category.find().populate('subcategories').lean();
+    const courses = await Course.find().lean();
+    categories.forEach((category) => {
+      category.subcategories.forEach((subcategory) => {
+        subcategory.countCourses = courses.filter((course) => course.category.toString() === subcategory._id.toString()).length;
+      });
+    });
+    
+    res.render('admin/categories/categories-list', {
+      title: 'Categories',
+      categories,
+    });
+  } catch (e) {
+    logger.error(e);
+    req.flash('error_msg', e.message);
+    res.redirect('/admin');
+  }
+}
+
+const createCategory = async (req, res, next) => {
+  
+}
+
 export default {
   getUsersView,
   getCoursesView,
@@ -250,4 +276,5 @@ export default {
   getCourseById,
   getCoursesOfUser,
   deleteCourse,
+  getCategoriesView,
 };
