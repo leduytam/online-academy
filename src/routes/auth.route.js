@@ -3,6 +3,7 @@ import { Router } from 'express';
 import authController from '../controllers/auth.controller.js';
 import auth from '../middlewares/auth.middleware.js';
 import {
+  validate,
   validateReJson,
   validateRedirect,
 } from '../middlewares/validate.middleware.js';
@@ -34,7 +35,7 @@ router
   .route('/change-password')
   .post(
     auth.protect,
-    validateReJson(authValidation.changePassword),
+    validate(authValidation.changePassword),
     authController.changePassword
   );
 
@@ -62,6 +63,20 @@ router.post(
   auth.preventAuth,
   validateReJson(authValidation.sendResetPasswordOtp),
   authController.sendResetPasswordOtp
+);
+
+router.post(
+  '/send-change-email-otp',
+  auth.protect,
+  validateReJson(authValidation.sendChangeEmailOtp),
+  authController.sendChangeEmailOtp
+);
+
+router.post(
+  '/change-email',
+  auth.protect,
+  validate(authValidation.changeEmail),
+  authController.changeEmail
 );
 
 export default router;

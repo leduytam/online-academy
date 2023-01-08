@@ -5,81 +5,37 @@
       <div class='card-body'>
         <ul class='nav nav-tabs border-bottom' id='myTab' role='tablist'>
           <li class='nav-item' role='presentation'>
-            <a
-              class='nav-link active'
-              id='information-tab'
-              data-bs-toggle='tab'
-              href='#information'
-              role='tab'
-              aria-controls='information'
-              aria-selected='true'
-            >Information</a>
+            <a class='nav-link active' id='information-tab' data-bs-toggle='tab' href='#information' role='tab' aria-controls='information' aria-selected='true'>Information</a>
           </li>
           <li class='nav-item' role='presentation'>
-            <a
-              class='nav-link'
-              id='picture-tab'
-              data-bs-toggle='tab'
-              href='#picture'
-              role='tab'
-              aria-controls='picture'
-              aria-selected='false'
-            >Profile picture</a>
+            <a class='nav-link' id='picture-tab' data-bs-toggle='tab' href='#picture' role='tab' aria-controls='picture' aria-selected='false'>Profile picture</a>
           </li>
           <li class='nav-item' role='presentation'>
-            <a
-              class='nav-link'
-              id='changePassword-tab'
-              data-bs-toggle='tab'
-              href='#changePassword'
-              role='tab'
-              aria-controls='changePassword'
-              aria-selected='false'
-            >Change password</a>
+            <a class='nav-link' id='changeEmail-tab' data-bs-toggle='tab' href='#changeEmail' role='tab' aria-controls='changeEmail' aria-selected='false'>Change email</a>
+          </li>
+          <li class='nav-item' role='presentation'>
+            <a class='nav-link' id='changePassword-tab' data-bs-toggle='tab' href='#changePassword' role='tab' aria-controls='changePassword' aria-selected='false'>Change password</a>
           </li>
         </ul>
         <div class='tab-content' id='myTabContent'>
-          <div
-            class='tab-pane fade show active'
-            id='information'
-            role='tabpanel'
-            aria-labelledby='information-tab'
-          >
+          <div class='tab-pane fade show active' id='information' role='tabpanel' aria-labelledby='information-tab'>
             <form action='/edit-profile' method='POST'>
               <div class='d-flex form-container'>
                 <div class='form-content'>
                   <div class='oa-form-group'>
                     <label class='oa-form-label oa-heading-sm'>Name</label>
-                    <input
-                      type='text'
-                      name='name'
-                      id='name'
-                      class='oa-text-input-large'
-                      value='{{user.name}}'
-                    />
+                    <input type='text' name='name' id='name' class='oa-text-input-large' value='{{user.name}}' />
                   </div>
                   <div class='oa-form-group'>
                     <label class='oa-form-label oa-heading-sm'>Email</label>
-                    <input
-                      type='text'
-                      name='email'
-                      id='email'
-                      class='oa-text-input-large'
-                      value='{{user.email}}'
-                      disabled='true'
-                    />
+                    <input type='text' name='email' id='email' class='oa-text-input-large' value='{{user.email}}' disabled='true' />
                   </div>
                   <div class='oa-form-group'>
                     <label class='oa-form-label oa-heading-sm'>Biography</label>
                     <div class='udlite-in-udheavy rt-editor-container'>
                       <div class='rt-editor ud-text-md'>
                         <div class='ProseMirror'>
-                          <input
-                            type='text'
-                            class='biography-input'
-                            name='bio'
-                            value='{{user.bio}}'
-                          />
+                          <input type='text' class='biography-input' name='bio' value='{{user.bio}}' />
                         </div>
                       </div>
 
@@ -93,72 +49,34 @@
                 <div class='form-content'>
                   <div class='oa-form-group'>
                     <label class='oa-form-label oa-heading-sm'>Website</label>
-                    <input
-                      type='text'
-                      name='website'
-                      id='website'
-                      class='oa-text-input-large'
-                      value='{{user.websiteLink}}'
-                    />
+                    <input type='text' name='website' id='website' class='oa-text-input-large' value='{{user.websiteLink}}' />
                   </div>
                   <div class='oa-form-group'>
                     <label class='oa-form-label oa-heading-sm'>Twitter</label>
-                    <div
-                      class='ud-text-input-container border border-1 border-dark border-end-0'
-                    >
+                    <div class='ud-text-input-container border border-1 border-dark border-end-0'>
                       <div class='link-to'>http://www.twitter.com/</div>
-                      <input
-                        type='text'
-                        name='twitter'
-                        id='twitter'
-                        class='oa-text-input-large'
-                        value='{{user.twitterLink}}'
-                      />
+                      <input type='text' name='twitter' id='twitter' class='oa-text-input-large' value='{{user.twitterLink}}' />
                     </div>
                   </div>
                   <div class='oa-form-group'>
                     <label class='oa-form-label oa-heading-sm'>Facebook</label>
-                    <div
-                      class='ud-text-input-container border border-1 border-dark border-end-0'
-                    >
+                    <div class='ud-text-input-container border border-1 border-dark border-end-0'>
                       <div class='link-to'>http://www.facebook.com/</div>
-                      <input
-                        type='text'
-                        name='facebook'
-                        id='facebook'
-                        class='oa-text-input-large'
-                        value='{{user.facebookLink}}'
-                      />
+                      <input type='text' name='facebook' id='facebook' class='oa-text-input-large' value='{{user.facebookLink}}' />
                     </div>
                   </div>
                   <div class='oa-form-group'>
                     <label class='oa-form-label oa-heading-sm'>LinkedIn</label>
-                    <div
-                      class='ud-text-input-container border border-1 border-dark border-end-0'
-                    >
+                    <div class='ud-text-input-container border border-1 border-dark border-end-0'>
                       <div class='link-to'>http://www.linkedin.com/</div>
-                      <input
-                        type='text'
-                        name='linkedin'
-                        id='linkedin'
-                        class='oa-text-input-large'
-                        value='{{user.linkedinLink}}'
-                      />
+                      <input type='text' name='linkedin' id='linkedin' class='oa-text-input-large' value='{{user.linkedinLink}}' />
                     </div>
                   </div>
                   <div class='oa-form-group'>
                     <label class='oa-form-label oa-heading-sm'>Youtube</label>
-                    <div
-                      class='ud-text-input-container border border-1 border-dark border-end-0'
-                    >
+                    <div class='ud-text-input-container border border-1 border-dark border-end-0'>
                       <div class='link-to'>http://www.youtube.com/</div>
-                      <input
-                        type='text'
-                        name='youtube'
-                        id='youtube'
-                        class='oa-text-input-large'
-                        value='{{user.youtubeLink}}'
-                      />
+                      <input type='text' name='youtube' id='youtube' class='oa-text-input-large' value='{{user.youtubeLink}}' />
                     </div>
                   </div>
                 </div>
@@ -170,17 +88,8 @@
               </div>
             </form>
           </div>
-          <div
-            class='tab-pane fade'
-            id='picture'
-            role='tabpanel'
-            aria-labelledby='picture-tab'
-          >
-            <form
-              action='/upload-image'
-              method='POST'
-              enctype='multipart/form-data'
-            >
+          <div class='tab-pane fade' id='picture' role='tabpanel' aria-labelledby='picture-tab'>
+            <form action='/upload-image' method='POST' enctype='multipart/form-data'>
               <div class='d-flex form-container'>
                 <div class='form-content'>
                   <div class='oa-form-group image-Name'>
@@ -191,23 +100,11 @@
                     <div class='udlite-in-udheavy'>
                       <div class='ud-image-upload-preview-wrapper'>
                         <div class='image-upload-preview-with-crop'>
-                          <img
-                            id='avatar-preview'
-                            src='{{#if user.avatar}}{{gcsPublicUrl user.avatar.filename}}{{else}}/assets/app/avatar-placeholder.png{{/if}}'
-                            alt='avatar'
-                            class='img-fluid'
-                          />
+                          <img id='avatar-preview' src='{{#if user.avatar}}{{gcsPublicUrl user.avatar.filename}}{{else}}/assets/app/avatar-placeholder.png{{/if}}' alt='avatar' class='img-fluid' />
                         </div>
                       </div>
                       <div class='mb-3'>
-                        <input
-                          class='form-control'
-                          type='file'
-                          id='avatar-input'
-                          name='image'
-                          accept='image/*'
-                          required="required"
-                        />
+                        <input class='form-control' type='file' id='avatar-input' name='image' accept='image/*' required="required" />
                       </div>
                     </div>
                     <div class='oa-footer-btns mt-5'>
@@ -220,43 +117,21 @@
               </div>
             </form>
           </div>
-          <div
-            class='tab-pane fade'
-            id='changePassword'
-            role='tabpanel'
-            aria-labelledby='changePassword-tab'
-          >
-            <form
-              id='frm-change-password'
-              action='/change-password'
-              method='POST'
-            >
+          <div class='tab-pane fade' id='changePassword' role='tabpanel' aria-labelledby='changePassword-tab'>
+            <form id='frm-change-password' action='/change-password' method='POST'>
               <div class='d-flex form-container'>
                 <div class='form-content'>
                   <div class='oa-form-group'>
                     <label class='oa-form-label oa-heading-sm'>Old password
                       <span class='text-danger ms-2 mt-2'>*</span>
                     </label>
-                    <input
-                      type='password'
-                      name='oldPassword'
-                      id='oldPassword'
-                      class='oa-text-input-large'
-                      required='true'
-                    />
+                    <input type='password' name='oldPassword' id='oldPassword' class='oa-text-input-large' required='true' />
                   </div>
                   <div class='oa-form-group'>
                     <label class='oa-form-label oa-heading-sm'>New password
                       <span class='text-danger ms-2 mt-2'>*</span>
                     </label>
-                    <input
-                      type='password'
-                      name='newPassword'
-                      id='newPassword'
-                      class='oa-text-input-large'
-                      required='required'
-                      pattern='^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'
-                    />
+                    <input type='password' name='newPassword' id='newPassword' class='oa-text-input-large' required='required' pattern='^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$' />
                     <div class='invalid-feedback'>
                       Password must be followed by:
                       <ul class='mb-0'>
@@ -273,18 +148,67 @@
                       password
                       <span class='text-danger ms-2 mt-2'>*</span>
                     </label>
-                    <input
-                      type='password'
-                      name='confirmNewPassword'
-                      id='confirmNewPassword'
-                      class='oa-text-input-large'
-                      required='required'
-                    />
+                    <input type='password' name='confirmNewPassword' id='confirmNewPassword' class='oa-text-input-large' required='required' />
                     <div class='invalid-feedback'>New password and confirm new
                       password do not match</div>
                   </div>
                 </div>
               </div>
+              <div class='oa-footer-btns mt-5'>
+                <button type='submit' class='save-button btn btn-primary'>
+                  <span>Save</span>
+                </button>
+              </div>
+            </form>
+          </div>
+          <div class='tab-pane fade' id='changeEmail' role='tabpanel' aria-labelledby='changeEmail-tab'>
+            <form id='frm-change-email' action='/change-email' method='POST'>
+              <div class='d-flex form-container'>
+                <div class='form-content'>
+                  <div class='oa-form-group'>
+                    <label class='oa-form-label oa-heading-sm'>New email
+                      <span class='text-danger ms-2 mt-2'>*</span>
+                    </label>
+                    <input
+                      type='email'
+                      name='email'
+                      id='newEmail'
+                      class='oa-text-input-large'
+                      required='true'
+                      pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
+                    />
+                  </div>
+                  
+                  <div class='d-flex mb-3 gap-3'>
+                    <div class='oa-form-group flex-grow-1'>
+                      <label class='oa-form-label oa-heading-sm'>
+                        OTP
+                        <span class='text-danger ms-2 mt-2'>*</span>
+                      </label>
+                      <input
+                        name='otp'
+                        type='text'
+                        class='oa-text-input-large w-100'
+                        placeholder='OTP'
+                        maxlength='6'
+                        required='required'
+                        pattern='^\d{6}$'
+                      />
+                    </div>
+
+                    <button
+                      id='btn-send-otp'
+                      type='button'
+                      class='btn btn-outline-secondary px-4 align-self-end'
+                      disabled='disabled'
+                      style="height: 3rem;"
+                    >
+                      Send OTP
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div id='alert-otp' class='alert d-none' role='alert'></div>
               <div class='oa-footer-btns mt-5'>
                 <button type='submit' class='save-button btn btn-primary'>
                   <span>Save</span>
@@ -298,16 +222,94 @@
   </div>
 </div>
 
-<script>
-  const avatarInput = document.getElementById('avatar-input');
-  const avatarPreview = document.getElementById('avatar-preview');
+{{#if (or error success)}}
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="toast" class="toast{{#if error}} text-bg-danger{{else}} text-bg-success{{/if}}" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="toast-body">
+        {{#if error}}{{error}}{{else}}{{success}}{{/if}}
+        </div>
+        <button type="button" class="btn-close me-2" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+{{/if}}
 
-  avatarInput.onchange = function (e) {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      avatarPreview.src = e.target.result;
+<script>
+  (() => {
+    const $ = document.querySelector.bind(document);
+
+    const avatarInput = $('#avatar-input');
+    const avatarPreview = $('#avatar-preview');
+
+    avatarInput.onchange = function (e) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        avatarPreview.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
     };
-    reader.readAsDataURL(file);
-  };
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const toastElement = $('#toast');
+      if (toastElement) {
+        const toast = new bootstrap.Toast(toastElement);
+        toast.show();
+      }
+    });
+
+    const sendOtpBtn = $('#btn-send-otp');
+    const newEmailInput = $('#newEmail');
+    const otpAlert = $('#alert-otp');
+    sendOtpBtn.addEventListener('click', async function (e) {
+      sendOtpBtn.disabled = true;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      const response = await fetch('/send-change-email-otp', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: newEmailInput.value }),
+      });
+
+      const { message } = await response.json();
+
+      if (response.status === 200) {
+        otpAlert.classList.remove('alert-danger');
+        otpAlert.classList.add('alert-success');
+
+        (() => {
+          let timer = 30;
+
+          const interval = setInterval(() => {
+            sendOtpBtn.textContent = `Resend OTP (${timer})`;
+            timer -= 1;
+          }, 1000);
+
+          setTimeout(() => {
+            clearInterval(interval);
+            sendOtpBtn.textContent = 'Resend OTP';
+            sendOtpBtn.disabled = false;
+          }, timer * 1000);
+        })();
+      } else {
+        otpAlert.classList.remove('alert-success');
+        otpAlert.classList.add('alert-danger');
+
+        sendOtpBtn.disabled = false;
+      }
+
+      otpAlert.textContent = message;
+      otpAlert.classList.remove('d-none');
+    });
+
+    newEmailInput.addEventListener('input', function (e) {
+      sendOtpBtn.disabled = !newEmailInput.validity.valid;
+    });
+  })();
 </script>
