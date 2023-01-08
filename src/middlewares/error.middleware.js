@@ -32,6 +32,6 @@ export const errorHandler = (err, req, res, next) => {
   //   return;
   // }
 
-  logger.error(err);
+  logger.error(error);
   res.render('errors/error', { error, layout: 'empty', title: 'Error' });
 };

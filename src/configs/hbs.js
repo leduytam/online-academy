@@ -33,6 +33,7 @@ const helpers = {
     const factor = 10 ** precision;
     return Math.round((a + Number.EPSILON) * factor) / factor;
   },
+  roundHalf: (a) => Math.round(a * 2) / 2,
   math: (a, operator, b) => {
     switch (operator) {
       case '+':
