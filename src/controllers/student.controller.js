@@ -4,10 +4,8 @@ import uniqueSlug from 'unique-slug';
 import EMedia from '../constant/media.js';
 import Media from '../models/media.model.js';
 import User from '../models/user.model.js';
-import gcsService from '../services/gcs.service.js';
 import logger from '../utils/logger.js';
 
-import User from '../models/user.model.js';
 import Course from '../models/course.model.js';
 import Enrollment from '../models/enrollment.model.js';
 import gcsService from '../services/gcs.service.js';
@@ -171,12 +169,10 @@ const toggleWishList = async (req, res, next) => {
 };
 
 export default {
-  getHomeView,
   getProfileView,
   updateInformation,
   uploadProfileImage,
   uploadImage,
-  getLessonView,
   getMyCoursesView,
   getWishlistView,
   toggleWishList,

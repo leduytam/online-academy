@@ -17,7 +17,6 @@ router.get('/wish-list', studentController.getWishlistView);
 
 router.get('/my-courses', studentController.getMyCoursesView);
 
-router.get('/lesson', studentController.getLessonView);
 router.get('/profile', studentController.getProfileView);
 
 router.route('/edit-profile').post(studentController.updateInformation);
@@ -28,6 +27,5 @@ router.post(
   studentController.uploadProfileImage
 );
 
-router.post('/add-wish-list', studentController.addWishList);
 
 export default router;
