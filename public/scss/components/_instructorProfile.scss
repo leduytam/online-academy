@@ -173,8 +173,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
   position: relative;
+  min-height: 20rem;
 }
 
 .file-uploader {
@@ -242,13 +242,17 @@
 
 .oa-footer-btns {
   text-align: left;
+}
 
-  .save-button {
-    height: 3rem;
-    color: #fff;
-    min-width: 5rem;
-    padding: 0 3rem;
-    font-size: 1rem;
-    font-weight: 700;
-  }
+.save-button {
+  height: 3rem;
+  color: #fff;
+  min-width: 5rem;
+  padding: 0 3rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.edit-icon {
+  color: $primary;
 }

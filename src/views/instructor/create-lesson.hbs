@@ -1,0 +1,63 @@
+<div class='container instructor-container'>
+  <div class='instructor-responsive-container'>
+    <form
+      action='/api/v1/instructor/{{courseSlug}}/{{sectionId}}/create-section'
+      method='POST'
+    >
+      <div class='d-flex form-container m-2'>
+        <div class='form-content'>
+          <div class='oa-form-group'>
+            <label class='oa-form-label oa-heading-sm'>Name</label>
+            <input
+              type='text'
+              name='name'
+              id='name'
+              class='oa-text-input-large'
+              placeholder="What's the name of your lesson?"
+              required
+            />
+          </div>
+          <div class='oa-form-group'>
+            <label class='oa-form-label oa-heading-sm'></label>
+            <div class='form-check'>
+              <input
+                class='form-check-input'
+                type='checkbox'
+                name='flexRadioDefault'
+                id='flexRadioDefault1'
+              />
+              <label class='form-check-label' for='flexRadioDefault1'>
+                Preview
+              </label>
+            </div>
+          </div>
+          <div class='oa-form-group'>
+            <label class='oa-form-label oa-heading-sm'>Video</label>
+            <div class='udlite-in-udheavy'>
+              <div class='ud-image-upload-preview-wrapper video-content'>
+                <div class='image-upload-preview-with-crop'>
+                </div>
+              </div>
+              <div class='mb-3'>
+                <input
+                  class='form-control video-content'
+                  type='file'
+                  name='video'
+                  accept='video/*'
+                />
+              </div>
+            </div>
+
+            <div class='oa-footer-btns d-flex pb-3'>
+              <button type='submit' class='save-button btn btn-primary'>
+                <i class='fa-solid fa-floppy-disk'></i>
+                <span>Add</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

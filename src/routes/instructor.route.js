@@ -21,6 +21,18 @@ router.get('/profile', InstructorController.getInfo);
 
 router.route('/edit-profile').post(InstructorController.updateInformation);
 
+router.get('/create-course', InstructorController.getCreateCourseView);
+
+router.get(
+  '/:courseSlug/create-section',
+  InstructorController.createSectionView
+);
+
+router.get(
+  '/:courseSlug/:sectionId/create-lesson',
+  InstructorController.createLessonView
+);
+
 router.post(
   '/upload-profile-image',
   upload.single('image'),

@@ -1,0 +1,96 @@
+<div class='container instructor-container'>
+  <div class='instructor-responsive-container'>
+    <form action='/instructor/create-course' method='POST'>
+      <div class='d-flex form-container'>
+        <div class='form-content'>
+          <div class='oa-form-group'>
+            <label class='oa-form-label oa-heading-sm'>Course Name</label>
+            <input
+              type='text'
+              name='name'
+              id='name'
+              placeholder="What's the name of your course?"
+              class='oa-text-input-large'
+            />
+          </div>
+
+          <div class='oa-form-group image-Name'>
+            <label class='oa-form-label oa-heading-sm'>Cover Photo</label>
+            <div class='udlite-in-udheavy'>
+              <div class='ud-image-upload-preview-wrapper'>
+                <div class='image-upload-preview-with-crop'>
+                  <img alt='cover' class='img-fluid' />
+                </div>
+              </div>
+              <div class='mb-3'>
+                <input
+                  class='form-control'
+                  type='file'
+                  id='formFile'
+                  name='image'
+                  accept='image/*'
+                />
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class='form-content'>
+          <div class='oa-form-group'>
+            <label class='oa-form-label oa-heading-sm'>Price</label>
+            <input
+              type='number'
+              name='price'
+              min='1'
+              id='price'
+              class='oa-text-input-large'
+              placeholder="What's the price of your course?"
+            />
+          </div>
+          <div class='oa-form-group'>
+            <label class='oa-form-label oa-heading-sm'>Category</label>
+            <select
+              class='form-select'
+              aria-label='Choose a suitable category'
+              name='category'
+            >
+              <option selected disabled>Choose a suitable category</option>
+              {{#each categories as |category|}}
+                {{#each this.subcategories as |subcategory|}}
+                  <option
+                    value='{{subcategory.name}}'
+                  >{{subcategory.name}}</option>
+                {{/each}}
+              {{/each}}
+            </select>
+          </div>
+          <div class='oa-form-group'>
+            <label class='oa-form-label oa-heading-sm'>Brief Description</label>
+            <input
+              type='text'
+              name='brief'
+              id='brief'
+              placeholder='Brief description of your course'
+              class='oa-text-input-large'
+            />
+          </div>
+          <div class='oa-form-group'>
+            <label class='oa-form-label oa-heading-sm'>Detail Description</label>
+            <textarea id='bio' class='biography-input' name='bio'></textarea>
+            <script>
+              tinymce.init({ selector: 'textarea#bio', menubar: false,
+              statusbar: false, setup: function (editor) { editor.on('init',
+              function (e) { editor.setContent(`{{{course.detailDescription}}}`);
+              }); } });
+            </script>
+          </div>
+        </div>
+      </div>
+      <div class='oa-footer-btns mt-5 d-flex justify-content-end'>
+        <button type='submit' class='save-button btn btn-primary'>
+          <span>Add</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

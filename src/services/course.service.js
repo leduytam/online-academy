@@ -32,6 +32,11 @@ const getCourseDetail = async (slug) => {
   return course;
 };
 
+const getAllByInstructor = async (instructorId) => {
+  const courses = await Course.find({ instructor: instructorId }).lean();
+  return courses;
+};
+
 const getReviewStats = async (courseId) => {
   const course = await Course.findById(courseId);
 
@@ -281,6 +286,7 @@ export default {
   getReviewStats,
   getCourseReviewOfUser,
   getCompletedLessons,
+  getAllByInstructor,
   completeLesson,
   completeCourse,
   getNewestCourses,

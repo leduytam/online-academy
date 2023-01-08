@@ -8,11 +8,13 @@ import Media from '../models/media.model.js';
 import Section from '../models/section.model.js';
 import Subcategory from '../models/subcategory.model.js';
 import User from '../models/user.model.js';
+import categoryService from '../services/category.service.js';
+import courseService from '../services/course.service.js';
 import gcsService from '../services/gcs.service.js';
 import logger from '../utils/logger.js';
 
 const get = async (req, res, next) => {
-  res.render('instructor/courses', {
+  res.render('instructor/dashboard', {
     title: 'Courses',
   });
 };
@@ -22,9 +24,11 @@ const getInfo = async (req, res, next) => {
   const userDisplay = await User.findById(user._id ?? '')
     .populate('avatar')
     .lean();
+  const courses = await courseService.getAllByInstructor(user._id ?? '');
   res.render('instructor/profile', {
     title: 'Profile',
     user: userDisplay,
+    courses,
   });
 };
 
@@ -107,10 +111,17 @@ const getCourseView = async (req, res, next) => {
   const { user } = req.session;
 
   // validate course instructor is the same as the logged in user
+
   const course = await Course.findOne({ slug: courseSlug })
     .populate('coverPhoto')
     .populate('category')
     .populate('instructor')
+    .populate({
+      path: 'sections',
+      populate: {
+        path: 'lessons',
+      },
+    })
     .lean();
 
   if (!course) {
@@ -122,9 +133,10 @@ const getCourseView = async (req, res, next) => {
     res.redirect('/instructor');
     return;
   }
-  res.render('instructor/course', {
+  res.render('instructor/course-detail', {
     title: 'Course',
     course,
+    categories: res.locals.categories,
   });
 };
 
@@ -284,6 +296,31 @@ const getSectionsView = async (req, res, next) => {
   }
 };
 
+const createSectionView = async (req, res, next) => {
+  const { courseSlug } = req.params;
+
+  const name = req.body;
+
+  res.render('instructor/create-section', {
+    title: 'Create section',
+    courseSlug,
+  });
+
+  try {
+    const course = await Course.findOne({ slug: courseSlug });
+    const section = await Section.create({
+      name,
+    });
+    course.sections.push(section._id);
+    await course.save();
+    res.redirect(`/instructor/course/${courseSlug}`);
+  } catch (e) {
+    logger.error(e);
+    req.session.error = 'Something went wrong';
+    res.redirect(`/instructor/course/${courseSlug}`);
+  }
+};
+
 const createSection = async (req, res, next) => {
   const { name } = req.body;
   const { courseSlug } = req.params;
@@ -311,10 +348,12 @@ const getSectionView = async (req, res, next) => {
     const section = await Section.findById(sectionId)
       .populate('lessons')
       .lean();
-    res.render('instructor/section', {
+    res.render('instructor/section-detail', {
       title: 'Section',
       course,
       section,
+      courseSlug,
+      sectionId,
     });
   } catch (e) {
     logger.error(e);
@@ -369,6 +408,51 @@ const deleteSection = async (req, res, next) => {
 };
 
 //  lesson
+
+const createLessonView = async (req, res, next) => {
+  try {
+    const { courseSlug, sectionId } = req.params;
+    const { name } = req.body;
+    const { file } = req;
+
+    res.render('instructor/create-lesson', {
+      title: 'Create lesson',
+      courseSlug,
+      sectionId,
+    });
+
+    if (!file) {
+      req.session.error = 'Please upload a video';
+      req.session.save((err) => {
+        res.redirect(`/instructor/${courseSlug}/${sectionId}`);
+      });
+      return;
+    }
+    const extname = path.extname(file.originalname);
+    const filename = `${uniqueSlug()}${Date.now()}${extname}`;
+    await gcsService.uploadVideo(file, filename);
+    const media = await Media.create({
+      filename,
+      type: 'video',
+    });
+    const lesson = await Lesson.create({
+      name,
+      video: media._id,
+      preview,
+      slug: uniqueSlug(),
+    });
+
+    const section = await Section.findById(sectionId);
+    section.lessons.push(lesson._id);
+    await section.save();
+    res.redirect(`/instructor/`);
+  } catch (e) {
+    logger.error(e);
+    req.session.error = 'Something went wrong';
+    res.redirect('/instructor');
+  }
+};
+
 const createLesson = async (req, res, next) => {
   try {
     const { sectionId } = req.params;
@@ -415,12 +499,22 @@ const getLessonView = async (req, res, next) => {
     const section = await Section.findById(sectionId)
       .populate('lessons')
       .lean();
-    const lesson = await Lesson.findOne({ slug: lessonSlug }).lean();
-    res.render('instructor/lesson', {
+    const lesson = await Lesson.findOne({ slug: lessonSlug })
+      .populate({
+        path: 'video',
+      })
+      .lean();
+
+    const videoUrl = lesson?.video?.filename
+      ? await gcsService.getVideoSignedUrl(lesson.video.filename)
+      : null;
+
+    res.render('instructor/lesson-detail', {
       title: 'Lesson',
       course,
       section,
       lesson,
+      videoUrl,
     });
   } catch (e) {
     logger.error(e);
@@ -488,6 +582,14 @@ const deleteLesson = async (req, res, next) => {
   }
 };
 
+const getCreateCourseView = async (req, res, next) => {
+  res.locals.categories = await categoryService.getAll();
+  res.render('instructor/create-course', {
+    title: 'Create course',
+    categories: res.locals.categories,
+  });
+};
+
 export default {
   get,
   getInfo,
@@ -507,4 +609,7 @@ export default {
   deleteSection,
   updateLesson,
   deleteLesson,
+  getCreateCourseView,
+  createSectionView,
+  createLessonView,
 };

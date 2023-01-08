@@ -1,0 +1,29 @@
+<div class='container instructor-container'>
+  <div class='instructor-responsive-container'>
+    <form
+      action='/api/v1/instructor/{{courseSlug}}/create-section'
+      method='POST'
+    >
+      <div class='d-flex form-container'>
+        <div class='form-content'>
+          <div class='oa-form-group'>
+            <label class='oa-form-label oa-heading-sm'>Section Name</label>
+            <input
+              type='text'
+              name='name'
+              id='name'
+              placeholder="What's the name of your course?"
+              class='oa-text-input-large'
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class='oa-footer-btns mt-5 d-flex justify-content-end'>
+        <button type='submit' class='save-button btn btn-primary'>
+          <span>Add</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
