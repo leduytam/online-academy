@@ -31,9 +31,13 @@
         <div class="col-md-3 course-card mt-4" data-slug={{this.slug}}>
             <div class="card position-relative">
                 <div class="position-absolute"  style="top:10px; right:10px;">
+                    {{#if this.isEnrolled}}
+                    <button type="button" class="btn btn-success" disabled>Enrolled</button>
+                    {{else}}
                     <button type="button" class="btn wish-list-button" data-id={{this._id}}>
                         <span class="{{#if this.isWishListed}} fa fa-heart fa-3x {{else}} fa-regular fa-heart fa-3x {{/if}}" style="color: white;"></span>
                     </button>
+                    {{/if}}
                 </div>
                 <img src={{this.coverPhoto}} class="card-img-top" alt="Cover photo">
                 <div class="card-body">
@@ -59,9 +63,13 @@
         <div class="col-md-3 course-card mt-4" data-slug={{this.slug}} >
             <div class="card position-relative">
                 <div class="position-absolute"  style="top:10px; right:10px;">
+                    {{#if this.isEnrolled}}
+                    <button type="button" class="btn btn-success" disabled>Enrolled</button>
+                    {{else}}
                     <button type="button" class="btn wish-list-button" data-id={{this._id}}>
-                        <span class="{{#if this.isWishlisted}} fa fa-heart fa-3x {{else}} fa-regular fa-heart fa-3x {{/if}}" style="color: white;"></span>
+                        <span class="{{#if this.isWishListed}} fa fa-heart fa-3x {{else}} fa-regular fa-heart fa-3x {{/if}}" style="color: white;"></span>
                     </button>
+                    {{/if}}
                 </div>
                 <img src={{this.coverPhoto}} class="card-img-top" alt="Cover photo">
                 <div class="card-body">

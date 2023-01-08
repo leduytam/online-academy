@@ -27,10 +27,12 @@ const getHomeView = async (req, res, next) => {
     latestCourses = await Promise.all(
       latestCourses.map(async (course) => {
         const { avg, total} = await courseService.getReviewStats(course._id);
+        const isEnrolled = userId ? await courseService.isEnrolled(course._id, userId) : false;
         const isWishListed = userId ? await courseService.isWishListed(course._id, userId) : false;
         return {
           ...course,
           isWishListed,
+          isEnrolled,
           avgRating: avg,
           totalRatings: total,
           coverPhoto: gcsService.getPublicImageUrl(course.coverPhoto.filename),
@@ -40,10 +42,12 @@ const getHomeView = async (req, res, next) => {
     mostViewedCourses = await Promise.all(
       mostViewedCourses.map(async (course) => {
         const { avg, total} = await courseService.getReviewStats(course._id);
+        const isEnrolled = userId ? await courseService.isEnrolled(course._id, userId) : false;
         const isWishListed = userId ? await courseService.isWishListed(course._id, userId) : false;
         return {
           ...course,
           isWishListed,
+          isEnrolled,
           avgRating: avg,
           totalRatings: total,
           coverPhoto: gcsService.getPublicImageUrl(course.coverPhoto.filename),
