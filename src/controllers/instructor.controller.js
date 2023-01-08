@@ -110,7 +110,7 @@ const getCourseView = async (req, res, next) => {
   const { courseSlug } = req.params;
   const { user } = req.session;
 
-  // validate course instructor is the same as the logged in user
+  res.locals.categories = await categoryService.getAll();
 
   const course = await Course.findOne({ slug: courseSlug })
     .populate('coverPhoto')
