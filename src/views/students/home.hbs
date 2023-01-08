@@ -9,7 +9,7 @@
         <div class="carousel-inner">
             {{#each topCourses}}
             <div class="carousel-item {{#if @first}}active{{/if}}" data-slug={{this.slug}}>
-                <img src={{this.coverPhoto}} class="d-block w-100" alt="...">
+                <img src={{this.coverPhoto}} class="d-block w-100" alt="..." style="height: 30em;">
                 <div class="carousel-caption d-none d-md-block">
                     <h5 class="text-warning fs-3">{{this.name}}</h5>
                 </div>
@@ -27,91 +27,59 @@
         </div>
     <h2 class="mt-5 fw-bold fs-2 mb-3">Most Viewed Courses</h2>
     <div class="row">
-        <div id="recipeCarousel" class="carousel slide custom-carousel" data-bs-ride="carousel">
-            <div class="carousel-inner" role="listbox">
-                {{#each mostViewedCourses}}
-                <div class="carousel-item {{#if @first}}active{{/if}}" data-slug={{this.slug}} >
-                    <div class="col-md-3 course-card">
-                        <div class="card position-relative">
-                            <div class="position-absolute"  style="top:10px; right:10px;">
-                                <button type="button" class="btn wish-list-button" data-id={{this._id}}>
-                                    <span class="{{#if this.isWishListed}} fa fa-heart fa-3x {{else}} fa-regular fa-heart fa-3x {{/if}}" style="color: white;"></span>
-                                </button>
-                            </div>
-                            <img src={{this.coverPhoto}} class="card-img-top" alt="Cover photo">
-                            <div class="card-body">
-                                <div style="height: 4em;">
-                                    <p class="fw-bold fs-5 course-header">{{this.name}}</p>
-                                </div>
-                                <p class="card-text fs-6 fw-light mb-0 text-truncate">{{this.instructor.name}}</p>
-                                <div class="d-flex align-items-center fs-8 gap-1">
-                                    <p class="mb-0 text-warning fw-bold">{{roundWithPrecision this.avgRating 1}}</p>
-                                    {{> stars rating=this.avgRating}}
-                                    <p class="mb-0 text-muted">({{this.totalRatings}})</p>
-                                </div>
-                                <p class='fw-bold mb-1 fs-4'>{{currency this.price}}</p>
-                            <span class="badge bg-warning text-dark">Best seller</span>
-                            </div>
-                        </div>
+        {{#each mostViewedCourses}}
+        <div class="col-md-3 course-card mt-4" data-slug={{this.slug}}>
+            <div class="card position-relative">
+                <div class="position-absolute"  style="top:10px; right:10px;">
+                    <button type="button" class="btn wish-list-button" data-id={{this._id}}>
+                        <span class="{{#if this.isWishListed}} fa fa-heart fa-3x {{else}} fa-regular fa-heart fa-3x {{/if}}" style="color: white;"></span>
+                    </button>
+                </div>
+                <img src={{this.coverPhoto}} class="card-img-top" alt="Cover photo">
+                <div class="card-body">
+                    <div style="height: 4em;">
+                        <p class="fw-bold fs-5 course-header">{{this.name}}</p>
                     </div>
+                    <p class="card-text fs-6 fw-light mb-0 text-truncate">{{this.instructor.name}}</p>
+                    <div class="d-flex align-items-center fs-8 gap-1">
+                        <p class="mb-0 text-warning fw-bold">{{roundWithPrecision this.avgRating 1}}</p>
+                        {{> stars rating=this.avgRating}}
+                        <p class="mb-0 text-muted">({{this.totalRatings}})</p>
+                    </div>
+                    <p class='fw-bold mb-1 fs-4'>{{currency this.price}}</p>
+                <span class="badge bg-warning text-dark">Best seller</span>
                 </div>
-                {{/each}}
             </div>
-            <a class="carousel-control-prev bg-transparent w-aut" href="#recipeCarousel" role="button" data-bs-slide="prev" style="width:45px">
-                <div class="bg-dark btn-wrapper">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                </div>
-            </a>
-            <a class="carousel-control-next bg-transparent w-aut" href="#recipeCarousel" role="button" data-bs-slide="next" style="width:45px">
-                <div class="bg-dark btn-wrapper">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                </div>
-            </a>
         </div>
+        {{/each}}
     </div>		
     <h2 class="mt-5 fw-bold fs-2 mb-3">Latest Courses</h2>
     <div class="row">
-        <div id="recipeCarousel-2" class="carousel slide custom-carousel" data-bs-ride="carousel-2">
-            <div class="carousel-inner" role="listbox">
-                {{#each latestCourses}}
-                <div class="carousel-item {{#if @first}}active{{/if}}" data-slug={{this.slug}} >
-                    <div class="col-md-3 course-card">
-                        <div class="card position-relative">
-                            <div class="position-absolute"  style="top:10px; right:10px;">
-                                <button type="button" class="btn wish-list-button" data-id={{this._id}}>
-                                    <span class="{{#if this.isWishlisted}} fa fa-heart fa-3x {{else}} fa-regular fa-heart fa-3x {{/if}}" style="color: white;"></span>
-                                </button>
-                            </div>
-                            <img src={{this.coverPhoto}} class="card-img-top" alt="Cover photo">
-                            <div class="card-body">
-                                <div style="height: 4em;">
-                                    <p class="fw-bold fs-5 course-header">{{this.name}}</p>
-                                </div>
-                                <p class="card-text fs-6 fw-light mb-0 text-truncate">{{this.instructor.name}}</p>
-                                <div class="d-flex align-items-center fs-8 gap-1">
-                                    <p class="mb-0 text-warning fw-bold">{{roundWithPrecision this.avgRating 1}}</p>
-                                    {{> stars rating=this.avgRating}}
-                                    <p class="mb-0 text-muted">({{this.totalRatings}})</p>
-                                </div>
-                                <p class='fw-bold mb-1 fs-4'>{{currency this.price}}</p>
-                            <span class="badge bg-warning text-dark">Best seller</span>
-                            </div>
-                        </div>
+        {{#each latestCourses}}
+        <div class="col-md-3 course-card mt-4" data-slug={{this.slug}} >
+            <div class="card position-relative">
+                <div class="position-absolute"  style="top:10px; right:10px;">
+                    <button type="button" class="btn wish-list-button" data-id={{this._id}}>
+                        <span class="{{#if this.isWishlisted}} fa fa-heart fa-3x {{else}} fa-regular fa-heart fa-3x {{/if}}" style="color: white;"></span>
+                    </button>
+                </div>
+                <img src={{this.coverPhoto}} class="card-img-top" alt="Cover photo">
+                <div class="card-body">
+                    <div style="height: 4em;">
+                        <p class="fw-bold fs-5 course-header">{{this.name}}</p>
                     </div>
+                    <p class="card-text fs-6 fw-light mb-0 text-truncate">{{this.instructor.name}}</p>
+                    <div class="d-flex align-items-center fs-8 gap-1">
+                        <p class="mb-0 text-warning fw-bold">{{roundWithPrecision this.avgRating 1}}</p>
+                        {{> stars rating=this.avgRating}}
+                        <p class="mb-0 text-muted">({{this.totalRatings}})</p>
+                    </div>
+                    <p class='fw-bold mb-1 fs-4'>{{currency this.price}}</p>
+                <span class="badge bg-warning text-dark">Best seller</span>
                 </div>
-                {{/each}}
             </div>
-            <a class="carousel-control-prev bg-transparent w-aut" href="#recipeCarousel-2" role="button" data-bs-slide="prev" style="width:45px">
-                <div class="bg-dark btn-wrapper">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                </div>
-            </a>
-            <a class="carousel-control-next bg-transparent w-aut" href="#recipeCarousel-2" role="button" data-bs-slide="next" style="width:45px">
-                <div class="bg-dark btn-wrapper">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                </div>
-            </a>
         </div>
+        {{/each}}
     </div>		
     <h2 class="mt-5 fw-bold fs-2 mb-3">Topic Recommended for you</h2>
     <div class="row">

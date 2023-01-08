@@ -3,66 +3,32 @@
 <div class="container mx-auto">
     <div class="row">
         {{#each courses}}
-        <div class="col-lg-3 col-md-6 mt-4 course-card" data-slug={{this.slug}}>
+        <div class="col-md-3 course-card mt-4" data-slug={{this.slug}}>
             <div class="card position-relative">
-               <div class="position-absolute">
-                  <button type="button" class="btn remove-wish-list" style="top:10px; right:10px;">
-                     <span class="fa fa-heart" style="color: red;"></span>
-                  </button>
-               </div>
+                <div class="position-absolute"  style="top:10px; right:10px;">
+                    <button type="button" class="btn wish-list-button" data-id={{this._id}}>
+                        <span class="{{#if this.isWishListed}} fa fa-heart fa-3x {{else}} fa-regular fa-heart fa-3x {{/if}}" style="color: white;"></span>
+                    </button>
+                </div>
                 <img src={{this.coverPhoto}} class="card-img-top" alt="Cover photo">
                 <div class="card-body">
                     <div style="height: 4em;">
                         <p class="fw-bold fs-5 course-header">{{this.name}}</p>
                     </div>
-                    <p class="card-text fs-6 fw-light mb-0 text-truncate">{{this.instructor.name}}</p>
-                    <div class="d-flex align-items-center">
-                        <span class = "card-text fs-6" style="color: orange;">4 &nbsp</span>
-                        <span class = "fa fa-star checked"></span>
-                        <span class = "fa fa-star checked"></span>
-                        <span class = "fa fa-star checked"></span>
-                        <span class = "fa fa-star checked"></span>
-                        <span class = "fa fa-star unchecked">&nbsp</span>
-                        <span class = "card-text fs-6 text-black-50">(123)</span>
+                    <p class="card-text fs-6 fw-light mb-0 text-truncate">{{this.instructorName}}</p>
+                    <div class="d-flex align-items-center fs-8 gap-1">
+                        <p class="mb-0 text-warning fw-bold">{{roundWithPrecision this.avgRating 1}}</p>
+                        {{> stars rating=this.avgRating}}
+                        <p class="mb-0 text-muted">({{this.totalRatings}})</p>
                     </div>
-                    <span class="badge bg-warning text-dark">Best seller</span>
+                    <p class='fw-bold mb-1 fs-4'>{{currency this.price}}</p>
+                <span class="badge bg-warning text-dark">Best seller</span>
                 </div>
             </div>
         </div>
         {{/each}}
-    </div>
+    </div>	
 </div>
 
-<script>
-    const cards = document.getElementsByClassName('course-card');
-    const button = document.getElementsByClassName('remove-wish-list');
-    // call api to remove course from wish list
-    for (let i = 0; i < button.length; i++) {
-        button[i].addEventListener('click', () => {
-            const slug = cards[i].getAttribute('data-slug');
-            const url = `/api/v1/courses/${slug}/wish-list`;
-            const options = {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            };
-            fetch(url, options)
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        cards[i].remove();
-                    }
-                })
-                .catch(err => console.log(err));
-        });
-    }
-    for (let i = 0; i < cards.length; i++) {
-        cards[i].addEventListener('click', () => {
-            const slug = cards[i].getAttribute('data-slug');
-            window.location.href = `/course/${slug}`;
-        });
-    }
+<script src='/js/student/redirectCard.js'></script>
 
-
-</script>
