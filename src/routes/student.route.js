@@ -12,7 +12,10 @@ const upload = multer({
   },
 });
 
-router.get('/', studentController.getHomeView);
+
+router.get('/wish-list', studentController.getWishlistView);
+
+router.get('/my-courses', studentController.getMyCoursesView);
 
 router.get('/profile', studentController.getProfileView);
 
@@ -23,5 +26,6 @@ router.post(
   upload.single('image'),
   studentController.uploadProfileImage
 );
+
 
 export default router;

@@ -4,6 +4,7 @@ import Enrollment from '../models/enrollment.model.js';
 import '../models/lesson.model.js';
 import '../models/media.model.js';
 import Review from '../models/review.model.js';
+import WishList from '../models/wishList.model.js';
 import '../models/section.model.js';
 import '../models/user.model.js';
 
@@ -261,6 +262,17 @@ const getMostPopularCourses = async (limit = 5) => {
   return courses;
 };
 
+const isWishListed = async (courseId, userId) => {
+  const wishList = await WishList.findOne({
+    course: courseId,
+    student: userId,
+  });
+  if (wishList) {
+    return true;
+  }
+  return false;
+};
+
 export default {
   getCourseDetail,
   isEnrolled,
@@ -274,4 +286,5 @@ export default {
   getNewestCourses,
   getHighestRatedCourses,
   getMostPopularCourses,
+  isWishListed,
 };
