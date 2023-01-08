@@ -60,6 +60,8 @@ const getPublicImageUrl = (filename) => {
 };
 
 const getVideoSignedUrl = async (filename) => {
+  console.log(configs.gcs.storage);
+
   const options = {
     version: 'v4',
     action: 'read',

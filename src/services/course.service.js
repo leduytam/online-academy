@@ -8,7 +8,12 @@ import '../models/section.model.js';
 import '../models/user.model.js';
 
 const getCourseDetail = async (slug) => {
-  const course = await Course.findOne({ slug, isDeleted: false })
+  const course = await Course.findOne({
+    slug,
+    isDeleted: {
+      $ne: true,
+    },
+  })
     .populate([
       'instructor',
       'coverPhoto',
@@ -186,6 +191,76 @@ const completeCourse = async (courseId, userId) => {
   );
 };
 
+const getNewestCourses = async (limit = 5) => {
+  const courses = await Course.find({
+    isDeleted: {
+      $ne: true,
+    },
+    createdAt: {
+      $gte: new Date(new Date().setDate(new Date().getDate() - 7)),
+    },
+  })
+    .select('_id')
+    .limit(limit);
+
+  return courses;
+};
+
+const getHighestRatedCourses = async (limit = 5) => {
+  const courses = await Course.aggregate([
+    {
+      $match: {
+        isDeleted: {
+          $ne: true,
+        },
+      },
+    },
+    {
+      $lookup: {
+        from: 'reviews',
+        localField: '_id',
+        foreignField: 'course',
+        as: 'reviews',
+      },
+    },
+    {
+      $addFields: {
+        avgRating: {
+          $avg: '$reviews.rating',
+        },
+      },
+    },
+    {
+      $sort: {
+        avgRating: -1,
+      },
+    },
+    {
+      $limit: limit,
+    },
+    {
+      $project: {
+        _id: 1,
+      },
+    },
+  ]);
+
+  return courses;
+};
+
+const getMostPopularCourses = async (limit = 5) => {
+  const courses = await Course.find({
+    isDeleted: {
+      $ne: true,
+    },
+  })
+    .sort({ views: -1 })
+    .limit(limit)
+    .select('_id');
+
+  return courses;
+};
+
 export default {
   getCourseDetail,
   isEnrolled,
@@ -196,4 +271,7 @@ export default {
   getCompletedLessons,
   completeLesson,
   completeCourse,
+  getNewestCourses,
+  getHighestRatedCourses,
+  getMostPopularCourses,
 };

@@ -57,7 +57,7 @@ const configs = {
   gcs: {
     storage: {
       projectId: env.GCS_PROJECT_ID,
-      keyFilename: path.join(__dirname, '..', '..', env.GCS_KEY_FILE),
+      keyFilename: env.GCS_KEY_FILE,
     },
     publicBucket: env.GCS_PUBLIC_BUCKET,
     privateBucket: env.GCS_PRIVATE_BUCKET,

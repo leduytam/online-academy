@@ -44,9 +44,23 @@
             <p class="fs-8 text-muted mb-1">{{course.instructor.name}}</p>
             <div class="d-flex align-items-center fs-8 gap-1">
               <p class="mb-0 text-warning fw-bold">{{roundWithPrecision course.avgRating 1}}</p>
-              {{> stars rating=course.avgRating}}
+              {{> stars rating=(roundHalf course.avgRating)}}
               <p class="mb-0 text-muted">({{course.totalRatings}})</p>
             </div>
+            
+            <p class="mt-2">
+              {{#if course.newest}}
+                <span class="badge bg-primary">Newest</span>
+              {{/if}}
+
+              {{#if course.mostPopular}}
+                <span class="badge bg-danger bg-opacity-75">Most popular</span>
+              {{/if}}
+
+              {{#if course.highestRated}}
+                <span class="badge bg-warning bg-opacity-75 text-dark">Highest rating</span>
+              {{/if}}
+            </p>
           </div>
 
           <div class='col-lg-3 col-md-1'>

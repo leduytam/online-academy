@@ -421,6 +421,10 @@ const getCourseCategoryView = async (req, res, next) => {
     .populate('coverPhoto')
     .lean();
 
+  const newestCourses = await courseService.getNewestCourses(6);
+  const mostPopularCourses = await courseService.getMostPopularCourses(6);
+  const highestRatedCourses = await courseService.getHighestRatedCourses(6);
+
   courses = await Promise.all(
     courses.map(async (course) => {
       const { _id } = course;
@@ -430,6 +434,13 @@ const getCourseCategoryView = async (req, res, next) => {
         ...course,
         avgRating: avg,
         totalRatings: total,
+        newest: newestCourses.some((c) => c._id.toString() === _id.toString()),
+        mostPopular: mostPopularCourses.some(
+          (c) => c._id.toString() === _id.toString()
+        ),
+        highestRated: highestRatedCourses.some(
+          (c) => c._id.toString() === _id.toString()
+        ),
       };
     })
   );
@@ -478,6 +489,10 @@ const getCourseSubcategoryView = async (req, res, next) => {
     .populate('coverPhoto')
     .lean();
 
+  const newestCourses = await courseService.getNewestCourses(6);
+  const mostPopularCourses = await courseService.getMostPopularCourses(6);
+  const highestRatedCourses = await courseService.getHighestRatedCourses(6);
+
   courses = await Promise.all(
     courses.map(async (course) => {
       const { _id } = course;
@@ -487,6 +502,13 @@ const getCourseSubcategoryView = async (req, res, next) => {
         ...course,
         avgRating: avg,
         totalRatings: total,
+        newest: newestCourses.some((c) => c._id.toString() === _id.toString()),
+        mostPopular: mostPopularCourses.some(
+          (c) => c._id.toString() === _id.toString()
+        ),
+        highestRated: highestRatedCourses.some(
+          (c) => c._id.toString() === _id.toString()
+        ),
       };
     })
   );
@@ -536,6 +558,10 @@ const getSearchCourseView = async (req, res, next) => {
     return (a, b) => 0;
   };
 
+  const newestCourses = await courseService.getNewestCourses(6);
+  const mostPopularCourses = await courseService.getMostPopularCourses(6);
+  const highestRatedCourses = await courseService.getHighestRatedCourses(6);
+
   courses = await Promise.all(
     courses.map(async (course) => {
       const { _id } = course;
@@ -545,6 +571,13 @@ const getSearchCourseView = async (req, res, next) => {
         ...course,
         avgRating: avg,
         totalRatings: total,
+        newest: newestCourses.some((c) => c._id.toString() === _id.toString()),
+        mostPopular: mostPopularCourses.some(
+          (c) => c._id.toString() === _id.toString()
+        ),
+        highestRated: highestRatedCourses.some(
+          (c) => c._id.toString() === _id.toString()
+        ),
       };
     })
   );
