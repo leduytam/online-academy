@@ -66,6 +66,15 @@ const sendResetPasswordOtp = {
   },
 };
 
+const sendChangeEmailOtp = {
+  body: {
+    email: Joi.string().email().required().messages({
+      'string.email': 'Invalid email',
+      'string.empty': 'Email is required',
+    }),
+  },
+};
+
 const changePassword = {
   body: {
     oldPassword: Joi.string().required().messages({
@@ -120,6 +129,22 @@ const resetPassword = {
   },
 };
 
+const changeEmail = {
+  body: {
+    email: Joi.string().email().required().messages({
+      'string.email': 'Invalid email',
+      'string.empty': 'Email is required',
+    }),
+    otp: Joi.string()
+      .required()
+      .regex(/^\d{6}$/)
+      .messages({
+        'string.empty': 'OTP is required',
+        'string.pattern.base': 'Invalid OTP',
+      }),
+  },
+};
+
 export default {
   login,
   register,
@@ -127,4 +152,6 @@ export default {
   resetPassword,
   sendVerifyOtp,
   sendResetPasswordOtp,
+  sendChangeEmailOtp,
+  changeEmail,
 };

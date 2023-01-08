@@ -47,3 +47,22 @@ export const validateReJson = (schema, abortEarly = true) => {
     });
   };
 };
+
+export const validate = (schema, abortEarly = true) => {
+  return (req, res, next) => {
+    const validSchema = _.pick(schema, ['body', 'params', 'query']);
+
+    const { error: errors } = Joi.compile(validSchema)
+      .prefs({ abortEarly })
+      .validate(_.pick(req, Object.keys(validSchema)));
+
+    if (!errors) {
+      next();
+      return;
+    }
+
+    req.error = errors.details.map((detail) => detail.message).join(', ');
+
+    next();
+  };
+};

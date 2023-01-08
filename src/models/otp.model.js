@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { model, Schema } from 'mongoose';
 
 const otpSchema = new Schema(
   {
@@ -16,7 +16,7 @@ const otpSchema = new Schema(
     },
     type: {
       type: String,
-      enum: ['verify', 'reset-password'],
+      enum: ['verify', 'reset-password', 'change-email'],
       required: true,
     },
   },

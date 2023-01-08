@@ -27,6 +27,9 @@
             >Profile picture</a>
           </li>
           <li class='nav-item' role='presentation'>
+            <a class='nav-link' id='changeEmail-tab' data-bs-toggle='tab' href='#changeEmail' role='tab' aria-controls='changeEmail' aria-selected='false'>Change email</a>
+          </li>
+          <li class='nav-item' role='presentation'>
             <a
               class='nav-link'
               id='changePassword-tab'
@@ -74,12 +77,19 @@
                     <div class='udlite-in-udheavy rt-editor-container'>
                       <div class='rt-editor ud-text-md'>
                         <div class='ProseMirror'>
-                          <input
-                            type='text'
-                            class='biography-input'
-                            name='bio'
-                            value='{{user.bio}}'
-                          />
+                          <textarea id="bio" class='biography-input' name='bio'></textarea>
+                          <script>
+                            tinymce.init({
+                              selector: 'textarea#bio',
+                              menubar: false,
+                              statusbar: false,
+                              setup: function (editor) {
+                                editor.on('init', function (e) {
+                                  editor.setContent(`{{{user.bio}}}`);
+                                });
+                              }
+                            });
+                          </script>
                         </div>
                       </div>
 
@@ -292,22 +302,156 @@
               </div>
             </form>
           </div>
+
+          <div class='tab-pane fade' id='changeEmail' role='tabpanel' aria-labelledby='changeEmail-tab'>
+            <form id='frm-change-email' action='/change-email' method='POST'>
+              <div class='d-flex form-container'>
+                <div class='form-content'>
+                  <div class='oa-form-group'>
+                    <label class='oa-form-label oa-heading-sm'>New email
+                      <span class='text-danger ms-2 mt-2'>*</span>
+                    </label>
+                    <input
+                      type='email'
+                      name='email'
+                      id='newEmail'
+                      class='oa-text-input-large'
+                      required='true'
+                      pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
+                    />
+                  </div>
+                  
+                  <div class='d-flex mb-3 gap-3'>
+                    <div class='oa-form-group flex-grow-1'>
+                      <label class='oa-form-label oa-heading-sm'>
+                        OTP
+                        <span class='text-danger ms-2 mt-2'>*</span>
+                      </label>
+                      <input
+                        name='otp'
+                        type='text'
+                        class='oa-text-input-large w-100'
+                        placeholder='OTP'
+                        maxlength='6'
+                        required='required'
+                        pattern='^\d{6}$'
+                      />
+                    </div>
+
+                    <button
+                      id='btn-send-otp'
+                      type='button'
+                      class='btn btn-outline-secondary px-4 align-self-end'
+                      disabled='disabled'
+                      style="height: 3rem;"
+                    >
+                      Send OTP
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div id='alert-otp' class='alert d-none' role='alert'></div>
+              <div class='oa-footer-btns mt-5'>
+                <button type='submit' class='save-button btn btn-primary'>
+                  <span>Save</span>
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<script>
-  const avatarInput = document.getElementById('avatar-input');
-  const avatarPreview = document.getElementById('avatar-preview');
+{{#if (or error success)}}
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="toast" class="toast{{#if error}} text-bg-danger{{else}} text-bg-success{{/if}}" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="toast-body">
+        {{#if error}}{{error}}{{else}}{{success}}{{/if}}
+        </div>
+        <button type="button" class="btn-close me-2" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+{{/if}}
 
-  avatarInput.onchange = function (e) {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      avatarPreview.src = e.target.result;
+<script>
+  (() => {
+    const $ = document.querySelector.bind(document);
+
+    const avatarInput = $('#avatar-input');
+    const avatarPreview = $('#avatar-preview');
+
+    avatarInput.onchange = function (e) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        avatarPreview.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
     };
-    reader.readAsDataURL(file);
-  };
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const toastElement = $('#toast');
+      if (toastElement) {
+        const toast = new bootstrap.Toast(toastElement);
+        toast.show();
+      }
+    });
+
+    const sendOtpBtn = $('#btn-send-otp');
+    const newEmailInput = $('#newEmail');
+    const otpAlert = $('#alert-otp');
+    sendOtpBtn.addEventListener('click', async function (e) {
+      sendOtpBtn.disabled = true;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      const response = await fetch('/send-change-email-otp', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: newEmailInput.value }),
+      });
+
+      const { message } = await response.json();
+
+      if (response.status === 200) {
+        otpAlert.classList.remove('alert-danger');
+        otpAlert.classList.add('alert-success');
+
+        (() => {
+          let timer = 30;
+
+          const interval = setInterval(() => {
+            sendOtpBtn.textContent = `Resend OTP (${timer})`;
+            timer -= 1;
+          }, 1000);
+
+          setTimeout(() => {
+            clearInterval(interval);
+            sendOtpBtn.textContent = 'Resend OTP';
+            sendOtpBtn.disabled = false;
+          }, timer * 1000);
+        })();
+      } else {
+        otpAlert.classList.remove('alert-success');
+        otpAlert.classList.add('alert-danger');
+
+        sendOtpBtn.disabled = false;
+      }
+
+      otpAlert.textContent = message;
+      otpAlert.classList.remove('d-none');
+    });
+
+    newEmailInput.addEventListener('input', function (e) {
+      sendOtpBtn.disabled = !newEmailInput.validity.valid;
+    });
+  })();
 </script>

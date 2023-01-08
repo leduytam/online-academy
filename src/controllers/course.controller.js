@@ -401,6 +401,9 @@ const getCourseCategoryView = async (req, res, next) => {
 
   const totalCourses = await Course.countDocuments({
     category: { $in: subcategories },
+    isDeleted: {
+      $ne: true,
+    },
   });
   const limitPerPage = +limit || 6;
   const totalPages = Math.ceil(totalCourses / limitPerPage);
@@ -409,6 +412,9 @@ const getCourseCategoryView = async (req, res, next) => {
 
   let courses = await Course.find({
     category: { $in: subcategories },
+    isDeleted: {
+      $ne: true,
+    },
   })
     .populate('category')
     .populate('instructor')
@@ -463,6 +469,9 @@ const getCourseSubcategoryView = async (req, res, next) => {
 
   let courses = await Course.find({
     category: subcategory,
+    isDeleted: {
+      $ne: true,
+    },
   })
     .populate('category')
     .populate('instructor')
@@ -505,6 +514,9 @@ const getSearchCourseView = async (req, res, next) => {
 
   let courses = await Course.find({
     $text: { $search: q, $caseSensitive: false },
+    isDeleted: {
+      $ne: true,
+    },
   })
     .populate(['instructor', 'coverPhoto'])
     .lean();

@@ -8,7 +8,7 @@ import '../models/section.model.js';
 import '../models/user.model.js';
 
 const getCourseDetail = async (slug) => {
-  const course = await Course.findOne({ slug })
+  const course = await Course.findOne({ slug, isDeleted: false })
     .populate([
       'instructor',
       'coverPhoto',

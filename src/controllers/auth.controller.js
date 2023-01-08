@@ -9,7 +9,9 @@ import otpService from '../services/otp.service.js';
 const login = async (req, res, next) => {
   const { email, password, rememberMe } = req.body;
 
-  const user = await User.findOne({ email }).select('+password');
+  const user = await User.findOne({ email, isDeleted: false }).select(
+    '+password'
+  );
 
   if (!user || !(await user.verifyPassword(password))) {
     req.session.error = 'Invalid email or password';
@@ -84,9 +86,21 @@ const changePassword = async (req, res, next) => {
 
   const user = await User.findById(_id).select('+password');
 
+  const redirectUrl =
+    user.role === ERole.STUDENT ? '/profile' : '/instructor/profile';
+
+  if (req.error) {
+    req.session.error = req.error;
+    req.session.save((err) => {
+      res.redirect(redirectUrl);
+    });
+    return;
+  }
+
   if (!(await user.verifyPassword(oldPassword))) {
-    res.status(httpStatus.BAD_REQUEST).json({
-      message: 'Old password is incorrect. Please try again.',
+    req.session.error = 'Invalid old password';
+    req.session.save((err) => {
+      res.redirect(redirectUrl);
     });
     return;
   }
@@ -94,8 +108,9 @@ const changePassword = async (req, res, next) => {
   user.password = newPassword;
   await user.save();
 
-  res.status(httpStatus.OK).json({
-    message: 'Password changed successfully',
+  req.session.success = 'Password changed successfully';
+  req.session.save((err) => {
+    res.redirect(redirectUrl);
   });
 };
 
@@ -122,6 +137,39 @@ const resetPassword = async (req, res, next) => {
   req.session.success = 'Password reset successfully';
   req.session.save((err) => {
     res.redirect('/login');
+  });
+};
+
+const changeEmail = async (req, res, next) => {
+  const { email, otp } = req.body;
+  const { _id } = req.session.user;
+
+  const user = await User.findById(_id);
+
+  const redirectUrl =
+    user.role === ERole.STUDENT ? '/profile' : '/instructor/profile';
+
+  const isOtpValid = await otpService.verify(email, otp, 'change-email');
+
+  if (!isOtpValid) {
+    req.session.error = 'Invalid OTP';
+    req.session.save((err) => {
+      res.redirect(redirectUrl);
+    });
+    return;
+  }
+
+  await otpService.deleteOtp(email, 'change-email');
+
+  user.email = email;
+
+  await user.save();
+
+  req.session.user = user;
+  req.session.success = 'Email changed successfully';
+
+  req.session.save((err) => {
+    res.redirect(redirectUrl);
   });
 };
 
@@ -156,6 +204,24 @@ const sendResetPasswordOtp = async (req, res, next) => {
   });
 };
 
+const sendChangeEmailOtp = async (req, res, next) => {
+  const { email } = req.body;
+
+  if (await User.isEmailTaken(email)) {
+    res.status(httpStatus.BAD_REQUEST).json({
+      message: 'Email is already taken',
+    });
+    return;
+  }
+
+  const otp = await otpService.create(email, 'change-email');
+  emailService.sendOtp(email, otp);
+
+  res.status(httpStatus.OK).json({
+    message: 'OTP has been sent to your email',
+  });
+};
+
 const getLogInView = async (req, res, next) => {
   res.render('login', {
     title: 'Login',
@@ -185,4 +251,6 @@ export default {
   getLogInView,
   getRegisterView,
   getForgotPasswordView,
+  changeEmail,
+  sendChangeEmailOtp,
 };
