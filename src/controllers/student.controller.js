@@ -172,7 +172,6 @@ export default {
   getProfileView,
   updateInformation,
   uploadProfileImage,
-  uploadImage,
   getMyCoursesView,
   getWishlistView,
   toggleWishList,
