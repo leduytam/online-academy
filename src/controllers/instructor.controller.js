@@ -129,6 +129,7 @@ const getCourseView = async (req, res, next) => {
   res.render('instructor/course', {
     title: 'Course',
     course,
+    categories: res.locals.categories,
   });
 };
 

@@ -60,7 +60,7 @@
             aria-labelledby='information-tab'
           >
             <form action='/instructor/edit-profile' method='POST'>
-              <div class='d-flex form-container'>
+              <div class='d-flex form-container flex-wrap'>
                 <div class='form-content'>
                   <div class='oa-form-group'>
                     <label class='oa-form-label oa-heading-sm'>Name</label>
@@ -70,6 +70,7 @@
                       id='name'
                       class='oa-text-input-large'
                       value='{{user.name}}'
+                      required='true'
                     />
                   </div>
                   <div class='oa-form-group'>
@@ -81,6 +82,7 @@
                       class='oa-text-input-large'
                       value='{{user.email}}'
                       disabled='true'
+                      required='true'
                     />
                   </div>
                   <div class='oa-form-group'>
@@ -120,6 +122,7 @@
                       id='website'
                       class='oa-text-input-large'
                       value='{{user.websiteLink}}'
+                      required='true'
                     />
                   </div>
                   <div class='oa-form-group'>
@@ -134,6 +137,7 @@
                         id='twitter'
                         class='oa-text-input-large'
                         value='{{user.twitterLink}}'
+                        required='true'
                       />
                     </div>
                   </div>
@@ -149,6 +153,7 @@
                         id='facebook'
                         class='oa-text-input-large'
                         value='{{user.facebookLink}}'
+                        required='true'
                       />
                     </div>
                   </div>
@@ -164,6 +169,7 @@
                         id='linkedin'
                         class='oa-text-input-large'
                         value='{{user.linkedinLink}}'
+                        required='true'
                       />
                     </div>
                   </div>
@@ -179,13 +185,15 @@
                         id='youtube'
                         class='oa-text-input-large'
                         value='{{user.youtubeLink}}'
+                        required='true'
                       />
                     </div>
                   </div>
                 </div>
               </div>
-              <div class='oa-footer-btns'>
+              <div class='oa-footer-btns pt-3'>
                 <button type='submit' class='save-button btn btn-primary'>
+                  <i class='fa-solid fa-floppy-disk'></i>
                   <span>Save</span>
                 </button>
               </div>
@@ -233,6 +241,7 @@
                     </div>
                     <div class='oa-footer-btns mt-3 mb-3 pb-3'>
                       <button type='submit' class='save-button btn btn-primary'>
+                        <i class='fa-solid fa-floppy-disk'></i>
                         <span>Save</span>
                       </button>
                     </div>
@@ -308,6 +317,7 @@
               </div>
               <div class='oa-footer-btns mt-5'>
                 <button type='submit' class='save-button btn btn-primary'>
+                  <i class='fa-solid fa-floppy-disk'></i>
                   <span>Save</span>
                 </button>
               </div>
@@ -395,7 +405,7 @@
                     <td class='text-center'>{{this.price}}</td>
                     <td class='text-center'>{{this.views}}</td>
                     <td class='text-center'>
-                      <a href='/instructor/{{this.slug}}'><i
+                      <a href='/instructor/courses/{{this.slug}}'><i
                           class='fa-solid fa-pen-to-square edit-icon'
                         ></i></a></td>
                   </tr>

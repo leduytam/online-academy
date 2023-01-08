@@ -1,0 +1,71 @@
+<div class='container instructor-container'>
+  <div class='instructor-responsive-container'>
+    <form action='/instructor/update-section' method='POST'>
+      <div class='d-flex form-container m-2'>
+        <div class='form-content'>
+          <div class='oa-form-group'>
+            <label class='oa-form-label oa-heading-sm'>Name</label>
+            <input
+              type='text'
+              name='name'
+              id='name'
+              class='oa-text-input-large'
+              value='test'
+              required
+            />
+          </div>
+          <div class='oa-form-group'>
+            <label class='oa-form-label oa-heading-sm'></label>
+            <div class='form-check'>
+              <input
+                class='form-check-input'
+                type='radio'
+                name='flexRadioDefault'
+                id='flexRadioDefault1'
+                required
+              />
+              <label class='form-check-label' for='flexRadioDefault1'>
+                Preview
+              </label>
+            </div>
+          </div>
+          <div class='oa-form-group'>
+            <label class='oa-form-label oa-heading-sm'>Video</label>
+            <div class='udlite-in-udheavy'>
+              <div class='ud-image-upload-preview-wrapper video-content'>
+                <div class='image-upload-preview-with-crop'>
+                  <video class='w-100 h-100' controls>
+                    <source
+                      type='video/mp4'
+                      src='https://www.youtube.com/watch?v=vVhKA9Av6vA&list=RDvVhKA9Av6vA&start_radio=1'
+                    />
+                  </video>
+                </div>
+              </div>
+              <div class='mb-3'>
+                <input
+                  class='form-control video-content'
+                  type='file'
+                  name='video'
+                  accept='video/*'
+                />
+              </div>
+            </div>
+
+            <div class='oa-footer-btns d-flex pb-3'>
+              <button type='submit' class='save-button btn btn-primary'>
+                <i class='fa-solid fa-floppy-disk'></i>
+                <span>Save</span>
+              </button>
+              <button
+                class='btn btn-danger save-button d-fex align-items-center justify-content-center'
+              ><i class='fa-solid fa-trash'></i>
+                Delete</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

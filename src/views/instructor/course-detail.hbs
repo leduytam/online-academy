@@ -1,42 +1,43 @@
 <div class='container instructor-container'>
   <div class='instructor-responsive-container'>
-    <form action='/instructor/create-course' method='POST'>
+    <form action='/instructor/update-course' method='POST'>
       <div class='course-container'>
-        <div class='d-flex flex-row justify-content-around text-hover mt-1'>
-          <h2 class='text-center'>{{course.name}}</h2>
-          <button
-            id='btn-login'
-            class='btn btn-primary w-20 add-lesson-button fs-6'
-          >
-            <i class='fa-solid fa-square-plus'></i>
-            Add section
-          </button>
+        <div
+          class='d-flex flex-row align-items-center text-hover mt-1 border-0 shadow-none'
+        >
+          <input name='name' class='section-input w-50' value="{{course.name}}" />
+          <a href=''>
+            <button class='btn btn-primary save-button' type='button'>
+              <i class='fa-solid fa-square-plus'></i>
+              Add section
+            </button>
+          </a>
         </div>
-        <div class='section-container d-flex flex-column'>
+        <div class='sections-container d-flex flex-column'>
           {{#each course.sections}}
-            <div
-              class='d-flex flex-row justify-content-between align-items-center text-hover'
-            >
-              <h5 class='p-1 fs-6'>{{this.name}}</h5>
-              <button
-                id='btn-login'
-                class='btn btn-primary w-20 add-lesson-button fs-6'
+            <div class='section-container'>
+              <div
+                class='d-flex flex-row justify-content-between align-items-center text-hover'
               >
-                <i class='fa-solid fa-square-plus'></i>
-                Add lesson
-              </button>
-            </div>
-            <div class='lesson-container'>
-              {{#each this.lessons}}
-                <ul class='list-group px-3'>
-                  <li class='list-group-item bg-secondary'>{{this.name}}</li>
-                </ul>
-              {{/each}}
+                <a
+                  href='/instructor/courses/{{../course.slug}}/{{this._id}}'
+                  class='text-decoration-none section-title'
+                >
+                  <h5 class='p-1 fs-6 m-0 section-title'>{{this.name}}</h5>
+                </a>
+              </div>
+              <div class='lesson-container d-flex'>
+                {{#each this.lessons}}
+                  <ul class='list-group px-3'>
+                    <li class='list-group-item bg-primary lesson-title'>{{this.name}}</li>
+                  </ul>
+                {{/each}}
+              </div>
             </div>
           {{/each}}
         </div>
       </div>
-      <div class='d-flex form-container'>
+      <div class='d-flex form-container flex-wrap'>
         <div class='form-content'>
           <div class='oa-form-group'>
             <label class='oa-form-label oa-heading-sm'>Course Name</label>
@@ -54,7 +55,7 @@
             <div class='udlite-in-udheavy'>
               <div class='ud-image-upload-preview-wrapper'>
                 <div class='image-upload-preview-with-crop'>
-                  <img alt='cover' class='img-fluid' />
+                  <img alt='cover' class='img-fluid' src="https://storage.googleapis.com/oa-public-bucket/{{course.coverPhoto.filename}}" />
                 </div>
               </div>
               <div class='mb-5 pb-3'>
@@ -90,7 +91,7 @@
               aria-label='Choose a suitable category'
               name='category'
             >
-              <option selected disabled>Choose a suitable category</option>
+              <option value="{{course.category.name}}" selected disabled>{{course.category.name}}</option>
               {{#each categories as |category|}}
                 {{#each this.subcategories as |subcategory|}}
                   <option
@@ -125,10 +126,15 @@
         </div>
       </div>
 
-      <div class='oa-footer-btns mt-5 d-flex justify-content-end'>
+      <div class='oa-footer-btns pb-3 d-flex justify-content-end pt-3'>
         <button type='submit' class='save-button btn btn-primary'>
+          <i class="fa-solid fa-floppy-disk"></i>
           <span>Save</span>
         </button>
+                  <button
+                  class='btn btn-danger save-button d-fex align-items-center justify-content-center'
+                ><i class='fa-solid fa-trash'></i>
+                  Delete</button>
       </div>
     </form>
   </div>
