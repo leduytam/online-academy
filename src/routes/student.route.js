@@ -21,14 +21,7 @@ router.route('/edit-profile').post(studentController.updateInformation);
 router.post(
   '/upload-profile-image',
   upload.single('image'),
-  async (req, res, next) => {
-    studentController.uploadProfileImage(req, res, next, gcsService);
-  }
-);
-router.post(
-  '/upload-image',
-  upload.single('image'),
-  studentController.uploadImage
+  studentController.uploadProfileImage
 );
 
 export default router;
