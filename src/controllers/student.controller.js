@@ -9,6 +9,7 @@ import logger from '../utils/logger.js';
 import Course from '../models/course.model.js';
 import Enrollment from '../models/enrollment.model.js';
 import gcsService from '../services/gcs.service.js';
+import courseService from '../services/course.service.js';
 import WishList from '../models/wishList.model.js';
 import '../models/media.model.js';
 
@@ -116,21 +117,31 @@ const getMyCoursesView = async (req, res, next) => {
 
 const getWishlistView = async (req, res, next) => {
   const { _id } = req.session.user
-  const wishList = await WishList
+  let wishList = await WishList
     .find({
       student: _id,
     })
     .populate('course')
     .lean();
-  const courses = wishList.map((item) => item.course);
-  res.render('students/wishList', {
-    title: 'Wish list',
-    courses: courses.map((course) => {
-      return {
-        ...course,
-        coverPhoto: gcsService.getPublicImageUrl(course.coverPhoto.filename),
-      }
-    })
+  wishList = await Promise.all(wishList.map(async (list) => {
+    const { avg, total } = await courseService.getReviewStats(list.course._id);
+    const instructor = await User.findById(list.course.instructor);
+    const media = await Media.findById(list.course.coverPhoto);
+    return {
+      coverPhoto: gcsService.getPublicImageUrl(media.filename),
+      avgRating: avg,
+      totalRatings: total,
+      isWishListed: true,
+      _id: list.course._id,
+      slug: list.course.slug,
+      name: list.course.name,
+      price: list.course.price,
+      instructorName: instructor.name,
+    }
+  }));
+  res.render('students/wishlist', {
+    title: 'Wish List',
+    courses: wishList,
   });
 };
 
