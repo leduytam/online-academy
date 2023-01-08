@@ -323,6 +323,51 @@ const getSectionView = async (req, res, next) => {
   }
 };
 
+const updateSection = async (req, res, next) => {
+  const { user } = req.session;
+  const { courseSlug, sectionId } = req.params;
+  const { name } = req.body;
+  try {
+    const course = await Course.findOne({ slug: courseSlug });
+    if (course.instructor.toString() !== user._id.toString()) {
+      req.session.error = 'You are not authorized to update this section';
+      res.redirect('/instructor');
+      return;
+    }
+    const section = await Section.findById(sectionId);
+    section.name = name;
+    await section.save();
+    res.redirect(`/instructor`);
+  } catch (e) {
+    logger.error(e);
+    req.session.error = 'Something went wrong';
+    res.redirect('/instructor');
+  }
+};
+
+const deleteSection = async (req, res, next) => {
+  const { user } = req.session;
+  const { courseSlug, sectionId } = req.params;
+  try {
+    const course = await Course.findOne({ slug: courseSlug });
+    if (course.instructor.toString() !== user._id.toString()) {
+      req.session.error = 'You are not authorized to delete this section';
+      res.redirect('/instructor');
+      return;
+    }
+    const section = await Section.findById(sectionId);
+    course.sections = course.sections.filter(
+      (s) => s.toString() !== section._id.toString()
+    );
+    await course.save();
+    res.redirect(`/instructor/`);
+  } catch (e) {
+    logger.error(e);
+    req.session.error = 'Something went wrong';
+    res.redirect('/instructor');
+  }
+};
+
 //  lesson
 const createLesson = async (req, res, next) => {
   try {
@@ -384,6 +429,65 @@ const getLessonView = async (req, res, next) => {
   }
 };
 
+const updateLesson = async (req, res, next) => {
+  const { user } = req.session;
+  const { courseSlug, lessonSlug } = req.params;
+  const { name, preview } = req.body;
+  const { file } = req;
+  try {
+    const course = await Course.findOne({ slug: courseSlug });
+    if (course.instructor.toString() !== user._id.toString()) {
+      req.session.error = 'You are not authorized to update this lesson';
+      res.redirect('/instructor');
+      return;
+    }
+    const lesson = await Lesson.findOne({ slug: lessonSlug });
+    lesson.name = name;
+    lesson.preview = preview;
+    if (file) {
+      const extname = path.extname(file.originalname);
+      const filename = `${uniqueSlug()}${Date.now()}${extname}`;
+      await gcsService.uploadVideo(file, filename);
+      const media = await Media.create({
+        filename,
+        type: 'video',
+      });
+      lesson.video = media._id;
+    }
+    await lesson.save();
+    res.redirect(`/instructor/`);
+  } catch (e) {
+    logger.error(e);
+    req.session.error = 'Something went wrong';
+    res.redirect('/instructor');
+  }
+};
+
+const deleteLesson = async (req, res, next) => {
+  const { user } = req.session;
+  const { courseSlug, sectionId, lessonSlug } = req.params;
+  try {
+    const course = await Course.findOne({ slug: courseSlug });
+    if (course.instructor.toString() !== user._id.toString()) {
+      req.session.error = 'You are not authorized to delete this lesson';
+      res.redirect('/instructor');
+      return;
+    }
+    const lesson = await Lesson.findOne({ slug: lessonSlug });
+    const section = await Section.findById(sectionId);
+    section.lessons = section.lessons.filter(
+      (l) => l.toString() !== lesson._id.toString()
+    );
+    await section.save();
+    await lesson.remove();
+    res.redirect(`/instructor/`);
+  } catch (e) {
+    logger.error(e);
+    req.session.error = 'Something went wrong';
+    res.redirect('/instructor');
+  }
+};
+
 export default {
   get,
   getInfo,
@@ -399,4 +503,8 @@ export default {
   getLessonView,
   deleteCourse,
   updateCourse,
+  updateSection,
+  deleteSection,
+  updateLesson,
+  deleteLesson,
 };
