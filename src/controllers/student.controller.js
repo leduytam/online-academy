@@ -50,7 +50,7 @@ const updateInformation = async (req, res, next) => {
   }
 };
 
-const uploadProfileImage = async (req, res, next) => {
+const uploadImage = async (req, res, next) => {
   const { file } = req;
   const { user } = req.session;
   const userUpdate = await User.findById(user._id ?? '');
@@ -89,5 +89,5 @@ export default {
   getHomeView,
   getProfileView,
   updateInformation,
-  uploadProfileImage,
+  uploadImage,
 };
