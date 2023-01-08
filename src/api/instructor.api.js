@@ -46,6 +46,20 @@ router.post(
   InstructorController.createSection
 );
 
+router.post(
+  '/:courseSlug/:sectionId/delete-section',
+  auth.protect,
+  auth.restrictTo(ERole.INSTRUCTOR),
+  InstructorController.deleteSection
+);
+
+router.post(
+  '/:courseSlug/:sectionId/update-section',
+  auth.protect,
+  auth.restrictTo(ERole.INSTRUCTOR),
+  InstructorController.updateSection
+);
+
 // lesson
 router.post(
   '/:courseSlug/:sectionId/create-lesson',
@@ -53,6 +67,21 @@ router.post(
   auth.restrictTo(ERole.INSTRUCTOR),
   upload.single('video'),
   InstructorController.createLesson
+);
+
+router.post(
+  '/:courseSlug/:sectionId/:lessonSlug/delete-lesson',
+  auth.protect,
+  auth.restrictTo(ERole.INSTRUCTOR),
+  InstructorController.deleteLesson
+);
+
+router.post(
+  '/:courseSlug/:sectionId/:lessonSlug/update-lesson',
+  auth.protect,
+  auth.restrictTo(ERole.INSTRUCTOR),
+  upload.single('video'),
+  InstructorController.updateLesson
 );
 
 export default router;
