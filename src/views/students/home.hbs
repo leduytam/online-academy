@@ -11,8 +11,7 @@
             <div class="carousel-item {{#if @first}}active{{/if}}">
                 <img src={{this.coverPhoto}} class="d-block w-100" alt="...">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5 class="text-info fs-3">{{this.name}}</h5>
-                    <p class="text-info">{{this.description}}</p>
+                    <h5 class="text-warning fs-3">{{this.name}}</h5>
                 </div>
             </div>
             {{/each}}
@@ -32,11 +31,11 @@
             <div class="carousel-inner" role="listbox">
                 {{#each mostViewedCourses}}
                 <div class="carousel-item {{#if @first}}active{{/if}}">
-                    <div class="col-md-3 course-card" data-id={{this._id}}>
+                    <div class="col-md-3 course-card" data-slug={{this.slug}}>
                         <div class="card position-relative">
                             <div class="position-absolute"  style="top:10px; right:10px;">
                                 <button type="button" class="btn wish-list-button" data-id={{this._id}}>
-                                    <span class="{{#if this.isWishlisted}} fa fa-heart fa-3x {{else}} fa-regular fa-heart fa-3x {{/if}}" style="color: white;"></span>
+                                    <span class="{{#if this.isWishListed}} fa fa-heart fa-3x {{else}} fa-regular fa-heart fa-3x {{/if}}" style="color: white;"></span>
                                 </button>
                             </div>
                             <img src={{this.coverPhoto}} class="card-img-top" alt="Cover photo">
@@ -45,15 +44,12 @@
                                     <p class="fw-bold fs-5 course-header">{{this.name}}</p>
                                 </div>
                                 <p class="card-text fs-6 fw-light mb-0 text-truncate">{{this.instructor.name}}</p>
-                                <div class="d-flex align-items-center">
-                                    <span class = "card-text fs-6" style="color: orange;">4 &nbsp</span>
-                                    <span class = "fa fa-star checked"></span>
-                                    <span class = "fa fa-star checked"></span>
-                                    <span class = "fa fa-star checked"></span>
-                                    <span class = "fa fa-star checked"></span>
-                                    <span class = "fa fa-star unchecked">&nbsp</span>
-                                    <span class = "card-text fs-6 text-black-50">(123)</span>
+                                <div class="d-flex align-items-center fs-8 gap-1">
+                                    <p class="mb-0 text-warning fw-bold">{{roundWithPrecision this.avgRating 1}}</p>
+                                    {{> stars rating=this.avgRating}}
+                                    <p class="mb-0 text-muted">({{this.totalRatings}})</p>
                                 </div>
+                                <p class='fw-bold mb-1 fs-4'>{{currency this.price}}</p>
                             <span class="badge bg-warning text-dark">Best seller</span>
                             </div>
                         </div>
@@ -79,7 +75,7 @@
             <div class="carousel-inner" role="listbox">
                 {{#each latestCourses}}
                 <div class="carousel-item {{#if @first}}active{{/if}}">
-                    <div class="col-md-3 course-card" data-id={{this._id}}>
+                    <div class="col-md-3 course-card" data-slug={{this.slug}}>
                         <div class="card position-relative">
                             <div class="position-absolute"  style="top:10px; right:10px;">
                                 <button type="button" class="btn wish-list-button" data-id={{this._id}}>
@@ -92,15 +88,12 @@
                                     <p class="fw-bold fs-5 course-header">{{this.name}}</p>
                                 </div>
                                 <p class="card-text fs-6 fw-light mb-0 text-truncate">{{this.instructor.name}}</p>
-                                <div class="d-flex align-items-center">
-                                    <span class = "card-text fs-6" style="color: orange;">4 &nbsp</span>
-                                    <span class = "fa fa-star checked"></span>
-                                    <span class = "fa fa-star checked"></span>
-                                    <span class = "fa fa-star checked"></span>
-                                    <span class = "fa fa-star checked"></span>
-                                    <span class = "fa fa-star unchecked">&nbsp</span>
-                                    <span class = "card-text fs-6 text-black-50">(123)</span>
+                                <div class="d-flex align-items-center fs-8 gap-1">
+                                    <p class="mb-0 text-warning fw-bold">{{roundWithPrecision this.avgRating 1}}</p>
+                                    {{> stars rating=this.avgRating}}
+                                    <p class="mb-0 text-muted">({{this.totalRatings}})</p>
                                 </div>
+                                <p class='fw-bold mb-1 fs-4'>{{currency this.price}}</p>
                             <span class="badge bg-warning text-dark">Best seller</span>
                             </div>
                         </div>
@@ -132,7 +125,6 @@
 			let next = el.nextElementSibling
 			for (var i=1; i<minPerSlide; i++) {
 				if (!next) {
-            // wrap carousel by using first child
             next = items[0]
         }
         let cloneChild = next.cloneNode(true)
