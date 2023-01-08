@@ -91,14 +91,12 @@
               <div class='d-flex justify-content-between mt-3'>
                 <div class='fs-5 fw-bold'>Subcategories</div>
                 <div>
-                  <button
+                  <a
                     class='btn btn-dark btn-sm'
-                    data-bs-toggle='modal'
-                    data-bs-target='#add-subcategory-modal'
-                    data-bs-category-id='{{this._id}}'
+                    href="/admin/categories/{{category._id}}/add-subcategory"
                   >
                     <i class='bi bi-plus-circle-fill'></i>
-                  </button>
+                  </a>
                 </div>
               </div>
 
@@ -140,9 +138,11 @@
                           <p class='fs-6 fw-bold ms-2'>#{{subcategory._id}}</p>
                         </div>
 
-                        <div class='d-flex flex-row align-items-center'>
+                        <div class='d-flex flex-row align-items-baseline'>
                           <p class='fs-6'>Subcategory Name: </p>
-                          <p class='fs-6 fw-bold ms-2'>{{subcategory.name}}</p>
+                          <input class='fs-6 fw-bold ms-2' value="{{subcategory.name}}"
+                          id="subcategory-name-{{subcategory._id}}"
+                          ></input>
                         </div>
 
                         <div class='d-flex flex-row align-items-center'>
@@ -170,6 +170,7 @@
                             data-bs-toggle='modal'
                             data-bs-target='#edit-subcategory-modal'
                             data-bs-category-id='{{this._id}}'
+                            onclick="editSubcategory('{{category._id}}','{{subcategory._id}}')"
                           >
                             <i class='bi bi-pencil-fill'></i>
                           </button>
@@ -179,6 +180,8 @@
                             data-bs-toggle='modal'
                             data-bs-target='#delete-subcategory-modal'
                             data-bs-category-id='{{this._id}}'
+                            onclick="removeSubcategory('{{category._id}}','{{subcategory._id}}')"
+
                           >
                             <i class='bi bi-archive-fill'></i>
                           </button>

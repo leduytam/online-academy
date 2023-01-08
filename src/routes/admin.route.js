@@ -50,4 +50,11 @@ router.get(
   AdminController.getAddCategoryView
 );
 
+router.get(
+  '/categories/:id/add-subcategory',
+  auth.protect,
+  auth.restrictTo(ERole.ADMIN),
+  AdminController.getAddSubcategoryView
+);
+
 export default router;
