@@ -17,13 +17,13 @@
           <li class='nav-item' role='presentation'>
             <a
               class='nav-link'
-              id='picture-tab'
+              id='video-tab'
               data-bs-toggle='tab'
-              href='#picture'
+              href='#video'
               role='tab'
-              aria-controls='picture'
+              aria-controls='video'
               aria-selected='false'
-            >Lesson Picture</a>
+            >Lesson Video</a>
           </li>
         </ul>
         <div class='tab-content' id='myTabContent'>
@@ -44,7 +44,7 @@
                       id='name'
                       class='oa-text-input-large'
                       value='{{lesson.name}}'
-                      required
+                      required='true'
                     />
                   </div>
                   <div class='oa-form-group mb-3'>
@@ -56,7 +56,7 @@
                         name='flexRadioDefault'
                         id='flexRadioDefault1'
                         value='{{lesson.isPreview}}'
-                        required
+                        required='true'
                       />
                       <label class='form-check-label' for='flexRadioDefault1'>
                         Preview
@@ -79,11 +79,15 @@
           </div>
           <div
             class='tab-pane fade'
-            id='picture'
+            id='video'
             role='tabpanel'
-            aria-labelledby='picture-tab'
+            aria-labelledby='video-tab'
           >
-            <form action='/instructor/update-section' method='POST'>
+            <form
+              action='/instructor/update-section'
+              method='POST'
+              enctype='multipart/form-data'
+            >
               <div class='d-flex form-container m-2'>
                 <div class='form-content'>
                   <div class='oa-form-group'>
@@ -102,7 +106,7 @@
                               data-slug='{{lesson.slug}}'
                               style='max-height: 50rem'
                             >
-                              <source type='video/mp4' src='{{videoUrl}}' />
+                              <source type='video' src='{{videoUrl}}' />
                             </video>
                           {{else}}
                             <div class='image-upload-preview'>
@@ -118,7 +122,8 @@
                           class='form-control video-content'
                           type='file'
                           name='video'
-                          accept='video/*'
+                          accept='video/mp4'
+                          required='true'
                         />
                       </div>
                       <progress

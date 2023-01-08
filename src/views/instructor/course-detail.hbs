@@ -1,11 +1,11 @@
 <div class='container instructor-container'>
   <div class='instructor-responsive-container'>
-    <form action='/instructor/update-course' method='POST'>
+    <form action='/api/v1/instructor/{{course.slug}}/update-course' method='POST' enctype='multipart/form-data'>
       <div class='course-container'>
         <div
           class='d-flex flex-row align-items-center text-hover mt-1 border-0 shadow-none'
         >
-          <input name='name' class='section-input w-50' value="{{course.name}}" />
+          <h2>{{course.name}}</h2>
           <a href='/instructor/{{course.slug}}/create-section'>
             <button class='btn btn-primary save-button' type='button'>
               <i class='fa-solid fa-square-plus'></i>
@@ -47,6 +47,7 @@
               id='name'
               value='{{course.name}}'
               class='oa-text-input-large'
+              required="true"
             />
           </div>
 
@@ -63,8 +64,9 @@
                   class='form-control'
                   type='file'
                   id='formFile'
-                  name='image'
+                  name='coverPhoto'
                   accept='image/*'
+                  required="true"
                 />
               </div>
             </div>
@@ -82,6 +84,7 @@
               class='oa-text-input-large'
               placeholder="What's the price of your course?"
               value='{{course.price}}'
+              required="true"
             />
           </div>
           <div class='oa-form-group'>
@@ -91,30 +94,33 @@
               aria-label='Choose a suitable category'
               name='category'
             >
-              <option value="{{course.category.name}}" selected disabled>{{course.category.name}}</option>
+              <option value="{{course.category._id}}" selected disabled>{{course.category.name}}</option>
               {{#each categories as |category|}}
                 {{#each this.subcategories as |subcategory|}}
                   <option
-                    value='{{subcategory.name}}'
+                    value='{{subcategory._id}}'
                   >{{subcategory.name}}</option>
                 {{/each}}
               {{/each}}
             </select>
           </div>
+
+          {{log course}}
           <div class='oa-form-group'>
             <label class='oa-form-label oa-heading-sm'>Brief Description</label>
             <input
               type='text'
-              name='brief'
+              name='briefDescription'
               id='brief'
               placeholder='Brief description of your course'
               class='oa-text-input-large'
               value='{{course.briefDescription}}'
+              required="true"
             />
           </div>
           <div class='oa-form-group'>
             <label class='oa-form-label oa-heading-sm'>Detail Description</label>
-            <textarea id="bio" class='biography-input' name='bio'></textarea>
+            <textarea id="bio" class='biography-input' name='detailDescription'>{{this.detailDescription}}</textarea>
                           <script>
                             tinymce.init({
                               selector: 'textarea#bio',

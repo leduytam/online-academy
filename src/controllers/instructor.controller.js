@@ -147,7 +147,7 @@ const createCourse = async (req, res, next) => {
     if (!file) {
       req.session.error = 'Please upload an image';
       req.session.save((err) => {
-        res.redirect('/instructor/courses');
+        res.redirect('/instructor');
       });
       return;
     }
@@ -189,6 +189,7 @@ const createCourse = async (req, res, next) => {
 const updateCourse = async (req, res, next) => {
   try {
     const { courseSlug } = req.params;
+    
     const { file } = req;
     const { user } = req.session;
 
@@ -243,11 +244,11 @@ const updateCourse = async (req, res, next) => {
 
     await course.save();
     req.session.success = 'Course updated successfully';
-    res.redirect('/instructor');
+    res.redirect(`/instructor/courses/${courseSlug}`);
   } catch (e) {
     logger.error(e);
     req.session.error = 'Something went wrong';
-    res.redirect('/instructor');
+    res.redirect(`/instructor/courses/${courseSlug}`);
   }
 };
 
@@ -299,26 +300,10 @@ const getSectionsView = async (req, res, next) => {
 const createSectionView = async (req, res, next) => {
   const { courseSlug } = req.params;
 
-  const name = req.body;
-
   res.render('instructor/create-section', {
     title: 'Create section',
     courseSlug,
   });
-
-  try {
-    const course = await Course.findOne({ slug: courseSlug });
-    const section = await Section.create({
-      name,
-    });
-    course.sections.push(section._id);
-    await course.save();
-    res.redirect(`/instructor/course/${courseSlug}`);
-  } catch (e) {
-    logger.error(e);
-    req.session.error = 'Something went wrong';
-    res.redirect(`/instructor/course/${courseSlug}`);
-  }
 };
 
 const createSection = async (req, res, next) => {
@@ -331,11 +316,11 @@ const createSection = async (req, res, next) => {
     });
     course.sections.push(section._id);
     await course.save();
-    res.redirect(`/instructor/`);
+    res.redirect(`/instructor/courses/${courseSlug}`);
   } catch (e) {
     logger.error(e);
     req.session.error = 'Something went wrong';
-    res.redirect('/instructor');
+    res.redirect(`/instructor/courses/${courseSlug}`);
   }
 };
 
@@ -410,58 +395,24 @@ const deleteSection = async (req, res, next) => {
 //  lesson
 
 const createLessonView = async (req, res, next) => {
-  try {
-    const { courseSlug, sectionId } = req.params;
-    const { name } = req.body;
-    const { file } = req;
+  const { courseSlug, sectionId } = req.params;
 
-    res.render('instructor/create-lesson', {
-      title: 'Create lesson',
-      courseSlug,
-      sectionId,
-    });
-
-    if (!file) {
-      req.session.error = 'Please upload a video';
-      req.session.save((err) => {
-        res.redirect(`/instructor/${courseSlug}/${sectionId}`);
-      });
-      return;
-    }
-    const extname = path.extname(file.originalname);
-    const filename = `${uniqueSlug()}${Date.now()}${extname}`;
-    await gcsService.uploadVideo(file, filename);
-    const media = await Media.create({
-      filename,
-      type: 'video',
-    });
-    const lesson = await Lesson.create({
-      name,
-      video: media._id,
-      preview,
-      slug: uniqueSlug(),
-    });
-
-    const section = await Section.findById(sectionId);
-    section.lessons.push(lesson._id);
-    await section.save();
-    res.redirect(`/instructor/`);
-  } catch (e) {
-    logger.error(e);
-    req.session.error = 'Something went wrong';
-    res.redirect('/instructor');
-  }
+  res.render('instructor/create-lesson', {
+    title: 'Create lesson',
+    courseSlug,
+    sectionId,
+  });
 };
 
 const createLesson = async (req, res, next) => {
   try {
-    const { sectionId } = req.params;
+    const { courseSlug, sectionId } = req.params;
     const { name, preview } = req.body;
     const { file } = req;
     if (!file) {
       req.session.error = 'Please upload a video';
       req.session.save((err) => {
-        res.redirect('/instructor/courses');
+        res.redirect('/instructor');
       });
       return;
     }
@@ -482,11 +433,11 @@ const createLesson = async (req, res, next) => {
     const section = await Section.findById(sectionId);
     section.lessons.push(lesson._id);
     await section.save();
-    res.redirect(`/instructor/`);
+    res.redirect(`/instructor/courses/${courseSlug}/${sectionId}`);
   } catch (e) {
     logger.error(e);
     req.session.error = 'Something went wrong';
-    res.redirect('/instructor');
+    res.redirect(`/instructor/courses/${courseSlug}/${sectionId}`);
   }
 };
 

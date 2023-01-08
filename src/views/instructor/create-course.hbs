@@ -1,6 +1,10 @@
 <div class='container instructor-container'>
   <div class='instructor-responsive-container'>
-    <form action='/instructor/create-course' method='POST'>
+    <form
+      action='/api/v1/instructor/create-course'
+      method='POST'
+      enctype='multipart/form-data'
+    >
       <div class='d-flex form-container'>
         <div class='form-content'>
           <div class='oa-form-group'>
@@ -11,6 +15,7 @@
               id='name'
               placeholder="What's the name of your course?"
               class='oa-text-input-large'
+              required='true'
             />
           </div>
 
@@ -27,8 +32,9 @@
                   class='form-control'
                   type='file'
                   id='formFile'
-                  name='image'
+                  name='coverPhoto'
                   accept='image/*'
+                  required='true'
                 />
               </div>
             </div>
@@ -45,6 +51,7 @@
               id='price'
               class='oa-text-input-large'
               placeholder="What's the price of your course?"
+              required='true'
             />
           </div>
           <div class='oa-form-group'>
@@ -58,7 +65,7 @@
               {{#each categories as |category|}}
                 {{#each this.subcategories as |subcategory|}}
                   <option
-                    value='{{subcategory.name}}'
+                    value='{{subcategory._id}}'
                   >{{subcategory.name}}</option>
                 {{/each}}
               {{/each}}
@@ -72,6 +79,7 @@
               id='brief'
               placeholder='Brief description of your course'
               class='oa-text-input-large'
+              required='true'
             />
           </div>
           <div class='oa-form-group'>
