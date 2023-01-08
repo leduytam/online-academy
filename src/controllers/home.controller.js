@@ -6,11 +6,11 @@ import { getTopCoursePipeline, getMostEnrolledCategoriesPipeline } from '../util
 
 const getHomeView = async (req, res, next) => {
   try {
+    const userId = req.session.user ? req.session.user._id : null;
     const topCoursePipeline = getTopCoursePipeline();
     const topCourses = await Enrollment.aggregate(topCoursePipeline);
     const mostEnrolledSubCategoriesPipeline = getMostEnrolledCategoriesPipeline();
     const mostEnrolledSubCategories = await Enrollment.aggregate(mostEnrolledSubCategoriesPipeline);
-    console.log("🚀 ~ file: home.controller.js:13 ~ getHomeView ~ mostEnrolledSubCategories", mostEnrolledSubCategories)
     
     let latestCourses = await Course.find({})
       .sort({ createdAt: -1 })
@@ -27,7 +27,7 @@ const getHomeView = async (req, res, next) => {
     latestCourses = await Promise.all(
       latestCourses.map(async (course) => {
         const { avg, total} = await courseService.getReviewStats(course._id);
-        const isWishListed = await courseService.isWishListed(course._id, req.session.user._id);
+        const isWishListed = userId ? await courseService.isWishListed(course._id, userId) : false;
         return {
           ...course,
           isWishListed,
@@ -40,7 +40,7 @@ const getHomeView = async (req, res, next) => {
     mostViewedCourses = await Promise.all(
       mostViewedCourses.map(async (course) => {
         const { avg, total} = await courseService.getReviewStats(course._id);
-        const isWishListed = await courseService.isWishListed(course._id, req.session.user._id);
+        const isWishListed = userId ? await courseService.isWishListed(course._id, userId) : false;
         return {
           ...course,
           isWishListed,
