@@ -138,6 +138,14 @@ const toggleWishList = async (req, res, next) => {
   try {
     const { courseId } = req.body;
     const { _id } = req.session.user;
+    if (!_id) {
+      res.send({
+        status: false,
+        code: 401,
+        message: 'Please login',
+      });
+      return;
+    }
     const wishList = await WishList.findOne({
       student: _id,
       course: courseId,

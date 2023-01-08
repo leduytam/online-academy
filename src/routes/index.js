@@ -45,7 +45,6 @@ router.use(errorRoute);
 router.use('/courses', courseRoute);
 router.use('/admin', adminRoute);
 router.use('/instructor', instructorRoute);
-router.use('/', homeRoute);
 
 // api
 router.use(`${configs.apiUrl}/student`, studentApi);
