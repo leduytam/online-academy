@@ -94,7 +94,7 @@ const getMyCoursesView = async (req, res, next) => {
     })
     .lean();
   const coursesId = enrollments.map((enrollment) => enrollment.course);
-  const courses = await Course
+  let courses = await Course
     .find({
       _id: {
         $in: coursesId,
@@ -103,15 +103,26 @@ const getMyCoursesView = async (req, res, next) => {
     .populate('instructor')
     .populate('coverPhoto')
     .lean();
-
-    res.render('students/myCourses', {
-    title: 'My courses',
-    courses: courses.map((course) => {
-      return {
-        ...course,
-        coverPhoto: gcsService.getPublicImageUrl(course.coverPhoto.filename),
-      }
-    })
+  courses = await Promise.all(courses.map(async (course) => {
+    const { avg, total } = await courseService.getReviewStats(course._id);
+    const media = await Media.findById(course.coverPhoto);
+    const enrollment = await Enrollment.findOne({
+      student: _id,
+      course: course._id,
+    });
+    return {
+      ...course,
+      coverPhoto: gcsService.getPublicImageUrl(media.filename),
+      avgRating: avg,
+      totalRatings: total,
+      isWishListed: true,
+      price: course.price,
+      isDone: enrollment.done,
+    }
+  }));
+  res.render('students/myCourses', {
+    title: 'My Courses',
+    courses,
   });
 };
 

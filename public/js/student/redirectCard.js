@@ -19,7 +19,6 @@ for (let i = 0; i < carouselItem.length; i++) {
 
 $(document).on('click', '.wish-list-button', function () {
     const id = $(this).data('id');
-    console.log("🚀 ~ file: redirectCard.js:14 ~ id", id)
     $.ajax({
         url: `/api/v1/student/wishlist`,
         type: 'POST',
