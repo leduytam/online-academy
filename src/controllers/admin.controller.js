@@ -1,8 +1,8 @@
+import Category from '../models/category.model.js';
 import Course from '../models/course.model.js';
 import SubCategory from '../models/subcategory.model.js';
 import User from '../models/user.model.js';
 import logger from '../utils/logger.js';
-import Category from '../models/category.model.js';
 
 // View
 const getUsersView = async (req, res, next) => {
@@ -243,10 +243,12 @@ const getCategoriesView = async (req, res, next) => {
     const courses = await Course.find().lean();
     categories.forEach((category) => {
       category.subcategories.forEach((subcategory) => {
-        subcategory.countCourses = courses.filter((course) => course.category.toString() === subcategory._id.toString()).length;
+        subcategory.countCourses = courses.filter(
+          (course) => course.category.toString() === subcategory._id.toString()
+        ).length;
       });
     });
-    
+
     res.render('admin/categories/categories-list', {
       title: 'Categories',
       categories,
@@ -256,11 +258,66 @@ const getCategoriesView = async (req, res, next) => {
     req.flash('error_msg', e.message);
     res.redirect('/admin');
   }
-}
+};
+
+const getAddCategoryView = async (req, res, next) => {
+  res.render('admin/categories/add-category', {
+    title: 'Add Category',
+  });
+};
 
 const createCategory = async (req, res, next) => {
-  
-}
+  try {
+    const { name } = req.body;
+    const category = new Category({ name });
+    await category.save();
+    res.redirect('/admin/categories');
+  } catch (e) {
+    logger.error(e);
+    res.redirect('/admin/categories');
+  }
+};
+
+const updateCategory = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { name } = req.body;
+    const category = await Category.findById(id);
+    if (!category) {
+      res.flash('error_msg', 'Category not found');
+      return;
+    }
+    category.name = name;
+    await category.save();
+    res.status(200).send({ status: true });
+  } catch (e) {
+    logger.error(e);
+    res.status(500).send({ status: false, message: e.message });
+  }
+};
+
+const deleteCategory = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const category = await Category.findById(id);
+    if (!category) {
+      res.flash('error_msg', 'Category not found');
+      return;
+    }
+    if (category.subcategories.length > 0) {
+      res.status(200).send({
+        status: false,
+        message: 'Please delete all subcategories in this category first',
+      });
+      return;
+    }
+    await category.remove();
+    res.status(200).send({ status: true });
+  } catch (e) {
+    logger.error(e);
+    res.status(500).send({ status: false, message: e.message });
+  }
+};
 
 export default {
   getUsersView,
@@ -277,4 +334,8 @@ export default {
   getCoursesOfUser,
   deleteCourse,
   getCategoriesView,
+  getAddCategoryView,
+  createCategory,
+  updateCategory,
+  deleteCategory,
 };

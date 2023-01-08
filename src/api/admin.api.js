@@ -34,4 +34,8 @@ router.post(
 router.get('/courses/:id', AdminController.getCourseById);
 router.post('/delete-course/:id', AdminController.deleteCourse);
 
+router.post('/categories/create-category', AdminController.createCategory);
+router.post('/categories/:id/update-category', AdminController.updateCategory);
+router.post('/categories/:id/delete-category', AdminController.deleteCategory);
+
 export default router;

@@ -1,5 +1,14 @@
 <div class='mx-2'>
   <div>
+    <div>
+      <a
+        href="/admin/categories/add-category"
+        class='btn btn-dark btn-lg'
+      >
+        <i class='bi bi-plus-circle-fill'></i>
+      </a>
+
+    </div>
     <div class='accordion mt-4' id='category-accordion'>
       {{#each this.categories as |category|}}
         <div class='accordion-item my-4'>
@@ -14,8 +23,10 @@
             >
               <div class='d-flex justify-content-between w-100'>
                 <div class='fw-bold fs-5'>{{category.name}}</div>
-                <div class='fw-bold me-2'>{{category.subcategories.length}}
-                  subcategories</div>
+                <div class='fw-bold me-2'>
+                  {{category.subcategories.length}}
+                  subcategories
+                </div>
               </div>
             </button>
           </h2>
@@ -29,18 +40,56 @@
             <div class='accordion-body py-3' style='background-color: #c8c1b8;'>
 
               <div class='d-flex flex-row align-items-center'>
-                <p class="fs-6">Name: </p>
-                <p class="fs-6 fw-bold ms-2">{{category.name}}</p>
+                <p class='fs-6'>Category Id: </p>
+                <p class='fs-6 fw-bold ms-2'>#{{category._id}}</p>
+              </div>
+
+              <div class='d-flex flex-row align-items-baseline'>
+                <p class='fs-6'>Category Name: </p>
+                <input class='fs-6 fw-bold ms-2' value="{{category.name}}"
+                  id="category-name-{{category._id}}"
+                ></input>
               </div>
 
               <div class='d-flex flex-row align-items-center'>
-                <p class="fs-6">Slug: </p>
-                <p class="fs-6 fw-bold ms-2">{{category.slug}}</p>
+                <p class='fs-6'>Category Slug: </p>
+                <p class='fs-6 fw-bold ms-2'>{{category.slug}}</p>
               </div>
 
+              <div class='d-flex flex-row align-items-center'>
+                <p class='fs-6'>Created at: </p>
+                <p class='fs-6 fw-bold ms-2'>{{category.createdAt}}</p>
+              </div>
 
-              <div class='d-flex justify-content-between'>
-                <div class='fs-6'>Subcategories</div>
+              <div class='d-flex flex-row align-items-center'>
+                <p class='fs-6'>Updated at: </p>
+                <p class='fs-6 fw-bold ms-2'>{{category.updatedAt}}</p>
+              </div>
+
+              <div class='d-flex flex-row align-items-center'>
+                <button
+                  class='btn btn-primary me-2'
+                  data-bs-toggle='modal'
+                  data-bs-target='#edit-category-modal'
+                  id="edit-category-btn"
+                  onclick="editCategory('{{category._id}}')"
+                >
+                  <i class='bi bi-pencil-fill'></i>
+                </button>
+
+                <button
+                  class='btn btn-danger'
+                  data-bs-toggle='modal'
+                  data-bs-target='#delete-category-modal'
+                  onclick="removeCategory('{{category._id}}')"
+
+                >
+                  <i class='bi bi-archive-fill'></i>
+                </button>
+              </div>
+
+              <div class='d-flex justify-content-between mt-3'>
+                <div class='fs-5 fw-bold'>Subcategories</div>
                 <div>
                   <button
                     class='btn btn-dark btn-sm'
@@ -53,7 +102,7 @@
                 </div>
               </div>
 
-              <div class='accordion mt-4' id='subcategory-accordion'>
+              <div class='accordion mt-2' id='subcategory-accordion'>
                 {{#each category.subcategories as |subcategory|}}
                   <div class='accordion-item'>
                     <h2
@@ -75,6 +124,68 @@
                         </div>
                       </button>
                     </h2>
+
+                    <div
+                      id='subcategory-{{subcategory._id}}'
+                      class='accordion-collapse collapse'
+                      aria-labelledby='subcategory-header-{{subcategory._id}}'
+                      data-bs-parent='#subcategory-accordion'
+                    >
+                      <div
+                        class='accordion-body py-3'
+                        style='background-color: #afb1ae;'
+                      >
+                        <div class='d-flex flex-row align-items-center'>
+                          <p class='fs-6'>Subcategory Id: </p>
+                          <p class='fs-6 fw-bold ms-2'>#{{subcategory._id}}</p>
+                        </div>
+
+                        <div class='d-flex flex-row align-items-center'>
+                          <p class='fs-6'>Subcategory Name: </p>
+                          <p class='fs-6 fw-bold ms-2'>{{subcategory.name}}</p>
+                        </div>
+
+                        <div class='d-flex flex-row align-items-center'>
+                          <p class='fs-6'>Subcategory Slug: </p>
+                          <p class='fs-6 fw-bold ms-2'>{{subcategory.slug}}</p>
+                        </div>
+
+                        <div class='d-flex flex-row align-items-center'>
+                          <p class='fs-6'>Created at: </p>
+                          <p
+                            class='fs-6 fw-bold ms-2'
+                          >{{subcategory.createdAt}}</p>
+                        </div>
+
+                        <div class='d-flex flex-row align-items-center'>
+                          <p class='fs-6'>Updated at: </p>
+                          <p
+                            class='fs-6 fw-bold ms-2'
+                          >{{subcategory.updatedAt}}</p>
+                        </div>
+
+                        <div class='d-flex flex-row align-items-center'>
+                          <button
+                            class='btn btn-primary btn-sm me-2'
+                            data-bs-toggle='modal'
+                            data-bs-target='#edit-subcategory-modal'
+                            data-bs-category-id='{{this._id}}'
+                          >
+                            <i class='bi bi-pencil-fill'></i>
+                          </button>
+
+                          <button
+                            class='btn btn-danger btn-sm'
+                            data-bs-toggle='modal'
+                            data-bs-target='#delete-subcategory-modal'
+                            data-bs-category-id='{{this._id}}'
+                          >
+                            <i class='bi bi-archive-fill'></i>
+                          </button>
+                        </div>
+
+                      </div>
+                    </div>
                   </div>
                 {{/each}}
               </div>
@@ -86,3 +197,5 @@
     </div>
   </div>
 </div>
+
+<script src="/js/admin/category.js"></script>
