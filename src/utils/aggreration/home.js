@@ -101,7 +101,7 @@ export function getMostEnrolledCategoriesPipeline() {
         },
       },
       { $sort: { count: -1 } },
-      { $limit: 5 },
+      { $limit: 6 },
       {
         $lookup: {
           from: 'subcategories',
@@ -116,12 +116,29 @@ export function getMostEnrolledCategoriesPipeline() {
           preserveNullAndEmptyArrays: true,
         },
       },
-      
+      {
+        $lookup: {
+          from: 'categories',
+          localField: 'subCategory._id',
+          foreignField: 'subcategories',
+          as: 'category',
+        },
+      },
+      {
+        $unwind: {
+          path: '$category',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
       {
         $project: {
-          name: '$subCategory.name',
-          slug: '$subCategory.slug',
+          name: '$category.name',
+          slug: '$category.slug',
+          subCategory: {
+            name: '$subCategory.name',
+            slug: '$subCategory.slug',
+          },
         },
-      }
+      },
     ];
 }

@@ -1,5 +1,5 @@
 <div class="container my-3">
-    <h2>Remarkable courses last week</h2>
+    <h2 class="mt-5 fw-bold fs-2 mb-3">Remarkable courses last week</h2>
     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
             {{#each topCourses}}
@@ -8,7 +8,7 @@
         </div>
         <div class="carousel-inner">
             {{#each topCourses}}
-            <div class="carousel-item {{#if @first}}active{{/if}}">
+            <div class="carousel-item {{#if @first}}active{{/if}}" data-slug={{this.slug}}>
                 <img src={{this.coverPhoto}} class="d-block w-100" alt="...">
                 <div class="carousel-caption d-none d-md-block">
                     <h5 class="text-warning fs-3">{{this.name}}</h5>
@@ -25,7 +25,7 @@
             <span class="visually-hidden">Next</span>
         </button>
         </div>
-    <h2>Most Viewed Courses</h2>
+    <h2 class="mt-5 fw-bold fs-2 mb-3">Most Viewed Courses</h2>
     <div class="row">
         <div id="recipeCarousel" class="carousel slide custom-carousel" data-bs-ride="carousel">
             <div class="carousel-inner" role="listbox">
@@ -69,7 +69,7 @@
             </a>
         </div>
     </div>		
-    <h2>Latest Courses</h2>
+    <h2 class="mt-5 fw-bold fs-2 mb-3">Latest Courses</h2>
     <div class="row">
         <div id="recipeCarousel-2" class="carousel slide custom-carousel" data-bs-ride="carousel-2">
             <div class="carousel-inner" role="listbox">
@@ -113,6 +113,19 @@
             </a>
         </div>
     </div>		
+    <h2 class="mt-5 fw-bold fs-2 mb-3">Topic Recommended for you</h2>
+    <div class="row">
+        {{#each mostEnrolledSubCategories}}
+        <div class="col-4 mb-2">
+            <a class="card" href="/categories/{{this.slug}}/{{this.subCategory.slug}}" style="text-decoration: none;">
+                <div class="card-body">
+                    <p class="text-center card-text fs-5 fw-bold">{{this.subCategory.name}}</p>
+                </div>
+            </a>
+        </div>
+        {{/each}}
+    </div>
+
 </div>
 
 <script src='/js/student/redirectCard.js'></script>

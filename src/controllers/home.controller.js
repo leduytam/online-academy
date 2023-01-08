@@ -10,6 +10,7 @@ const getHomeView = async (req, res, next) => {
     const topCourses = await Enrollment.aggregate(topCoursePipeline);
     const mostEnrolledSubCategoriesPipeline = getMostEnrolledCategoriesPipeline();
     const mostEnrolledSubCategories = await Enrollment.aggregate(mostEnrolledSubCategoriesPipeline);
+    console.log("🚀 ~ file: home.controller.js:13 ~ getHomeView ~ mostEnrolledSubCategories", mostEnrolledSubCategories)
     
     let latestCourses = await Course.find({})
       .sort({ createdAt: -1 })
@@ -40,7 +41,6 @@ const getHomeView = async (req, res, next) => {
       mostViewedCourses.map(async (course) => {
         const { avg, total} = await courseService.getReviewStats(course._id);
         const isWishListed = await courseService.isWishListed(course._id, req.session.user._id);
-        console.log("🚀 ~ file: home.controller.js:43 ~ mostViewedCourses.map ~ isWishListed", isWishListed)
         return {
           ...course,
           isWishListed,
