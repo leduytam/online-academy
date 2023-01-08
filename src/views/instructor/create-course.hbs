@@ -76,13 +76,13 @@
           </div>
           <div class='oa-form-group'>
             <label class='oa-form-label oa-heading-sm'>Detail Description</label>
-            <input
-              type='text'
-              name='detail'
-              id='detail'
-              placeholder='Detail description of your course'
-              class='oa-text-input-large'
-            />
+            <textarea id='bio' class='biography-input' name='bio'></textarea>
+            <script>
+              tinymce.init({ selector: 'textarea#bio', menubar: false,
+              statusbar: false, setup: function (editor) { editor.on('init',
+              function (e) { editor.setContent(`{{{course.detailDescription}}}`);
+              }); } });
+            </script>
           </div>
         </div>
       </div>

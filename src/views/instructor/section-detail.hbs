@@ -5,8 +5,8 @@
         <div
           class='d-flex flex-row align-items-center text-hover section-header mt-1 border-0 shadow-none'
         >
-          <input name='name' class='section-input' value='Text section' />
-          <a href=''>
+          <input name='name' class='section-input' value='{{section.name}}' />
+          <a href='/instructor/{{courseSlug}}/{{sectionId}}/create-lesson'>
             <button class='btn btn-primary save-button' type='button'>
               <i class='fa-solid fa-square-plus'></i>
               Add lesson
@@ -15,48 +15,30 @@
         </div>
         <div class='section-detail-content'>
           <ul class='list-group px-3 d-flex flex-row lessons'>
-            <li class='list-group-item lesson-container'>
-              <div class='d-flex flex-column h-100'>
-                <span
-                  class='badge bg-success py-2 fs-6 fw-bold w-50'
-                >Preview</span>
-                <a
-                  href='/instructor/courses/node-js-express-mongodb-and-more-the-complete-bootcamp-2023/63a6adbf1b1d043478f100f0/459d97e1'
-                  class='lesson-title'
-                >Test lesson</a>
-                <div>Course Structure and Projects Course Structure and Projects
-                  Course Structure and Projects Course Structure and Projects
-                  Course Structure and Projects</div>
-              </div>
-            </li>
-            <li class='list-group-item lesson-container'>
-              <div class='d-flex flex-column h-100'>
-                <span
-                  class='badge bg-success py-2 fs-6 fw-bold w-50'
-                >Preview</span>
-                <a
-                  href='/instructor/courses/node-js-express-mongodb-and-more-the-complete-bootcamp-2023/63a6adbf1b1d043478f100f0/459d97e1'
-                  class='lesson-title'
-                >Test lesson</a>
-                <div>Course Structure and Projects Course Structure and Projects
-                  Course Structure and Projects Course Structure and Projects
-                  Course Structure and Projects</div>
-              </div>
-            </li>
-            <li class='list-group-item lesson-container'>
-              <div class='d-flex flex-column h-100'>
-                <span
-                  class='badge bg-warning py-2 fs-6 fw-bold w-50'
-                >Pending</span>
-                <a
-                  href='/instructor/courses/node-js-express-mongodb-and-more-the-complete-bootcamp-2023/63a6adbf1b1d043478f100f0/459d97e1'
-                  class='lesson-title'
-                >Test lesson</a>
-                <div>Course Structure and Projects Course Structure and Projects
-                  Course Structure and Projects Course Structure and Projects
-                  Course Structure and Projects</div>
-              </div>
-            </li>
+            {{#if section.lessons}}
+              {{#each section.lessons}}
+                <li class='list-group-item lesson-container'>
+                  <div class='d-flex flex-column h-100'>
+                    {{#if this.isPreview}}
+                      <span
+                        class='badge bg-success py-2 fs-6 fw-bold w-50'
+                      >Preview</span>
+                    {{else}}
+                      <span
+                        class='badge bg-warning py-2 fs-6 fw-bold w-50'
+                      >Pending</span>
+                    {{/if}}
+                    <a
+                      href='/instructor/courses/node-js-express-mongodb-and-more-the-complete-bootcamp-2023/63a6adbf1b1d043478f100f0/459d97e1'
+                      class='lesson-title'
+                    >{{this.name}}</a>
+                    <div>Course Structure and Projects Course Structure and
+                      Projects Course Structure and Projects Course Structure
+                      and Projects Course Structure and Projects</div>
+                  </div>
+                </li>
+              {{/each}}
+            {{/if}}
           </ul>
         </div>
       </div>

@@ -6,7 +6,7 @@
           class='d-flex flex-row align-items-center text-hover mt-1 border-0 shadow-none'
         >
           <input name='name' class='section-input w-50' value="{{course.name}}" />
-          <a href=''>
+          <a href='/instructor/{{course.slug}}/create-section'>
             <button class='btn btn-primary save-button' type='button'>
               <i class='fa-solid fa-square-plus'></i>
               Add section
@@ -14,13 +14,13 @@
           </a>
         </div>
         <div class='sections-container d-flex flex-column'>
-          {{#each course.sections}}
+          {{#each this.course.sections}}
             <div class='section-container'>
               <div
                 class='d-flex flex-row justify-content-between align-items-center text-hover'
               >
                 <a
-                  href='/instructor/courses/{{../course.slug}}/{{this._id}}'
+                  href="/instructor/courses/{{../course.slug}}/{{this._id}}"
                   class='text-decoration-none section-title'
                 >
                   <h5 class='p-1 fs-6 m-0 section-title'>{{this.name}}</h5>
@@ -114,14 +114,19 @@
           </div>
           <div class='oa-form-group'>
             <label class='oa-form-label oa-heading-sm'>Detail Description</label>
-            <input
-              type='text'
-              name='detail'
-              id='detail'
-              placeholder='Detail description of your course'
-              class='oa-text-input-large'
-              value='{{course.detailDescription}}'
-            />
+            <textarea id="bio" class='biography-input' name='bio'></textarea>
+                          <script>
+                            tinymce.init({
+                              selector: 'textarea#bio',
+                              menubar: false,
+                              statusbar: false,
+                              setup: function (editor) {
+                                editor.on('init', function (e) {
+                                  editor.setContent(`{{{course.detailDescription}}}`);
+                                });
+                              }
+                            });
+                          </script>
           </div>
         </div>
       </div>
