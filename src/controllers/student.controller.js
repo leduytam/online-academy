@@ -14,11 +14,6 @@ import gcsService from '../services/gcs.service.js';
 import WishList from '../models/wishList.model.js';
 import '../models/media.model.js';
 
-const getHomeView = async (req, res, next) => {
-  res.render('students/home', {
-    title: 'Home page',
-  });
-};
 
 const getProfileView = async (req, res, next) => {
   const { user } = req.session;
@@ -141,40 +136,30 @@ const getWishlistView = async (req, res, next) => {
   });
 };
 
-const addWishList = async (req, res, next) => {
+const toggleWishList = async (req, res, next) => {
   try {
     const { courseId } = req.body;
     const { _id } = req.session.user;
-    const wishList = await WishList.create({
+    const wishList = await WishList.findOne({
       student: _id,
       course: courseId,
     });
+    if (wishList) {
+      await WishList.findOneAndDelete({
+        student: _id,
+        course: courseId,
+      });
+    }
+    else {
+      await WishList.create({
+        student: _id,
+        course: courseId,
+      });
+    }
     res.send({
       status: true,
       code: 200,
-      data: wishList,
-    });
-  } catch (error) {
-    res.send({
-      status: false,
-      code: 500,
-      message: error.message,
-    });
-  }
-};
-
-const removeWishList = async (req, res, next) => {
-  try {
-    const { courseId } = req.body;
-    const { _id } = req.session.user;
-    const wishList = await WishList.findOneAndDelete({
-      student: _id,
-      course: courseId,
-    });
-    res.send({
-      status: true,
-      code: 200,
-      data: wishList,
+      isWishListed: wishList ? false : true,
     });
   } catch (error) {
     res.send({
@@ -194,6 +179,5 @@ export default {
   getLessonView,
   getMyCoursesView,
   getWishlistView,
-  addWishList,
-  removeWishList,
+  toggleWishList,
 };

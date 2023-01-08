@@ -77,3 +77,51 @@ export function getTopCoursePipeline() {
         },
     ]
 }
+
+export function getMostEnrolledCategoriesPipeline() {
+    return [
+      {
+        $lookup: {
+          from: 'courses',
+          localField: 'course',
+          foreignField: '_id',
+          as: 'course',
+        },
+      },
+      {
+        $unwind: {
+          path: '$course',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $group: {
+          _id: '$course.category',
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { count: -1 } },
+      { $limit: 5 },
+      {
+        $lookup: {
+          from: 'subcategories',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'subCategory',
+        },
+      },
+      {
+        $unwind: {
+          path: '$subCategory',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      
+      {
+        $project: {
+          name: '$subCategory.name',
+          slug: '$subCategory.slug',
+        },
+      }
+    ];
+}

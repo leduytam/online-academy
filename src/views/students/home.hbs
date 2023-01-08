@@ -1,12 +1,44 @@
 <div class="container my-3">
+    <h2>Remarkable courses last week</h2>
+    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            {{#each topCourses}}
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to={{@index}} {{#if @first}}class="active" aria-current="true"{{/if}} aria-label="Slide {{@index}}"></button>
+            {{/each}}
+        </div>
+        <div class="carousel-inner">
+            {{#each topCourses}}
+            <div class="carousel-item {{#if @first}}active{{/if}}">
+                <img src={{this.coverPhoto}} class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5 class="text-info fs-3">{{this.name}}</h5>
+                    <p class="text-info">{{this.description}}</p>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+        </div>
     <h2>Most Viewed Courses</h2>
     <div class="row">
-        <div id="recipeCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div id="recipeCarousel" class="carousel slide custom-carousel" data-bs-ride="carousel">
             <div class="carousel-inner" role="listbox">
                 {{#each mostViewedCourses}}
                 <div class="carousel-item {{#if @first}}active{{/if}}">
                     <div class="col-md-3 course-card" data-id={{this._id}}>
                         <div class="card position-relative">
+                            <div class="position-absolute"  style="top:10px; right:10px;">
+                                <button type="button" class="btn wish-list-button" data-id={{this._id}}>
+                                    <span class="{{#if this.isWishlisted}} fa fa-heart fa-3x {{else}} fa-regular fa-heart fa-3x {{/if}}" style="color: white;"></span>
+                                </button>
+                            </div>
                             <img src={{this.coverPhoto}} class="card-img-top" alt="Cover photo">
                             <div class="card-body">
                                 <div style="height: 4em;">
@@ -23,13 +55,6 @@
                                     <span class = "card-text fs-6 text-black-50">(123)</span>
                                 </div>
                             <span class="badge bg-warning text-dark">Best seller</span>
-                                {{!-- TODO: handle progress later --}}
-                                {{!-- <div class="progress" style="height: 5px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25"
-                                        aria-valuemin="0" aria-valuemax="100"></div>
-                                </div> --}}
-                                {{!-- TODO: Add complete percentage
-                                <p>% complete</p> --}}
                             </div>
                         </div>
                     </div>
@@ -48,14 +73,19 @@
             </a>
         </div>
     </div>		
-    <h2>Top Remarkable Courses</h2>
+    <h2>Latest Courses</h2>
     <div class="row">
-        <div id="recipeCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div id="recipeCarousel-2" class="carousel slide custom-carousel" data-bs-ride="carousel-2">
             <div class="carousel-inner" role="listbox">
-                {{#each topCourses}}
+                {{#each latestCourses}}
                 <div class="carousel-item {{#if @first}}active{{/if}}">
                     <div class="col-md-3 course-card" data-id={{this._id}}>
                         <div class="card position-relative">
+                            <div class="position-absolute"  style="top:10px; right:10px;">
+                                <button type="button" class="btn wish-list-button" data-id={{this._id}}>
+                                    <span class="{{#if this.isWishlisted}} fa fa-heart fa-3x {{else}} fa-regular fa-heart fa-3x {{/if}}" style="color: white;"></span>
+                                </button>
+                            </div>
                             <img src={{this.coverPhoto}} class="card-img-top" alt="Cover photo">
                             <div class="card-body">
                                 <div style="height: 4em;">
@@ -72,35 +102,30 @@
                                     <span class = "card-text fs-6 text-black-50">(123)</span>
                                 </div>
                             <span class="badge bg-warning text-dark">Best seller</span>
-                                {{!-- TODO: handle progress later --}}
-                                {{!-- <div class="progress" style="height: 5px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25"
-                                        aria-valuemin="0" aria-valuemax="100"></div>
-                                </div> --}}
-                                {{!-- TODO: Add complete percentage
-                                <p>% complete</p> --}}
                             </div>
                         </div>
                     </div>
                 </div>
                 {{/each}}
             </div>
-            <a class="carousel-control-prev bg-transparent w-aut" href="#recipeCarousel" role="button" data-bs-slide="prev" style="width:45px">
+            <a class="carousel-control-prev bg-transparent w-aut" href="#recipeCarousel-2" role="button" data-bs-slide="prev" style="width:45px">
                 <div class="bg-dark btn-wrapper">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 </div>
             </a>
-            <a class="carousel-control-next bg-transparent w-aut" href="#recipeCarousel" role="button" data-bs-slide="next" style="width:45px">
+            <a class="carousel-control-next bg-transparent w-aut" href="#recipeCarousel-2" role="button" data-bs-slide="next" style="width:45px">
                 <div class="bg-dark btn-wrapper">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 </div>
             </a>
         </div>
-    </div>	
+    </div>		
 </div>
 
+<script src='/js/student/redirectCard.js'></script>
+<script src='/js/student/toggleWishList.js'></script>
 <script>
-    let items = document.querySelectorAll('.carousel .carousel-item')
+    let items = document.querySelectorAll('.custom-carousel .carousel-item')
 
 		items.forEach((el) => {
 			const minPerSlide = 4
