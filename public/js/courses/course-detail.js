@@ -295,6 +295,7 @@ const createReviews = (reviews) => {
 const createRelatedCourses = async (slug) => {
   const response = await axios.get('/api/v1/courses/' + slug + '/related');
   const { data } = response;
+  console.log('related courses', data);
   const relatedCoursesInnerElement = document.getElementById('course-related-courses-inner');
   relatedCoursesInnerElement.innerHTML = data.map((course, index) => {
     const courseThumbnailUrl = course.thumbnail ? course.thumbnail.url : `https://avatars.dicebear.com/api/miniavs/${course.slug}.png`;
