@@ -19,9 +19,9 @@ router.get('/profile', studentController.getProfileView);
 router.route('/edit-profile').post(studentController.updateInformation);
 
 router.post(
-  '/upload-image',
+  '/upload-profile-image',
   upload.single('image'),
-  studentController.uploadImage
+  studentController.uploadProfileImage
 );
 
 export default router;
