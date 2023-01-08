@@ -11,7 +11,7 @@
       <a class='nav-link' › href='#' data-bs-toggle='dropdown' aria-expanded='false'>
         Categories
       </a>
-
+      
       <ul class='dropdown-menu'>
         {{#each categories as |category|}}
         <li>
@@ -22,15 +22,17 @@
             </span>
           </a>
 
-          <ul class='dropdown-menu dropdown-submenu'>
-            {{#each this.subcategories as |subcategory|}}
-            <li>
-              <a class='dropdown-item' href='/categories/{{category.slug}}/{{subcategory.slug}}'>
-                {{subcategory.name}}
-              </a>
-            </li>
-            {{/each}}
-          </ul>
+          {{#if category.subcategories}}
+            <ul class='dropdown-menu dropdown-submenu'>
+              {{#each this.subcategories as |subcategory|}}
+              <li>
+                <a class='dropdown-item' href='/categories/{{category.slug}}/{{subcategory.slug}}'>
+                  {{subcategory.name}}
+                </a>
+              </li>
+              {{/each}}
+            </ul>
+          {{/if}}
         </li>
         {{/each}}
       </ul>
