@@ -27,11 +27,11 @@
                 </a>
               </div>
               <div class='lesson-container d-flex'>
+                  <ul class='list-group px-3 d-flex flex-row lessons-content'>
                 {{#each this.lessons}}
-                  <ul class='list-group px-3'>
                     <li class='list-group-item bg-primary lesson-title'>{{this.name}}</li>
-                  </ul>
                 {{/each}}
+                  </ul>
               </div>
             </div>
           {{/each}}
@@ -105,7 +105,6 @@
             </select>
           </div>
 
-          {{log course}}
           <div class='oa-form-group'>
             <label class='oa-form-label oa-heading-sm'>Brief Description</label>
             <input

@@ -189,7 +189,7 @@ const createCourse = async (req, res, next) => {
 const updateCourse = async (req, res, next) => {
   try {
     const { courseSlug } = req.params;
-    
+
     const { file } = req;
     const { user } = req.session;
 
@@ -395,12 +395,13 @@ const deleteSection = async (req, res, next) => {
 //  lesson
 
 const createLessonView = async (req, res, next) => {
-  const { courseSlug, sectionId } = req.params;
+  const { courseSlug, sectionId, lessonSlug } = req.params;
 
   res.render('instructor/create-lesson', {
     title: 'Create lesson',
     courseSlug,
     sectionId,
+    lessonSlug,
   });
 };
 
@@ -408,11 +409,14 @@ const createLesson = async (req, res, next) => {
   try {
     const { courseSlug, sectionId } = req.params;
     const { name, preview } = req.body;
+
+    const isPreview = preview == 'on' ? true : false;
+
     const { file } = req;
     if (!file) {
       req.session.error = 'Please upload a video';
       req.session.save((err) => {
-        res.redirect('/instructor');
+        res.redirect(`/instructor/${courseSlug}/${sectionId}`);
       });
       return;
     }
@@ -426,7 +430,7 @@ const createLesson = async (req, res, next) => {
     const lesson = await Lesson.create({
       name,
       video: media._id,
-      preview,
+      preview: isPreview,
       slug: uniqueSlug(),
     });
 
@@ -476,7 +480,7 @@ const getLessonView = async (req, res, next) => {
 
 const updateLesson = async (req, res, next) => {
   const { user } = req.session;
-  const { courseSlug, lessonSlug } = req.params;
+  const { courseSlug, lessonSlug, sectionId } = req.params;
   const { name, preview } = req.body;
   const { file } = req;
   try {
@@ -500,11 +504,11 @@ const updateLesson = async (req, res, next) => {
       lesson.video = media._id;
     }
     await lesson.save();
-    res.redirect(`/instructor/`);
+    res.redirect(`/instructor/courses/${courseSlug}/${sectionId}`);
   } catch (e) {
     logger.error(e);
     req.session.error = 'Something went wrong';
-    res.redirect('/instructor');
+    res.redirect('/instructor/courses/${courseSlug}/${sectionId}');
   }
 };
 
