@@ -130,17 +130,33 @@ const createSectionLesson = (sections) => {
     accordionBodyElement.innerHTML = section.lessons.map((lesson, index) => {
       // left is name of lesson and check the preview to show the preview text on the right
       return `
-        <div class="d-flex align-items-center my-3">
+        <div class="d-flex align-items-baseline my-3">
           <div class="me-2">
             <i class="bi bi-play-circle-fill ms-1"></i>
           </div>
           <div class="d-flex justify-content-between w-100">
             <a href="#" class="text-decoration-none text-dark">${lesson.name}</a>
-            ${lesson.preview ? `<a href="#" class="text-muted">Preview</a>` : ''}
+            ${lesson.preview ? `<a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#preview-lesson-video-${lesson._id}">Preview</a>` : ''}
+          </div>
+        </div>
+
+        <div class="modal fade" id="preview-lesson-video-${lesson._id}" tabindex="-1" aria-labelledby="modal-preview-lesson" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modal-preview-lesson">${lesson.name}</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+               <video width="100%" height="auto" controls src="${lesson.video}"></video>
+              </div>
+            </div>
           </div>
         </div>
       `
     }).join('');
+
+
 
     accordionCollapseElement.appendChild(accordionBodyElement);
     accordionItemElement.appendChild(accordionCollapseElement);

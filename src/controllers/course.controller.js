@@ -55,8 +55,11 @@ const getCourseDetail = async (req, res, next) => {
         const section = await Section.findById(sectionId);
         const lessons = await Promise.all(
           section.lessons.map(async (sectionLesson) => {
-            const lesson = await Lesson.findById(sectionLesson);
-            return lesson;
+            const lesson = await Lesson.findById(sectionLesson).populate('video');
+            return {
+              ...lesson.toObject(),
+              video: lesson?.preview && lesson?.video?.filename ? await gcsService.getVideoSignedUrl(lesson.video.filename) : null,
+            };
           })
         );
         return {
