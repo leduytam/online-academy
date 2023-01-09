@@ -150,7 +150,7 @@ const getWishlistView = async (req, res, next) => {
       instructorName: instructor.name,
     }
   }));
-  res.render('students/wishlist', {
+  res.render('students/wishList', {
     title: 'Wish List',
     courses: wishList,
   });
