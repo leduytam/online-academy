@@ -4,8 +4,13 @@ for (let i = 0; i < cards.length; i++) {
         if (e.target.classList.contains('wish-list-button') || e.target.classList.contains('fa-heart') || e.target.classList.contains('fa-regular')) {
             return;
         }
+        const isEnrolled = cards[i].getAttribute('data-isEnrolled');
         const slug = cards[i].getAttribute('data-slug');
-        window.location.href = `/courses/${slug}`;
+        if (isEnrolled == 'true') {
+            window.location.href = `/courses/${slug}/lessons`;
+        } else {
+            window.location.href = `/courses/${slug}`;
+        }
     });
 }
 
