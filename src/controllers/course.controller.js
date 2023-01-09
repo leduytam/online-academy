@@ -13,6 +13,8 @@ import gcsService from '../services/gcs.service.js';
 const getCourseDetailView = async (req, res, next) => {
   const { slug } = req.params;
   const course = await Course.findOne({ slug });
+  course.views += 1;
+  await course.save();
   res.render('courses/course-detail', {
     title: course.name,
     data: course,

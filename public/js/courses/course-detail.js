@@ -2,7 +2,7 @@ const starNotFilled = `<i class="bi bi-star ms-1"></i>`;
 const starFilled = `<i class="bi bi-star-fill ms-1"></i>`;
 const starHalfFilled = `<i class="bi bi-star-half ms-1"></i>`;
 
-const RatingStars = (rating) => {
+  const RatingStars = (rating) => {
 
   return (
   `
@@ -16,10 +16,10 @@ const createBreadcrumb = (category, subcategory, name) => {
   breadcrumb.style.background = 'transparent';
   breadcrumb.innerHTML = `
     <li class="breadcrumb-item">
-      <a class="text-decoration-none fw-bold" style="color: ${color}" href="/courses/${category.slug}">${category.name}</a>
+      <a class="text-decoration-none fw-bold" style="color: ${color}" href="/categories/${category.slug}">${category.name}</a>
     </li>
     <li class="breadcrumb-item">
-      <a class="text-decoration-none fw-bold" style="color: ${color}" href="/courses/${category.slug}/${subcategory.slug}">${subcategory.name}</a>
+      <a class="text-decoration-none fw-bold" style="color: ${color}" href="/categories/${category.slug}/${subcategory.slug}">${subcategory.name}</a>
     </li>
     <li class="breadcrumb-item active" aria-current="page">
       <span class="fw-bold" style="color: ${color}">${name}</span>
@@ -38,10 +38,10 @@ const createBriefDescription = (briefDescription) => {
   briefDescriptionElement.innerHTML = briefDescription;
 }
 
-const createRating = (reviews, enrollments) => {
+const createRating = (reviews, enrollments, views) => {
   const color = "#f3ca8c"
   const ratings = reviews.map((review) => review.rating);
-  const averageRating = ratings.reduce((a, b) => a + b, 0) / ratings.length;
+  const averageRating = ratings.length > 0 ?ratings.reduce((a, b) => a + b, 0) / ratings.length : 0;
 
   const roundedAverageRating = Math.round(averageRating * 2) / 2.0;
   
@@ -55,12 +55,12 @@ const createRating = (reviews, enrollments) => {
   averageRatingElement.innerHTML = `
     <span class="fw-bold" style="color: ${color}">${roundedAverageRating}</span>
   `
-  ratingStarsElement.innerHTML = RatingStars(roundedAverageRating);
+  ratingStarsElement.innerHTML = RatingStars(roundedAverageRating ?? 0);
   ratingCountElement.innerHTML = `
     (${reviews.length} ratings)
   `
   enrollmentCountElement.innerHTML = `
-    ${enrollments.length} students
+    ${enrollments.length} students &#x2022; ${views} views
   `
   
 }
@@ -233,7 +233,7 @@ const createInstructor = (instructor) => {
 const createReviews = (reviews) => {
   const color = "#f3ca8c"
   const ratings = reviews.map((review) => review.rating);
-  const averageRating = ratings.reduce((a, b) => a + b, 0) / ratings.length;
+  const averageRating = ratings.length > 0 ? ratings.reduce((a, b) => a + b, 0) / ratings.length : 0;
   const roundedAverageRating = Math.round(averageRating * 2) / 2.0;
 
   const reviewsTitleElement = document.getElementById('course-reviews-header');
@@ -272,7 +272,7 @@ const createReviews = (reviews) => {
                 <div class="text-muted fs-6">
                   ${review.rating}
                   <span style="color:${color}" class="me-1">
-                    ${RatingStars(review.rating)}
+                    ${RatingStars(review.rating ?? 0)}
                   </span>
                   &#x2022
                   ${new Date(review.createdAt).toLocaleDateString()}
@@ -337,13 +337,14 @@ $(document).ready(async function () {
     thumbnail,
     detailDescription,
     isEnrolled,
+    views,
   } = data;
 
   // header
   createBreadcrumb(category, subcategory, name);
   createTitle(name);
   createBriefDescription(briefDescription);
-  createRating(reviews, enrollments);
+  createRating(reviews, enrollments, views);
   createCourseInstructor(instructor);
   createUpdateTime(updatedAt);
   createPrice(price);
