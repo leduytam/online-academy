@@ -1,6 +1,10 @@
 <div class='container instructor-container'>
   <div class='instructor-responsive-container'>
-    <form action='/api/v1/instructor/{{course.slug}}/update-course' method='POST' enctype='multipart/form-data'>
+    <form
+      action='/api/v1/instructor/{{course.slug}}/update-course'
+      method='POST'
+      enctype='multipart/form-data'
+    >
       <div class='course-container'>
         <div
           class='d-flex flex-row align-items-center text-hover mt-1 border-0 shadow-none'
@@ -20,18 +24,20 @@
                 class='d-flex flex-row justify-content-between align-items-center text-hover'
               >
                 <a
-                  href="/instructor/courses/{{../course.slug}}/{{this._id}}"
+                  href='/instructor/courses/{{../course.slug}}/{{this._id}}'
                   class='text-decoration-none section-title'
                 >
                   <h5 class='p-1 fs-6 m-0 section-title'>{{this.name}}</h5>
                 </a>
               </div>
               <div class='lesson-container d-flex'>
-                  <ul class='list-group px-3 d-flex flex-row lessons-content'>
-                {{#each this.lessons}}
-                    <li class='list-group-item bg-primary lesson-title'>{{this.name}}</li>
-                {{/each}}
-                  </ul>
+                <ul class='list-group px-3 d-flex flex-row lessons-content'>
+                  {{#each this.lessons}}
+                    <li
+                      class='list-group-item bg-primary lesson-title'
+                    >{{this.name}}</li>
+                  {{/each}}
+                </ul>
               </div>
             </div>
           {{/each}}
@@ -47,7 +53,7 @@
               id='name'
               value='{{course.name}}'
               class='oa-text-input-large'
-              required="true"
+              required='true'
             />
           </div>
 
@@ -56,7 +62,11 @@
             <div class='udlite-in-udheavy'>
               <div class='ud-image-upload-preview-wrapper'>
                 <div class='image-upload-preview-with-crop'>
-                  <img alt='cover' class='img-fluid' src="https://storage.googleapis.com/oa-public-bucket/{{course.coverPhoto.filename}}" />
+                  <img
+                    alt='cover'
+                    class='img-fluid'
+                    src='https://storage.googleapis.com/oa-public-bucket/{{course.coverPhoto.filename}}'
+                  />
                 </div>
               </div>
               <div class='mb-5 pb-3'>
@@ -66,7 +76,7 @@
                   id='formFile'
                   name='coverPhoto'
                   accept='image/*'
-                  required="true"
+                  required='true'
                 />
               </div>
             </div>
@@ -84,7 +94,7 @@
               class='oa-text-input-large'
               placeholder="What's the price of your course?"
               value='{{course.price}}'
-              required="true"
+              required='true'
             />
           </div>
           <div class='oa-form-group'>
@@ -94,7 +104,11 @@
               aria-label='Choose a suitable category'
               name='category'
             >
-              <option value="{{course.category._id}}" selected disabled>{{course.category.name}}</option>
+              <option
+                value='{{course.category._id}}'
+                selected
+                disabled
+              >{{course.category.name}}</option>
               {{#each categories as |category|}}
                 {{#each this.subcategories as |subcategory|}}
                   <option
@@ -114,37 +128,35 @@
               placeholder='Brief description of your course'
               class='oa-text-input-large'
               value='{{course.briefDescription}}'
-              required="true"
+              required='true'
             />
           </div>
           <div class='oa-form-group'>
             <label class='oa-form-label oa-heading-sm'>Detail Description</label>
-            <textarea id="bio" class='biography-input' name='detailDescription'>{{this.detailDescription}}</textarea>
-                          <script>
-                            tinymce.init({
-                              selector: 'textarea#bio',
-                              menubar: false,
-                              statusbar: false,
-                              setup: function (editor) {
-                                editor.on('init', function (e) {
-                                  editor.setContent(`{{{course.detailDescription}}}`);
-                                });
-                              }
-                            });
-                          </script>
+            <textarea
+              id='bio'
+              class='biography-input'
+              name='detailDescription'
+            >{{this.detailDescription}}</textarea>
+            <script>
+              tinymce.init({ selector: 'textarea#bio', menubar: false,
+              statusbar: false, setup: function (editor) { editor.on('init',
+              function (e) { editor.setContent(`{{{course.detailDescription}}}`);
+              }); } });
+            </script>
           </div>
         </div>
       </div>
 
       <div class='oa-footer-btns pb-3 d-flex justify-content-end pt-3'>
         <button type='submit' class='save-button btn btn-primary'>
-          <i class="fa-solid fa-floppy-disk"></i>
+          <i class='fa-solid fa-floppy-disk'></i>
           <span>Save</span>
         </button>
-                  <button
-                  class='btn btn-danger save-button d-fex align-items-center justify-content-center'
-                ><i class='fa-solid fa-trash'></i>
-                  Delete</button>
+        <button
+          class='btn btn-danger save-button d-fex align-items-center justify-content-center'
+        ><i class='fa-solid fa-trash'></i>
+          Delete</button>
       </div>
     </form>
   </div>

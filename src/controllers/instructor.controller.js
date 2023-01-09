@@ -361,11 +361,11 @@ const updateSection = async (req, res, next) => {
     const section = await Section.findById(sectionId);
     section.name = name;
     await section.save();
-    res.redirect(`/instructor`);
+    res.redirect(`/instructor/courses/${courseSlug}/${sectionId}`);
   } catch (e) {
     logger.error(e);
     req.session.error = 'Something went wrong';
-    res.redirect('/instructor');
+    res.redirect(`/instructor/courses/${courseSlug}/${sectionId}`);
   }
 };
 
@@ -474,7 +474,7 @@ const getLessonView = async (req, res, next) => {
   } catch (e) {
     logger.error(e);
     req.session.error = 'Something went wrong';
-    res.redirect('/instructor');
+    res.redirect(`/instructor/courses/${courseSlug}/${sectionId}`);
   }
 };
 
@@ -508,7 +508,7 @@ const updateLesson = async (req, res, next) => {
   } catch (e) {
     logger.error(e);
     req.session.error = 'Something went wrong';
-    res.redirect('/instructor/courses/${courseSlug}/${sectionId}');
+    res.redirect(`/instructor/courses/${courseSlug}/${sectionId}`);
   }
 };
 

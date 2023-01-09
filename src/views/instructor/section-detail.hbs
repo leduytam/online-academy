@@ -1,6 +1,6 @@
 <div class='container instructor-container'>
   <div class='instructor-responsive-container'>
-    <form action='/instructor/update-section' method='POST'>
+    <form action='/api/v1/instructor/{{courseSlug}}/{{sectionId}}/update-section' method='POST'>
       <div class='section-detail-container'>
         <div
           class='d-flex flex-row align-items-center text-hover section-header mt-1 border-0 shadow-none'
@@ -42,7 +42,7 @@
           </ul>
         </div>
       </div>
-      <div class='oa-footer-btns mt-2 d-flex justify-content-end'>
+      <div class='oa-footer-btns mt-2 d-flex justify-content-end pb-3'>
         <button type='submit' class='save-button btn btn-primary'>
           <i class='fa-solid fa-floppy-disk'></i>
           <span>Save</span>
