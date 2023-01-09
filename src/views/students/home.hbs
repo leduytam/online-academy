@@ -1,136 +1,156 @@
-<div class="container my-3">
-    <h2 class="mt-5 fw-bold fs-2 mb-3">Remarkable courses last week</h2>
-    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            {{#each topCourses}}
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to={{@index}} {{#if @first}}class="active" aria-current="true"{{/if}} aria-label="Slide {{@index}}"></button>
-            {{/each}}
-        </div>
-        <div class="carousel-inner">
-            {{#each topCourses}}
-            <div class="carousel-item {{#if @first}}active{{/if}}" data-slug={{this.slug}} data-isEnrolled={{this.isEnrolled}}>
-                <img src={{this.coverPhoto}} class="d-block w-100" alt="..." style="height: 30em;">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5 class="text-warning fs-3">{{this.name}}</h5>
-                </div>
-            </div>
-            {{/each}}
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-        </div>
-    <h2 class="mt-5 fw-bold fs-2 mb-3">Most Viewed Courses</h2>
-    <div class="row">
+<div class="container-xl px-4 my-3">
+    <div class="position-relative hide-on-md">
+      <div class="position-absolute bg-white p-3 ms-5 mt-5" style="max-width: 28rem">
+        <h1 class="fs-3 fw-bold">Did you make a wish?</h1>
+        <p class="fs-6">Time to make it come true. <span class="text-decoration-underline text-primary">Get the courses on your wishlist</span> and take the first step toward your goals.</p>
+      </div>
+      <img src="https://storage.googleapis.com/oa-public-bucket/hero.jpg" alt="hero" class="img-fluid">
+    </div>
+
+    <h2 class="mt-5 fw-bold fs-4 mb-3">Top courses last week</h2>
+    <div class="slick">
+        {{#each topCourses}}
+          <div class="card position-relative border-0 course-card" data-slug={{this.slug}} data-isEnrolled={{this.isEnrolled}}>
+              <div class="position-absolute" style="top:10px; right:10px;">
+                {{#if ../userId}}
+                  {{#if this.isEnrolled}}
+                    <button type="button" class="btn btn-success fs-7" disabled>Enrolled</button>
+                  {{else}}
+                    <button type="button" class="btn wish-list-button border-0 fs-4 p-0" data-id={{this._id}}>
+                        <span class="{{#if this.isWishListed}} fa fa-heart{{else}}fa-regular fa-heart{{/if}}" style="{{#if this.isWishListed}}color: red;{{else}}color: white;{{/if}}"></span>
+                    </button>
+                  {{/if}}
+                {{/if}}
+              </div>
+              <img src={{this.coverPhoto}} class="card-img-top" style="height: 11rem" alt="Cover photo">
+              <div class="card-body p-2">
+                  <p class="fw-bold fs-7 ellipsis-text-2 mb-1">{{this.name}}</p>
+                  <p class="card-text text-muted fs-8 mb-0 text-truncate">{{this.instructor.name}}</p>
+                  <div class="d-flex align-items-center fs-8 gap-1">
+                      <p class="mb-0 text-warning fw-bold">{{roundWithPrecision this.avgRating 1}}</p>
+                      {{> stars rating=this.avgRating}}
+                      <p class="mb-0 text-muted">({{this.totalRatings}})</p>
+                  </div>
+                  <p class='fw-bold mb-1 fs-6'>{{currency this.price}}</p>
+                  <div class="d-flex gap-2">
+                        {{#if this.hasBadge}}
+                            {{#if this.newest}}
+                                <span class="badge bg-primary">Newest</span>
+                            {{/if}}
+                            {{#if this.mostPopular}}
+                                <span class="badge bg-danger bg-opacity-75">Most popular</span>
+                            {{/if}}
+
+                            {{#if this.highestRated}}
+                                <span class="badge bg-warning bg-opacity-75 text-dark">Highest rating</span>
+                            {{/if}}
+                        {{/if}}      
+                  </div>
+              </div>
+          </div>
+        {{/each}}
+    </div>
+
+    <h2 class="mt-5 fw-bold fs-4 mb-3">Most viewed courses</h2>
+    <div class="slick">
         {{#each mostViewedCourses}}
-        <div class="col-md-3 course-card mt-4" data-slug={{this.slug}} data-isEnrolled={{this.isEnrolled}}>
-            <div class="card position-relative">
-                <div class="position-absolute"  style="top:10px; right:10px;">
-                    {{#if this.isEnrolled}}
-                    <button type="button" class="btn btn-success" disabled>Enrolled</button>
-                    {{else}}
-                    <button type="button" class="btn wish-list-button" data-id={{this._id}}>
-                        <span class="{{#if this.isWishListed}} fa fa-heart fa-3x {{else}} fa-regular fa-heart fa-3x {{/if}}" style="color: white;"></span>
+          <div class="card position-relative border-0 course-card" data-slug={{this.slug}} data-isEnrolled={{this.isEnrolled}}>
+              <div class="position-absolute" style="top:10px; right:10px;">
+                {{#if ../userId}}
+                  {{#if this.isEnrolled}}
+                    <button type="button" class="btn btn-success fs-7" disabled>Enrolled</button>
+                  {{else}}
+                    <button type="button" class="btn wish-list-button border-0 fs-4 p-0" data-id={{this._id}}>
+                        <span class="{{#if this.isWishListed}} fa fa-heart{{else}}fa-regular fa-heart{{/if}}" style="{{#if this.isWishListed}}color: red;{{else}}color: white;{{/if}}"></span>
                     </button>
-                    {{/if}}
-                </div>
-                <img src={{this.coverPhoto}} class="card-img-top" alt="Cover photo">
-                <div class="card-body">
-                    <div style="height: 4em;">
-                        <p class="fw-bold fs-5 course-header">{{this.name}}</p>
-                    </div>
-                    <p class="card-text fs-6 fw-light mb-0 text-truncate">{{this.instructor.name}}</p>
-                    <div class="d-flex align-items-center fs-8 gap-1">
-                        <p class="mb-0 text-warning fw-bold">{{roundWithPrecision this.avgRating 1}}</p>
-                        {{> stars rating=this.avgRating}}
-                        <p class="mb-0 text-muted">({{this.totalRatings}})</p>
-                    </div>
-                    <p class='fw-bold mb-1 fs-4'>{{currency this.price}}</p>
-                    {{#if this.hasBadge}}
-                        {{#if this.newest}}
-                            <span class="badge bg-primary">Newest</span>
-                        {{/if}}
+                  {{/if}}
+                {{/if}}
+              </div>
+              <img src={{this.coverPhoto}} class="card-img-top" style="height: 11rem" alt="Cover photo">
+              <div class="card-body p-2">
+                  <p class="fw-bold fs-7 ellipsis-text-2 mb-1">{{this.name}}</p>
+                  <p class="card-text text-muted fs-8 mb-0 text-truncate">{{this.instructor.name}}</p>
+                  <div class="d-flex align-items-center fs-8 gap-1">
+                      <p class="mb-0 text-warning fw-bold">{{roundWithPrecision this.avgRating 1}}</p>
+                      {{> stars rating=this.avgRating}}
+                      <p class="mb-0 text-muted">({{this.totalRatings}})</p>
+                  </div>
+                  <p class='fw-bold mb-1 fs-6'>{{currency this.price}}</p>
+                  <div class="d-flex gap-2">
+                        {{#if this.hasBadge}}
+                            {{#if this.newest}}
+                                <span class="badge bg-primary">Newest</span>
+                            {{/if}}
+                            {{#if this.mostPopular}}
+                                <span class="badge bg-danger bg-opacity-75">Most popular</span>
+                            {{/if}}
 
-                        {{#if this.mostPopular}}
-                            <span class="badge bg-danger bg-opacity-75">Most popular</span>
-                        {{/if}}
-
-                        {{#if this.highestRated}}
-                            <span class="badge bg-warning bg-opacity-75 text-dark">Highest rating</span>
-                        {{/if}}
-                    {{else}}
-                        <span class="badge bg-success">For you</span>
-                    {{/if}}
-                </div>
-            </div>
-        </div>
+                            {{#if this.highestRated}}
+                                <span class="badge bg-warning bg-opacity-75 text-dark">Highest rating</span>
+                            {{/if}}
+                        {{/if}}      
+                  </div>
+              </div>
+          </div>
         {{/each}}
-    </div>		
-    <h2 class="mt-5 fw-bold fs-2 mb-3">Latest Courses</h2>
-    <div class="row">
+    </div>
+
+    <h2 class="mt-5 fw-bold fs-4 mb-3">Latest courses</h2>
+    <div class="slick">
         {{#each latestCourses}}
-        <div class="col-md-3 course-card mt-4" data-slug={{this.slug}} data-isEnrolled={{this.isEnrolled}} >
-            <div class="card position-relative">
-                <div class="position-absolute"  style="top:10px; right:10px;">
-                    {{#if this.isEnrolled}}
-                    <button type="button" class="btn btn-success" disabled>Enrolled</button>
-                    {{else}}
-                    <button type="button" class="btn wish-list-button" data-id={{this._id}}>
-                        <span class="{{#if this.isWishListed}} fa fa-heart fa-3x {{else}} fa-regular fa-heart fa-3x {{/if}}" style="color: white;"></span>
+          <div class="card position-relative border-0 course-card" data-slug={{this.slug}} data-isEnrolled={{this.isEnrolled}}>
+              <div class="position-absolute" style="top:10px; right:10px;">
+                {{#if ../userId}}
+                  {{#if this.isEnrolled}}
+                    <button type="button" class="btn btn-success fs-7" disabled>Enrolled</button>
+                  {{else}}
+                    <button type="button" class="btn wish-list-button border-0 fs-4 p-0" data-id={{this._id}}>
+                        <span class="{{#if this.isWishListed}} fa fa-heart{{else}}fa-regular fa-heart{{/if}}" style="{{#if this.isWishListed}}color: red;{{else}}color: white;{{/if}}"></span>
                     </button>
-                    {{/if}}
-                </div>
-                <img src={{this.coverPhoto}} class="card-img-top" alt="Cover photo">
-                <div class="card-body">
-                    <div style="height: 4em;">
-                        <p class="fw-bold fs-5 course-header">{{this.name}}</p>
-                    </div>
-                    <p class="card-text fs-6 fw-light mb-0 text-truncate">{{this.instructor.name}}</p>
-                    <div class="d-flex align-items-center fs-8 gap-1">
-                        <p class="mb-0 text-warning fw-bold">{{roundWithPrecision this.avgRating 1}}</p>
-                        {{> stars rating=this.avgRating}}
-                        <p class="mb-0 text-muted">({{this.totalRatings}})</p>
-                    </div>
-                    <p class='fw-bold mb-1 fs-4'>{{currency this.price}}</p>
-                    {{#if this.hasBadge}}
-                        {{#if this.newest}}
-                            <span class="badge bg-primary">Newest</span>
-                        {{/if}}
+                  {{/if}}
+                {{/if}}
+              </div>
+              <img src={{this.coverPhoto}} class="card-img-top" style="height: 11rem" alt="Cover photo">
+              <div class="card-body p-2">
+                  <p class="fw-bold fs-7 ellipsis-text-2 mb-1">{{this.name}}</p>
+                  <p class="card-text text-muted fs-8 mb-0 text-truncate">{{this.instructor.name}}</p>
+                  <div class="d-flex align-items-center fs-8 gap-1">
+                      <p class="mb-0 text-warning fw-bold">{{roundWithPrecision this.avgRating 1}}</p>
+                      {{> stars rating=this.avgRating}}
+                      <p class="mb-0 text-muted">({{this.totalRatings}})</p>
+                  </div>
+                  <p class='fw-bold mb-1 fs-6'>{{currency this.price}}</p>
+                  <div class="d-flex gap-2">
+                        {{#if this.hasBadge}}
+                            {{#if this.newest}}
+                                <span class="badge bg-primary">Newest</span>
+                            {{/if}}
+                            {{#if this.mostPopular}}
+                                <span class="badge bg-danger bg-opacity-75">Most popular</span>
+                            {{/if}}
 
-                        {{#if this.mostPopular}}
-                            <span class="badge bg-danger bg-opacity-75">Most popular</span>
-                        {{/if}}
-
-                        {{#if this.highestRated}}
-                            <span class="badge bg-warning bg-opacity-75 text-dark">Highest rating</span>
-                        {{/if}}
-                    {{else}}
-                        <span class="badge bg-success">For you</span>
-                    {{/if}}
-                </p>
-                </div>
-            </div>
-        </div>
+                            {{#if this.highestRated}}
+                                <span class="badge bg-warning bg-opacity-75 text-dark">Highest rating</span>
+                            {{/if}}
+                        {{/if}}      
+                  </div>
+              </div>
+          </div>
         {{/each}}
-    </div>		
-    <h2 class="mt-5 fw-bold fs-2 mb-3">Topic Recommended for you</h2>
+    </div>
+
+    <h2 class="mt-5 fw-bold fs-4 mb-3">Categories recommend for you</h2>
     <div class="row">
         {{#each mostEnrolledSubCategories}}
-        <div class="col-4 mb-2">
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
             <a class="card" href="/categories/{{this.slug}}/{{this.subCategory.slug}}" style="text-decoration: none;">
                 <div class="card-body">
-                    <p class="text-center card-text fs-5 fw-bold">{{this.subCategory.name}}</p>
+                    <p class="text-center card-text fs-6 fw-bold">{{this.subCategory.name}}</p>
                 </div>
             </a>
         </div>
         {{/each}}
     </div>
-
 </div>
 
 <script src='/js/student/redirectCard.js'></script>
@@ -148,5 +168,39 @@
         el.appendChild(cloneChild.children[0])
         next = next.nextElementSibling
     }
-})
+    })
+
+    $(document).ready(function(){
+        $('.slick').slick({
+            slidesToShow: 4,
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 5000,
+            arrows: true,
+            dots: false,
+            responsive: [
+                {
+                  breakpoint: 992,
+                  settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 1
+                  }
+                },
+                {
+                  breakpoint: 768,
+                  settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1
+                  }
+                },
+                {
+                  breakpoint: 500,
+                  settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                  }
+                }
+            ]
+        });
+    });
 </script>

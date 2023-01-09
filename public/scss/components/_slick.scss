@@ -1,0 +1,23 @@
+.slick-track
+{
+    display: flex !important;
+    gap: 1rem;
+}
+
+.slick-slide
+{
+    height: inherit !important;
+}
+
+.slick-prev {
+  z-index: 2;
+}
+
+.slick-next {
+  z-index: 2;
+  right: -30px;
+}
+
+.slick-prev:before, .slick-next:before {
+  color: $dark !important;
+}
