@@ -8,7 +8,7 @@
         </div>
         <div class="carousel-inner">
             {{#each topCourses}}
-            <div class="carousel-item {{#if @first}}active{{/if}}" data-slug={{this.slug}}>
+            <div class="carousel-item {{#if @first}}active{{/if}}" data-slug={{this.slug}} data-isEnrolled={{this.isEnrolled}}>
                 <img src={{this.coverPhoto}} class="d-block w-100" alt="..." style="height: 30em;">
                 <div class="carousel-caption d-none d-md-block">
                     <h5 class="text-warning fs-3">{{this.name}}</h5>
@@ -28,7 +28,7 @@
     <h2 class="mt-5 fw-bold fs-2 mb-3">Most Viewed Courses</h2>
     <div class="row">
         {{#each mostViewedCourses}}
-        <div class="col-md-3 course-card mt-4" data-slug={{this.slug}}>
+        <div class="col-md-3 course-card mt-4" data-slug={{this.slug}} data-isEnrolled={{this.isEnrolled}}>
             <div class="card position-relative">
                 <div class="position-absolute"  style="top:10px; right:10px;">
                     {{#if this.isEnrolled}}
@@ -51,7 +51,21 @@
                         <p class="mb-0 text-muted">({{this.totalRatings}})</p>
                     </div>
                     <p class='fw-bold mb-1 fs-4'>{{currency this.price}}</p>
-                <span class="badge bg-warning text-dark">Best seller</span>
+                    {{#if this.hasBadge}}
+                        {{#if this.newest}}
+                            <span class="badge bg-primary">Newest</span>
+                        {{/if}}
+
+                        {{#if this.mostPopular}}
+                            <span class="badge bg-danger bg-opacity-75">Most popular</span>
+                        {{/if}}
+
+                        {{#if this.highestRated}}
+                            <span class="badge bg-warning bg-opacity-75 text-dark">Highest rating</span>
+                        {{/if}}
+                    {{else}}
+                        <span class="badge bg-success">For you</span>
+                    {{/if}}
                 </div>
             </div>
         </div>
@@ -60,7 +74,7 @@
     <h2 class="mt-5 fw-bold fs-2 mb-3">Latest Courses</h2>
     <div class="row">
         {{#each latestCourses}}
-        <div class="col-md-3 course-card mt-4" data-slug={{this.slug}} >
+        <div class="col-md-3 course-card mt-4" data-slug={{this.slug}} data-isEnrolled={{this.isEnrolled}} >
             <div class="card position-relative">
                 <div class="position-absolute"  style="top:10px; right:10px;">
                     {{#if this.isEnrolled}}
@@ -83,7 +97,22 @@
                         <p class="mb-0 text-muted">({{this.totalRatings}})</p>
                     </div>
                     <p class='fw-bold mb-1 fs-4'>{{currency this.price}}</p>
-                <span class="badge bg-warning text-dark">Best seller</span>
+                    {{#if this.hasBadge}}
+                        {{#if this.newest}}
+                            <span class="badge bg-primary">Newest</span>
+                        {{/if}}
+
+                        {{#if this.mostPopular}}
+                            <span class="badge bg-danger bg-opacity-75">Most popular</span>
+                        {{/if}}
+
+                        {{#if this.highestRated}}
+                            <span class="badge bg-warning bg-opacity-75 text-dark">Highest rating</span>
+                        {{/if}}
+                    {{else}}
+                        <span class="badge bg-success">For you</span>
+                    {{/if}}
+                </p>
                 </div>
             </div>
         </div>
