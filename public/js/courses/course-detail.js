@@ -324,6 +324,7 @@ $(document).ready(async function () {
   $('#course-page').css('display', 'block');
 
   const { data } = response;
+  console.log(data);
   const { category, 
     subcategory, 
     name, 

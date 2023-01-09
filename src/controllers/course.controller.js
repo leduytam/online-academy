@@ -2,6 +2,7 @@ import hbs from '../configs/hbs.js';
 import Category from '../models/category.model.js';
 import Course from '../models/course.model.js';
 import Enrollment from '../models/enrollment.model.js';
+import User from '../models/user.model.js';
 import Lesson from '../models/lesson.model.js';
 import Media from '../models/media.model.js';
 import Review from '../models/review.model.js';
@@ -26,7 +27,13 @@ const getCourseDetail = async (req, res, next) => {
     const { slug } = req.params;
     const { user } = req.session;
     const course = await Course.findOne({ slug })
-      .populate('instructor')
+      .populate({
+        path: 'instructor',
+        populate: {
+          path: 'avatar',
+          model: 'Media',
+        }
+      })
       .populate('category');
 
     const subcategory = await Subcategory.findById(course.category);
@@ -79,6 +86,10 @@ const getCourseDetail = async (req, res, next) => {
       sections,
       thumbnail,
       isEnrolled,
+      instructor : {
+        ...course.instructor.toObject(),
+        avatar: course.instructor?.avatar?.filename ? gcsService.getPublicImageUrl(course.instructor.avatar.filename): null,
+      }
     };
     res.status(200).send(result);
   } catch (error) {
