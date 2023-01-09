@@ -1,152 +1,139 @@
 <div class='container instructor-container'>
   <div class='instructor-responsive-container'>
-    <div class='tab-container'>
-      <div class='card-body'>
-        <ul class='nav nav-tabs border-bottom' id='myTab' role='tablist'>
-          <li class='nav-item' role='presentation'>
-            <a
-              class='nav-link active'
-              id='information-tab'
-              data-bs-toggle='tab'
-              href='#information'
-              role='tab'
-              aria-controls='information'
-              aria-selected='true'
-            >Lesson Information</a>
-          </li>
-          <li class='nav-item' role='presentation'>
-            <a
-              class='nav-link'
-              id='picture-tab'
-              data-bs-toggle='tab'
-              href='#picture'
-              role='tab'
-              aria-controls='picture'
-              aria-selected='false'
-            >Lesson Picture</a>
-          </li>
-        </ul>
-        <div class='tab-content' id='myTabContent'>
-          <div
-            class='tab-pane fade show active'
-            id='information'
-            role='tabpanel'
-            aria-labelledby='information-tab'
-          >
-            <form action='/instructor/update-section' method='POST'>
-              <div class='d-flex form-container m-2'>
-                <div class='form-content'>
-                  <div class='oa-form-group'>
-                    <label class='oa-form-label oa-heading-sm'>Name</label>
+    <div class='tab-content' id='myTabContent'>
+      <div
+        class='tab-pane fade show active'
+        id='information'
+        role='tabpanel'
+        aria-labelledby='information-tab'
+      >
+        <form
+          action='/api/v1/instructor/{{course.slug}}/{{section._id}}/{{lesson.slug}}/update-lesson'
+          method='POST'
+          id='form-video-update'
+        >
+          <div class='d-flex form-container m-2'>
+            <div class='form-content'>
+              <div class='oa-form-group'>
+                <a href='/instructor/courses/{{course.slug}}/{{section._id}}'>
+                  <svg
+                    class='back-icon'
+                    xmlns='http://www.w3.org/2000/svg'
+                    viewBox='0 0 448 512'
+                  ><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                      d='M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z'
+                    ></path></svg>
+                </a>
+                <label class='oa-form-label oa-heading-sm'>Name</label>
+                <input
+                  type='text'
+                  name='name'
+                  id='name'
+                  class='oa-text-input-large'
+                  value='{{lesson.name}}'
+                  required='true'
+                />
+              </div>
+              <div class='oa-form-group mb-3'>
+                <label class='oa-form-label oa-heading-sm'></label>
+                <div class='form-check'>
+                  {{#if lesson.preview}}
                     <input
-                      type='text'
-                      name='name'
-                      id='name'
-                      class='oa-text-input-large'
-                      value='{{lesson.name}}'
-                      required
+                      class='form-check-input'
+                      type='checkbox'
+                      name='preview'
+                      id='preview'
+                      checked
+                    />
+                  {{else}}
+                    <input
+                      class='form-check-input'
+                      type='checkbox'
+                      name='preview'
+                      id='preview'
+                    />
+                  {{/if}}
+                  <label class='form-check-label' for='preview'>
+                    Preview
+                  </label>
+                </div>
+              </div>
+              <div class='oa-form-group'>
+                <label class='oa-form-label oa-heading-sm'>Video</label>
+                <div class='udlite-in-udheavy'>
+                  <div class='ud-image-upload-preview-wrapper video-content'>
+                    <div class='image-upload-preview-with-crop'>
+                      {{#if videoUrl}}
+                        <video
+                          class='w-100 h-100'
+                          controls
+                          playsinline
+                          id='player'
+                          data-slug='{{lesson.slug}}'
+                          style='max-height: 50rem'
+                        >
+                          <source
+                            type='video/mp4'
+                            src='{{videoUrl}}'
+                            id='video-preview'
+                          />
+                        </video>
+                      {{else}}
+                        <div class='image-upload-preview'>
+                          <div class='image-upload-preview-placeholder'>
+                            <i class='fa-solid fa-video'></i>
+                          </div>
+                        </div>
+                      {{/if}}
+                    </div>
+                  </div>
+                  <div class='mb-3'>
+                    <input
+                      class='form-control video-content'
+                      id='video-input'
+                      type='file'
+                      name='video'
+                      accept='video/mp4'
+                      required='true'
                     />
                   </div>
-                  <div class='oa-form-group mb-3'>
-                    <label class='oa-form-label oa-heading-sm'></label>
-                    <div class='form-check'>
-                      <input
-                        class='form-check-input'
-                        type='checkbox'
-                        name='flexRadioDefault'
-                        id='flexRadioDefault1'
-                        value='{{lesson.isPreview}}'
-                        required
-                      />
-                      <label class='form-check-label' for='flexRadioDefault1'>
-                        Preview
-                      </label>
-                    </div>
-                  </div>
-                  <div class='oa-footer-btns d-flex pb-3'>
-                    <button type='submit' class='save-button btn btn-primary'>
-                      <i class='fa-solid fa-floppy-disk'></i>
-                      <span>Save</span>
-                    </button>
-                    <button
-                      class='btn btn-danger save-button d-fex align-items-center justify-content-center'
-                    ><i class='fa-solid fa-trash'></i>
-                      Delete</button>
-                  </div>
+                  <progress
+                    id='progress'
+                    max='100'
+                    value='0'
+                    class='video-content'
+                  ></progress>
                 </div>
-              </div>
-            </form>
-          </div>
-          <div
-            class='tab-pane fade'
-            id='picture'
-            role='tabpanel'
-            aria-labelledby='picture-tab'
-          >
-            <form action='/instructor/update-section' method='POST'>
-              <div class='d-flex form-container m-2'>
-                <div class='form-content'>
-                  <div class='oa-form-group'>
-                    <label class='oa-form-label oa-heading-sm'>Video</label>
-                    <div class='udlite-in-udheavy'>
-                      <div
-                        class='ud-image-upload-preview-wrapper video-content'
-                      >
-                        <div class='image-upload-preview-with-crop'>
-                          {{#if videoUrl}}
-                            <video
-                              class='w-100 h-100'
-                              controls
-                              playsinline
-                              id='player'
-                              data-slug='{{lesson.slug}}'
-                              style='max-height: 50rem'
-                            >
-                              <source type='video/mp4' src='{{videoUrl}}' />
-                            </video>
-                          {{else}}
-                            <div class='image-upload-preview'>
-                              <div class='image-upload-preview-placeholder'>
-                                <i class='fa-solid fa-video'></i>
-                              </div>
-                            </div>
-                          {{/if}}
-                        </div>
-                      </div>
-                      <div class='mb-3'>
-                        <input
-                          class='form-control video-content'
-                          type='file'
-                          name='video'
-                          accept='video/*'
-                        />
-                      </div>
-                      <progress
-                        id='progress'
-                        max='100'
-                        value='0'
-                        class='video-content'
-                      ></progress>
-                    </div>
 
-                    <div class='oa-footer-btns d-flex pb-3'>
-                      <button type='submit' class='save-button btn btn-primary'>
-                        <i class='fa-solid fa-floppy-disk'></i>
-                        <span>Save</span>
-                      </button>
-                      <button
-                        class='btn btn-danger save-button d-fex align-items-center justify-content-center'
-                      ><i class='fa-solid fa-trash'></i>
-                        Delete</button>
-                    </div>
+                <script
+                  src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js'
+                ></script>
 
-                  </div>
-                </div>
+                <script>
+                  const $ = document.querySelector.bind(document); const config
+                  = { onUploadProgress: e => { const percentUploaded =
+                  Math.round((e.loaded * 100) / e.total)
+                  $('#progress').setAttribute('value', percentUploaded); } };
+                  $('#form-video-update').addEventListener('submit', e => {
+                  e.preventDefault(); const data = new FormData(e.target);
+                  axios.post(`/api/v1/instructor/{{course.slug}}/{{section._id}}/{{lesson.slug}}/update-lesson`,
+                  data, config).then(function(res) { window.location
+                  =`/instructor/courses/{{course.slug}}/{{section._id}}/{{lesson.slug}}`;
+                  }) });
+                </script>
+
               </div>
-            </form>
+              <div class='oa-footer-btns d-flex pb-3'>
+                <button type='submit' class='save-button btn btn-primary'>
+                  <i class='fa-solid fa-floppy-disk'></i>
+                  <span>Save</span>
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
+
   </div>
 </div>

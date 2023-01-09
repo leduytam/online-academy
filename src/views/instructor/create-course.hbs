@@ -1,6 +1,10 @@
 <div class='container instructor-container'>
   <div class='instructor-responsive-container'>
-    <form action='/instructor/create-course' method='POST'>
+    <form
+      action='/api/v1/instructor/create-course'
+      method='POST'
+      enctype='multipart/form-data'
+    >
       <div class='d-flex form-container'>
         <div class='form-content'>
           <div class='oa-form-group'>
@@ -11,6 +15,7 @@
               id='name'
               placeholder="What's the name of your course?"
               class='oa-text-input-large'
+              required='true'
             />
           </div>
 
@@ -19,16 +24,17 @@
             <div class='udlite-in-udheavy'>
               <div class='ud-image-upload-preview-wrapper'>
                 <div class='image-upload-preview-with-crop'>
-                  <img alt='cover' class='img-fluid' />
+                  <img alt='cover' class='img-fluid' id="coverPhoto-preview"/>
                 </div>
               </div>
               <div class='mb-3'>
                 <input
                   class='form-control'
                   type='file'
-                  id='formFile'
-                  name='image'
+                  id='coverPhoto-input'
+                  name='coverPhoto'
                   accept='image/*'
+                  required='true'
                 />
               </div>
             </div>
@@ -45,6 +51,7 @@
               id='price'
               class='oa-text-input-large'
               placeholder="What's the price of your course?"
+              required='true'
             />
           </div>
           <div class='oa-form-group'>
@@ -58,7 +65,7 @@
               {{#each categories as |category|}}
                 {{#each this.subcategories as |subcategory|}}
                   <option
-                    value='{{subcategory.name}}'
+                    value='{{subcategory._id}}'
                   >{{subcategory.name}}</option>
                 {{/each}}
               {{/each}}
@@ -72,6 +79,7 @@
               id='brief'
               placeholder='Brief description of your course'
               class='oa-text-input-large'
+              required='true'
             />
           </div>
           <div class='oa-form-group'>
@@ -94,3 +102,21 @@
     </form>
   </div>
 </div>
+
+<script>
+  (() => {
+    const $ = document.querySelector.bind(document);
+
+    const coverPhotoInput = $('#coverPhoto-input');
+    const coverPhotoPreview = $('#coverPhoto-preview');
+
+    coverPhotoInput.onchange = function(e) {
+            const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        coverPhotoPreview.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    };
+  })();
+</script>

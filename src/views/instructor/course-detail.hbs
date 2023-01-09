@@ -1,17 +1,24 @@
 <div class='container instructor-container'>
   <div class='instructor-responsive-container'>
-    <form action='/instructor/update-course' method='POST'>
+    <form
+      action='/api/v1/instructor/{{course.slug}}/update-course'
+      method='POST'
+      enctype='multipart/form-data'
+    >
       <div class='course-container'>
         <div
           class='d-flex flex-row align-items-center text-hover mt-1 border-0 shadow-none'
         >
-          <input name='name' class='section-input w-50' value="{{course.name}}" />
-          <a href='/instructor/{{course.slug}}/create-section'>
-            <button class='btn btn-primary save-button' type='button'>
-              <i class='fa-solid fa-square-plus'></i>
-              Add section
-            </button>
+          <a href="/instructor/profile">
+          <svg class="back-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
           </a>
+            <h2>{{course.name}}</h2>
+            <a href='/instructor/{{course.slug}}/create-section'>
+              <button class='btn btn-primary save-button' type='button'>
+                <i class='fa-solid fa-square-plus'></i>
+                Add section
+              </button>
+            </a>
         </div>
         <div class='sections-container d-flex flex-column'>
           {{#each this.course.sections}}
@@ -20,18 +27,20 @@
                 class='d-flex flex-row justify-content-between align-items-center text-hover'
               >
                 <a
-                  href="/instructor/courses/{{../course.slug}}/{{this._id}}"
+                  href='/instructor/courses/{{../course.slug}}/{{this._id}}'
                   class='text-decoration-none section-title'
                 >
                   <h5 class='p-1 fs-6 m-0 section-title'>{{this.name}}</h5>
                 </a>
               </div>
               <div class='lesson-container d-flex'>
-                {{#each this.lessons}}
-                  <ul class='list-group px-3'>
-                    <li class='list-group-item bg-primary lesson-title'>{{this.name}}</li>
-                  </ul>
-                {{/each}}
+                <ul class='list-group px-3 d-flex flex-row lessons-content'>
+                  {{#each this.lessons}}
+                    <li
+                      class='list-group-item bg-primary lesson-title'
+                    >{{this.name}}</li>
+                  {{/each}}
+                </ul>
               </div>
             </div>
           {{/each}}
@@ -47,6 +56,7 @@
               id='name'
               value='{{course.name}}'
               class='oa-text-input-large'
+              required='true'
             />
           </div>
 
@@ -55,16 +65,22 @@
             <div class='udlite-in-udheavy'>
               <div class='ud-image-upload-preview-wrapper'>
                 <div class='image-upload-preview-with-crop'>
-                  <img alt='cover' class='img-fluid' src="https://storage.googleapis.com/oa-public-bucket/{{course.coverPhoto.filename}}" />
+                  <img
+                    alt='cover'
+                    class='img-fluid'
+                    id="coverPhoto-preview"
+                    src='{{#if course.coverPhoto}} https://storage.googleapis.com/oa-public-bucket/{{course.coverPhoto.filename}} {{/if}}'
+                  />
                 </div>
               </div>
               <div class='mb-5 pb-3'>
                 <input
                   class='form-control'
                   type='file'
-                  id='formFile'
-                  name='image'
+                  id='coverPhoto-input'
+                  name='coverPhoto'
                   accept='image/*'
+                  required='true'
                 />
               </div>
             </div>
@@ -82,6 +98,7 @@
               class='oa-text-input-large'
               placeholder="What's the price of your course?"
               value='{{course.price}}'
+              required='true'
             />
           </div>
           <div class='oa-form-group'>
@@ -91,56 +108,74 @@
               aria-label='Choose a suitable category'
               name='category'
             >
-              <option value="{{course.category.name}}" selected disabled>{{course.category.name}}</option>
+              <option
+                value='{{course.category._id}}'
+                selected
+                disabled
+              >{{course.category.name}}</option>
               {{#each categories as |category|}}
                 {{#each this.subcategories as |subcategory|}}
                   <option
-                    value='{{subcategory.name}}'
+                    value='{{subcategory._id}}'
                   >{{subcategory.name}}</option>
                 {{/each}}
               {{/each}}
             </select>
           </div>
+
           <div class='oa-form-group'>
             <label class='oa-form-label oa-heading-sm'>Brief Description</label>
             <input
               type='text'
-              name='brief'
+              name='briefDescription'
               id='brief'
               placeholder='Brief description of your course'
               class='oa-text-input-large'
               value='{{course.briefDescription}}'
+              required='true'
             />
           </div>
           <div class='oa-form-group'>
             <label class='oa-form-label oa-heading-sm'>Detail Description</label>
-            <textarea id="bio" class='biography-input' name='bio'></textarea>
-                          <script>
-                            tinymce.init({
-                              selector: 'textarea#bio',
-                              menubar: false,
-                              statusbar: false,
-                              setup: function (editor) {
-                                editor.on('init', function (e) {
-                                  editor.setContent(`{{{course.detailDescription}}}`);
-                                });
-                              }
-                            });
-                          </script>
+            <textarea
+              id='bio'
+              class='biography-input'
+              name='detailDescription'
+            >{{this.detailDescription}}</textarea>
+            <script>
+              tinymce.init({ selector: 'textarea#bio', menubar: false,
+              statusbar: false, setup: function (editor) { editor.on('init',
+              function (e) { editor.setContent(`{{{course.detailDescription}}}`);
+              }); } });
+            </script>
           </div>
         </div>
       </div>
 
       <div class='oa-footer-btns pb-3 d-flex justify-content-end pt-3'>
         <button type='submit' class='save-button btn btn-primary'>
-          <i class="fa-solid fa-floppy-disk"></i>
+          <i class='fa-solid fa-floppy-disk'></i>
           <span>Save</span>
         </button>
-                  <button
-                  class='btn btn-danger save-button d-fex align-items-center justify-content-center'
-                ><i class='fa-solid fa-trash'></i>
-                  Delete</button>
       </div>
     </form>
   </div>
 </div>
+
+<script>
+  (() => {
+    const $ = document.querySelector.bind(document);
+
+    const coverPhotoInput = $('#coverPhoto-input');
+    const coverPhotoPreview = $('#coverPhoto-preview');
+
+    coverPhotoInput.onchange = function(e) {
+            const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        coverPhotoPreview.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    };
+  })();
+</script>
