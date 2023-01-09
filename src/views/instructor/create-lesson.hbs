@@ -27,8 +27,6 @@
                 type='checkbox'
                 name='preview'
                 id='preview'
-                required='true'
-                disabled
               />
               <label class='form-check-label' for='preview'>
                 Preview
@@ -47,7 +45,7 @@
                   class='form-control video-content'
                   type='file'
                   name='video'
-                  accept='video/*'
+                  accept='video/mp4'
                   required='true'
                 />
               </div>
@@ -79,9 +77,11 @@
               onUploadProgress: e => { const percentUploaded =
               Math.round((e.loaded * 100) / e.total)
               $('#progress').setAttribute('value', percentUploaded); } };
-              $('#form-video-create').addEventListener('submit', e => { const
-              data = new FormData(e.target); axios.post(`/api/v1/instructor/{{courseSlug}}/{{sectionId}}/create-lesson`,
-              data, config) });
+              $('#form-video-create').addEventListener('submit', e => {
+              e.preventDefault(); const data = new FormData(e.target);
+              axios.post(`/api/v1/instructor/{{courseSlug}}/{{sectionId}}/create-lesson`,
+              data, config).then(function(res) { window.location =
+              `/instructor/courses/{{courseSlug}}/{{sectionId}}`; }) });
             </script>
 
           </div>

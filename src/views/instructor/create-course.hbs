@@ -24,14 +24,14 @@
             <div class='udlite-in-udheavy'>
               <div class='ud-image-upload-preview-wrapper'>
                 <div class='image-upload-preview-with-crop'>
-                  <img alt='cover' class='img-fluid' />
+                  <img alt='cover' class='img-fluid' id="coverPhoto-preview"/>
                 </div>
               </div>
               <div class='mb-3'>
                 <input
                   class='form-control'
                   type='file'
-                  id='formFile'
+                  id='coverPhoto-input'
                   name='coverPhoto'
                   accept='image/*'
                   required='true'
@@ -102,3 +102,21 @@
     </form>
   </div>
 </div>
+
+<script>
+  (() => {
+    const $ = document.querySelector.bind(document);
+
+    const coverPhotoInput = $('#coverPhoto-input');
+    const coverPhotoPreview = $('#coverPhoto-preview');
+
+    coverPhotoInput.onchange = function(e) {
+            const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        coverPhotoPreview.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    };
+  })();
+</script>

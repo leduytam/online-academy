@@ -5,6 +5,9 @@
         <div
           class='d-flex flex-row align-items-center text-hover section-header mt-1 border-0 shadow-none'
         >
+                  <a href="/instructor/courses/{{courseSlug}}">
+          <svg class="back-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
+          </a>
           <input name='name' class='section-input w-50' value='{{section.name}}' />
           <a href='/instructor/{{courseSlug}}/{{sectionId}}/create-lesson'>
             <button class='btn btn-primary save-button' type='button'>
@@ -19,7 +22,7 @@
               {{#each section.lessons}}
                 <li class='list-group-item lesson-container'>
                   <div class='d-flex flex-column h-100'>
-                    {{#if this.isPreview}}
+                    {{#if this.preview}}
                       <span
                         class='badge bg-success py-2 fs-6 fw-bold w-50'
                       >Preview</span>
@@ -32,10 +35,6 @@
                       href='/instructor/courses/{{../course.slug}}/{{../section._id}}/{{this.slug}}'
                       class='lesson-title'
                     >{{this.name}}</a>
-                    <div>Course Structure and Projects Course Structure and
-                      Projects Course Structure and Projects Course Structure
-                      and Projects Course Structure and Projects</div>
-                  </div>
                 </li>
               {{/each}}
             {{/if}}
@@ -47,10 +46,6 @@
           <i class='fa-solid fa-floppy-disk'></i>
           <span>Save</span>
         </button>
-        <button
-          class='btn btn-danger save-button d-fex align-items-center justify-content-center'
-        ><i class='fa-solid fa-trash'></i>
-          Delete</button>
       </div>
     </form>
   </div>

@@ -482,7 +482,10 @@ const updateLesson = async (req, res, next) => {
   const { user } = req.session;
   const { courseSlug, lessonSlug, sectionId } = req.params;
   const { name, preview } = req.body;
-  const { file } = req;
+  const { file } = req;  
+
+  const isPreview = preview == 'on' ? true : false;
+
   try {
     const course = await Course.findOne({ slug: courseSlug });
     if (course.instructor.toString() !== user._id.toString()) {
@@ -492,7 +495,7 @@ const updateLesson = async (req, res, next) => {
     }
     const lesson = await Lesson.findOne({ slug: lessonSlug });
     lesson.name = name;
-    lesson.preview = preview;
+    lesson.preview = isPreview;
     if (file) {
       const extname = path.extname(file.originalname);
       const filename = `${uniqueSlug()}${Date.now()}${extname}`;
