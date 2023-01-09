@@ -1,3 +1,5 @@
+import fs from 'fs';
+import { getVideoDurationInSeconds } from 'get-video-duration';
 import path from 'path';
 import uniqueSlug from 'unique-slug';
 
@@ -420,12 +422,23 @@ const createLesson = async (req, res, next) => {
       });
       return;
     }
+
     const extname = path.extname(file.originalname);
     const filename = `${uniqueSlug()}${Date.now()}${extname}`;
     await gcsService.uploadVideo(file, filename);
+
+    const urlVideo = await gcsService.getVideoSignedUrl(filename);
+
+    const duration = Math.round(
+      await getVideoDurationInSeconds(urlVideo).then(async (duration) => {
+        return duration;
+      })
+    );
+
     const media = await Media.create({
       filename,
       type: 'video',
+      duration: duration,
     });
     const lesson = await Lesson.create({
       name,
@@ -482,7 +495,7 @@ const updateLesson = async (req, res, next) => {
   const { user } = req.session;
   const { courseSlug, lessonSlug, sectionId } = req.params;
   const { name, preview } = req.body;
-  const { file } = req;  
+  const { file } = req;
 
   const isPreview = preview == 'on' ? true : false;
 
@@ -500,9 +513,19 @@ const updateLesson = async (req, res, next) => {
       const extname = path.extname(file.originalname);
       const filename = `${uniqueSlug()}${Date.now()}${extname}`;
       await gcsService.uploadVideo(file, filename);
+
+      const urlVideo = await gcsService.getVideoSignedUrl(filename);
+
+      const duration = Math.round(
+        await getVideoDurationInSeconds(urlVideo).then(async (duration) => {
+          return duration;
+        })
+      );
+
       const media = await Media.create({
         filename,
         type: 'video',
+        duration: duration,
       });
       lesson.video = media._id;
     }
