@@ -7,12 +7,19 @@ import Media from '../models/media.model.js';
 import Review from '../models/review.model.js';
 import Section from '../models/section.model.js';
 import Subcategory from '../models/subcategory.model.js';
+import User from '../models/user.model.js';
 import courseService from '../services/course.service.js';
 import gcsService from '../services/gcs.service.js';
 
 const getCourseDetailView = async (req, res, next) => {
   const { slug } = req.params;
   const course = await Course.findOne({ slug });
+  if (!course) {
+    res.redirect('/404');
+    return;
+  }
+  course.views += 1;
+  await course.save();
   res.render('courses/course-detail', {
     title: course.name,
     data: course,
@@ -24,12 +31,24 @@ const getCourseDetail = async (req, res, next) => {
     const { slug } = req.params;
     const { user } = req.session;
     const course = await Course.findOne({ slug })
-      .populate('instructor')
+      .populate({
+        path: 'instructor',
+        populate: {
+          path: 'avatar',
+          model: 'Media',
+        },
+      })
       .populate('category');
 
     const subcategory = await Subcategory.findById(course.category);
     const category = await Category.findOne({ subcategories: subcategory._id });
-    const reviews = await Review.find({ course: course._id }).populate('owner');
+    const reviews = await Review.find({ course: course._id }).populate({
+      path: 'owner',
+      populate: {
+        path: 'avatar',
+        model: 'Media',
+      },
+    });
     const enrollments = await Enrollment.find({ course: course._id });
     const sections = await Promise.all(
       course.sections.map(async (sectionId) => {
@@ -72,11 +91,27 @@ const getCourseDetail = async (req, res, next) => {
       ...course.toObject(),
       category,
       subcategory,
-      reviews,
+      reviews: reviews.map((review) => {
+        return {
+          ...review.toObject(),
+          owner: {
+            ...review.owner.toObject(),
+            avatar: review.owner?.avatar?.filename
+              ? gcsService.getPublicImageUrl(review.owner.avatar.filename)
+              : null,
+          },
+        };
+      }),
       enrollments,
       sections,
       thumbnail,
       isEnrolled,
+      instructor: {
+        ...course.instructor.toObject(),
+        avatar: course.instructor?.avatar?.filename
+          ? gcsService.getPublicImageUrl(course.instructor.avatar.filename)
+          : null,
+      },
     };
     res.status(200).send(result);
   } catch (error) {

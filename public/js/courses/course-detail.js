@@ -2,7 +2,7 @@ const starNotFilled = `<i class="bi bi-star ms-1"></i>`;
 const starFilled = `<i class="bi bi-star-fill ms-1"></i>`;
 const starHalfFilled = `<i class="bi bi-star-half ms-1"></i>`;
 
-const RatingStars = (rating) => {
+  const RatingStars = (rating) => {
 
   return (
   `
@@ -16,10 +16,10 @@ const createBreadcrumb = (category, subcategory, name) => {
   breadcrumb.style.background = 'transparent';
   breadcrumb.innerHTML = `
     <li class="breadcrumb-item">
-      <a class="text-decoration-none fw-bold" style="color: ${color}" href="/courses/${category.slug}">${category.name}</a>
+      <a class="text-decoration-none fw-bold" style="color: ${color}" href="/categories/${category.slug}">${category.name}</a>
     </li>
     <li class="breadcrumb-item">
-      <a class="text-decoration-none fw-bold" style="color: ${color}" href="/courses/${category.slug}/${subcategory.slug}">${subcategory.name}</a>
+      <a class="text-decoration-none fw-bold" style="color: ${color}" href="/categories/${category.slug}/${subcategory.slug}">${subcategory.name}</a>
     </li>
     <li class="breadcrumb-item active" aria-current="page">
       <span class="fw-bold" style="color: ${color}">${name}</span>
@@ -38,10 +38,10 @@ const createBriefDescription = (briefDescription) => {
   briefDescriptionElement.innerHTML = briefDescription;
 }
 
-const createRating = (reviews, enrollments) => {
+const createRating = (reviews, enrollments, views) => {
   const color = "#f3ca8c"
   const ratings = reviews.map((review) => review.rating);
-  const averageRating = ratings.reduce((a, b) => a + b, 0) / ratings.length;
+  const averageRating = ratings.length > 0 ?ratings.reduce((a, b) => a + b, 0) / ratings.length : 0;
 
   const roundedAverageRating = Math.round(averageRating * 2) / 2.0;
   
@@ -55,12 +55,12 @@ const createRating = (reviews, enrollments) => {
   averageRatingElement.innerHTML = `
     <span class="fw-bold" style="color: ${color}">${roundedAverageRating}</span>
   `
-  ratingStarsElement.innerHTML = RatingStars(roundedAverageRating);
+  ratingStarsElement.innerHTML = RatingStars(roundedAverageRating ?? 0);
   ratingCountElement.innerHTML = `
     (${reviews.length} ratings)
   `
   enrollmentCountElement.innerHTML = `
-    ${enrollments.length} students
+    ${enrollments.length} students &#x2022; ${views} views
   `
   
 }
@@ -216,15 +216,96 @@ const createInstructor = (instructor) => {
   const instructorElement = document.getElementById('course-instructor');
   const instructorAvatarUrl = instructor.avatar ? instructor.avatar : `https://avatars.dicebear.com/api/miniavs/${instructor.email}.png`;
   instructorElement.innerHTML = `
-    <div class="d-flex align-items-center">
-      <div class="me-2">
+    <div class="d-flex mt-3">
+      <div class="me-4">
         <a href="#">
           <img src="${instructorAvatarUrl}" alt="instructor avatar" class="rounded-circle" style="width: 7rem; height: auto;">
         </a>
       </div>
       <div>
-        <div class="fw-bold">${instructor.name}</div>
-        <div class="text-muted">${instructor.description || "Instructor's description"}</div>
+        <div class="fw-bold fs-5">${instructor.name}</div>
+        <div class="text-muted">${instructor.bio || "Instructor's description"}</div>
+        <button
+          class="btn btn-link text-dark fs-5 fw-bold p-0 mt-2"
+          type="button"
+          data-bs-toggle="modal" 
+          data-bs-target="#instructorModal"
+        >
+        View me more!
+        </button>
+      </div>
+    </div>
+
+    <div class="modal fade" id="instructorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5 fw-bold" id="exampleModalLabel">${instructor.name}</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body d-flex flex-column align-items-center">
+              <img src="${instructorAvatarUrl}" alt="instructor avatar" class="rounded-circle" style="width: 10rem; height: auto;">
+              <div class="mt-4">
+                <div class='d-flex flex-row align-items-center'>
+                  <p class='fs-6'>Name: </p>
+                  <p class='fs-6 fw-bold ms-2'>${instructor.name}</p>
+                </div>
+
+                <div class='d-flex flex-row align-items-center'>
+                  <p class='fs-6'>Email: </p>
+                  <p class='fs-6 fw-bold ms-2'>${instructor.email}</p>
+                </div>
+
+                <div class='d-flex flex-row align-items-center'>
+                  <p class='fs-6'>Join from: </p>
+                  <p class='fs-6 fw-bold ms-2'>${new Date(instructor.createdAt).toDateString()}</p>
+                </div>
+
+                <div>
+                  <p class='fs-6'>Bio: </p>
+                  <p class='fs-6 fw-bold ms-2'>${instructor.bio}</p>
+                </div>
+
+                <div class="input-group mt-3">
+                  <a class="input-group-text" id="basic-addon3" href="${instructor?.twitterLink}">
+                    Twitter
+                  </a>
+                  <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" disabled value="${instructor?.twitterLink || ''}">
+                </div>
+
+                <div class="input-group mt-3">
+                <a class="input-group-text" id="basic-addon3" href="${instructor?.facebookLink}">
+                Facebook
+              </a>
+                  <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" disabled value="${instructor?.facebookLink || ''}">
+                </div>
+
+                <div class="input-group mt-3">
+                <a class="input-group-text" id="basic-addon3" href="${instructor?.youtubeLink}">
+                Youtube
+              </a>
+                  <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" disabled value="${instructor?.youtubeLink || ''}">
+                </div>
+
+                <div class="input-group mt-3">
+                <a class="input-group-text" id="basic-addon3" href="${instructor?.linkedinLink}">
+                Linkedin
+              </a>
+                  <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" disabled value="${instructor?.linkedinLink || ''}">
+                </div>
+
+                <div class="input-group mt-3">
+                <a class="input-group-text" id="basic-addon3" href="${instructor?.websiteLink}">
+                My website
+              </a>
+                  <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" disabled value="${instructor?.websiteLink || ''}">
+                </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Got it!</button>
+          </div>
+        </div>
       </div>
     </div>
   `
@@ -233,7 +314,7 @@ const createInstructor = (instructor) => {
 const createReviews = (reviews) => {
   const color = "#f3ca8c"
   const ratings = reviews.map((review) => review.rating);
-  const averageRating = ratings.reduce((a, b) => a + b, 0) / ratings.length;
+  const averageRating = ratings.length > 0 ? ratings.reduce((a, b) => a + b, 0) / ratings.length : 0;
   const roundedAverageRating = Math.round(averageRating * 2) / 2.0;
 
   const reviewsTitleElement = document.getElementById('course-reviews-header');
@@ -258,29 +339,29 @@ const createReviews = (reviews) => {
   reviewsElement.style.height = `${2 * 17}rem`;
   
   reviewsElement.innerHTML = reviews.map((review) => {
-    const reviewAvatarUrl = review.avatar ? review.avatar : `https://avatars.dicebear.com/api/miniavs/${review.owner.email}.png`;
+    const reviewAvatarUrl = review.owner.avatar ? review.owner.avatar : `https://avatars.dicebear.com/api/miniavs/${review.owner.email}.png`;
     return `
       <div class="col-12 col-md-6" >
         <div class="mb-3" style="height:17rem">
           <div class="border-top">
             <div class="d-flex align-items-center pt-2 h-25">
-              <div class="me-2">
-                <img src="${reviewAvatarUrl}" alt="reviewer avatar" class="rounded-circle img-fluid h-100" >
+              <div class="me-2 avatar avatar-lg">
+                <img src="${reviewAvatarUrl}" alt="reviewer" class="rounded-circle img-fluid" >
               </div>
               <div>
                 <div class="fw-bold">${review.owner.name}</div>
                 <div class="text-muted fs-6">
                   ${review.rating}
                   <span style="color:${color}" class="me-1">
-                    ${RatingStars(review.rating)}
+                    ${RatingStars(review.rating ?? 0)}
                   </span>
                   &#x2022
                   ${new Date(review.createdAt).toLocaleDateString()}
                 </div>
               </div>
             </div>
-            <div class="h-75 py-2">
-              <div class="overflow-auto h-100">
+            <div class="h-75 py-4">
+              <div class="overflow-auto" style="height: 10rem;">
                 ${review.review}
               </div>
             </div>
@@ -324,6 +405,7 @@ $(document).ready(async function () {
   $('#course-page').css('display', 'block');
 
   const { data } = response;
+  console.log(data);
   const { category, 
     subcategory, 
     name, 
@@ -337,13 +419,14 @@ $(document).ready(async function () {
     thumbnail,
     detailDescription,
     isEnrolled,
+    views,
   } = data;
 
   // header
   createBreadcrumb(category, subcategory, name);
   createTitle(name);
   createBriefDescription(briefDescription);
-  createRating(reviews, enrollments);
+  createRating(reviews, enrollments, views);
   createCourseInstructor(instructor);
   createUpdateTime(updatedAt);
   createPrice(price);
