@@ -223,10 +223,89 @@ const createInstructor = (instructor) => {
         </a>
       </div>
       <div>
-        <a>
-          <div class="fw-bold">${instructor.name}</div>
-        </a>
+        <div class="fw-bold fs-5">${instructor.name}</div>
         <div class="text-muted">${instructor.bio || "Instructor's description"}</div>
+        <button
+          class="btn btn-link text-dark fs-5 fw-bold p-0 mt-2"
+          type="button"
+          data-bs-toggle="modal" 
+          data-bs-target="#instructorModal"
+        >
+        View me more!
+        </button>
+      </div>
+    </div>
+
+    <div class="modal fade" id="instructorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5 fw-bold" id="exampleModalLabel">${instructor.name}</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body d-flex flex-column align-items-center">
+              <img src="${instructorAvatarUrl}" alt="instructor avatar" class="rounded-circle" style="width: 10rem; height: auto;">
+              <div class="mt-4">
+                <div class='d-flex flex-row align-items-center'>
+                  <p class='fs-6'>Name: </p>
+                  <p class='fs-6 fw-bold ms-2'>${instructor.name}</p>
+                </div>
+
+                <div class='d-flex flex-row align-items-center'>
+                  <p class='fs-6'>Email: </p>
+                  <p class='fs-6 fw-bold ms-2'>${instructor.email}</p>
+                </div>
+
+                <div class='d-flex flex-row align-items-center'>
+                  <p class='fs-6'>Join from: </p>
+                  <p class='fs-6 fw-bold ms-2'>${new Date(instructor.createdAt).toDateString()}</p>
+                </div>
+
+                <div>
+                  <p class='fs-6'>Bio: </p>
+                  <p class='fs-6 fw-bold ms-2'>${instructor.bio}</p>
+                </div>
+
+                <div class="input-group mt-3">
+                  <a class="input-group-text" id="basic-addon3" href="${instructor?.twitterLink}">
+                    Twitter
+                  </a>
+                  <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" disabled value="${instructor?.twitterLink || ''}">
+                </div>
+
+                <div class="input-group mt-3">
+                <a class="input-group-text" id="basic-addon3" href="${instructor?.facebookLink}">
+                Facebook
+              </a>
+                  <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" disabled value="${instructor?.facebookLink || ''}">
+                </div>
+
+                <div class="input-group mt-3">
+                <a class="input-group-text" id="basic-addon3" href="${instructor?.youtubeLink}">
+                Youtube
+              </a>
+                  <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" disabled value="${instructor?.youtubeLink || ''}">
+                </div>
+
+                <div class="input-group mt-3">
+                <a class="input-group-text" id="basic-addon3" href="${instructor?.linkedinLink}">
+                Linkedin
+              </a>
+                  <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" disabled value="${instructor?.linkedinLink || ''}">
+                </div>
+
+                <div class="input-group mt-3">
+                <a class="input-group-text" id="basic-addon3" href="${instructor?.websiteLink}">
+                My website
+              </a>
+                  <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" disabled value="${instructor?.websiteLink || ''}">
+                </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Got it!</button>
+          </div>
+        </div>
       </div>
     </div>
   `

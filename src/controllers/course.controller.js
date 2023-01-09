@@ -2,18 +2,22 @@ import hbs from '../configs/hbs.js';
 import Category from '../models/category.model.js';
 import Course from '../models/course.model.js';
 import Enrollment from '../models/enrollment.model.js';
-import User from '../models/user.model.js';
 import Lesson from '../models/lesson.model.js';
 import Media from '../models/media.model.js';
 import Review from '../models/review.model.js';
 import Section from '../models/section.model.js';
 import Subcategory from '../models/subcategory.model.js';
+import User from '../models/user.model.js';
 import courseService from '../services/course.service.js';
 import gcsService from '../services/gcs.service.js';
 
 const getCourseDetailView = async (req, res, next) => {
   const { slug } = req.params;
   const course = await Course.findOne({ slug });
+  if (!course) {
+    res.redirect('/404');
+    return;
+  }
   course.views += 1;
   await course.save();
   res.render('courses/course-detail', {
@@ -32,7 +36,7 @@ const getCourseDetail = async (req, res, next) => {
         populate: {
           path: 'avatar',
           model: 'Media',
-        }
+        },
       })
       .populate('category');
 
@@ -43,7 +47,7 @@ const getCourseDetail = async (req, res, next) => {
       populate: {
         path: 'avatar',
         model: 'Media',
-      }
+      },
     });
     const enrollments = await Enrollment.find({ course: course._id });
     const sections = await Promise.all(
@@ -92,18 +96,22 @@ const getCourseDetail = async (req, res, next) => {
           ...review.toObject(),
           owner: {
             ...review.owner.toObject(),
-            avatar: review.owner?.avatar?.filename ? gcsService.getPublicImageUrl(review.owner.avatar.filename): null,
-          }
+            avatar: review.owner?.avatar?.filename
+              ? gcsService.getPublicImageUrl(review.owner.avatar.filename)
+              : null,
+          },
         };
       }),
       enrollments,
       sections,
       thumbnail,
       isEnrolled,
-      instructor : {
+      instructor: {
         ...course.instructor.toObject(),
-        avatar: course.instructor?.avatar?.filename ? gcsService.getPublicImageUrl(course.instructor.avatar.filename): null,
-      }
+        avatar: course.instructor?.avatar?.filename
+          ? gcsService.getPublicImageUrl(course.instructor.avatar.filename)
+          : null,
+      },
     };
     res.status(200).send(result);
   } catch (error) {
