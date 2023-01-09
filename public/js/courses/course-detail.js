@@ -216,15 +216,17 @@ const createInstructor = (instructor) => {
   const instructorElement = document.getElementById('course-instructor');
   const instructorAvatarUrl = instructor.avatar ? instructor.avatar : `https://avatars.dicebear.com/api/miniavs/${instructor.email}.png`;
   instructorElement.innerHTML = `
-    <div class="d-flex align-items-center">
-      <div class="me-2">
+    <div class="d-flex mt-3">
+      <div class="me-4">
         <a href="#">
           <img src="${instructorAvatarUrl}" alt="instructor avatar" class="rounded-circle" style="width: 7rem; height: auto;">
         </a>
       </div>
       <div>
-        <div class="fw-bold">${instructor.name}</div>
-        <div class="text-muted">${instructor.description || "Instructor's description"}</div>
+        <a>
+          <div class="fw-bold">${instructor.name}</div>
+        </a>
+        <div class="text-muted">${instructor.bio || "Instructor's description"}</div>
       </div>
     </div>
   `
@@ -258,14 +260,14 @@ const createReviews = (reviews) => {
   reviewsElement.style.height = `${2 * 17}rem`;
   
   reviewsElement.innerHTML = reviews.map((review) => {
-    const reviewAvatarUrl = review.avatar ? review.avatar : `https://avatars.dicebear.com/api/miniavs/${review.owner.email}.png`;
+    const reviewAvatarUrl = review.owner.avatar ? review.owner.avatar : `https://avatars.dicebear.com/api/miniavs/${review.owner.email}.png`;
     return `
       <div class="col-12 col-md-6" >
         <div class="mb-3" style="height:17rem">
           <div class="border-top">
             <div class="d-flex align-items-center pt-2 h-25">
-              <div class="me-2">
-                <img src="${reviewAvatarUrl}" alt="reviewer avatar" class="rounded-circle img-fluid h-100" >
+              <div class="me-2 avatar avatar-lg">
+                <img src="${reviewAvatarUrl}" alt="reviewer" class="rounded-circle img-fluid" >
               </div>
               <div>
                 <div class="fw-bold">${review.owner.name}</div>
@@ -279,8 +281,8 @@ const createReviews = (reviews) => {
                 </div>
               </div>
             </div>
-            <div class="h-75 py-2">
-              <div class="overflow-auto h-100">
+            <div class="h-75 py-4">
+              <div class="overflow-auto" style="height: 10rem;">
                 ${review.review}
               </div>
             </div>

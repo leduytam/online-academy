@@ -38,7 +38,13 @@ const getCourseDetail = async (req, res, next) => {
 
     const subcategory = await Subcategory.findById(course.category);
     const category = await Category.findOne({ subcategories: subcategory._id });
-    const reviews = await Review.find({ course: course._id }).populate('owner');
+    const reviews = await Review.find({ course: course._id }).populate({
+      path: 'owner',
+      populate: {
+        path: 'avatar',
+        model: 'Media',
+      }
+    });
     const enrollments = await Enrollment.find({ course: course._id });
     const sections = await Promise.all(
       course.sections.map(async (sectionId) => {
@@ -81,7 +87,15 @@ const getCourseDetail = async (req, res, next) => {
       ...course.toObject(),
       category,
       subcategory,
-      reviews,
+      reviews: reviews.map((review) => {
+        return {
+          ...review.toObject(),
+          owner: {
+            ...review.owner.toObject(),
+            avatar: review.owner?.avatar?.filename ? gcsService.getPublicImageUrl(review.owner.avatar.filename): null,
+          }
+        };
+      }),
       enrollments,
       sections,
       thumbnail,
